@@ -142,10 +142,10 @@ const Brand = () => {
 const MobileNavigation = () => {
   return (
     <>
-      {/* Скрытый чекбокс для управления меню */}
+      {/* Hidden checkbox for controlling the menu */}
       <input type="checkbox" id="mobile-menu-toggle" />
       
-      {/* Кнопка бургер-меню */}
+      {/* Burger menu button */}
       <label 
         htmlFor="mobile-menu-toggle"
         className="md:hidden p-2 hover:bg-accent rounded-md cursor-pointer"
@@ -154,13 +154,13 @@ const MobileNavigation = () => {
         <span className="sr-only">Open menu</span>
       </label>
 
-      {/* Оверлей */}
+      {/* Overlay */}
       <label 
         htmlFor="mobile-menu-toggle" 
         className="off-canvas-overlay"
       />
       
-      {/* Мобильное меню */}
+      {/* Mobile menu */}
       <div className="off-canvas">
         <div className="p-4 space-y-4">
           <div className="flex justify-between items-center">
@@ -183,7 +183,7 @@ const MobileNavigation = () => {
                   className="submenu-toggle hidden" 
                 />
                 
-                {/* Заголовок подменю */}
+                {/* Submenu title */}
                 <label 
                   htmlFor={`submenu-toggle-${index}`}
                   className="w-full text-left p-3 hover:bg-accent rounded-md flex justify-between items-center cursor-pointer"
@@ -204,7 +204,7 @@ const MobileNavigation = () => {
                   </svg>
                 </label>
 
-                {/* Подменю */}
+                {/* Submenu */}
                 <div className="submenu">
                   {section.subItems.map((item) => (
                     <a
@@ -259,7 +259,7 @@ const DesktopNavigation = () => (
         </li>
       ))}
       
-      {/* Статические ссылки */}
+      {/* Static links */}
       {content.navigation.static.map((item) => (
         <li key={item.id}>
           <a 

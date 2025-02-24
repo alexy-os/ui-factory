@@ -1,5 +1,5 @@
 @layer components {
-  /* Off-canvas система */
+  /* Off-canvas system */
   .off-canvas {
     @apply fixed inset-y-0 right-0 w-[80%] max-w-sm bg-background shadow-xl transform translate-x-full transition-transform duration-300 z-50;
   }
@@ -8,7 +8,7 @@
     @apply fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40;
   }
 
-  /* Состояние при активном чекбоксе */
+  /* State when checkbox is active */
   #mobile-menu-toggle:checked ~ .off-canvas {
     transform: translateX(0);
   }
@@ -17,12 +17,12 @@
     @apply opacity-100 pointer-events-auto;
   }
 
-  /* Скрываем чекбокс */
+  /* Hide checkbox */
   #mobile-menu-toggle {
     @apply hidden;
   }
 
-  /* Анимация для стрелок подменю */
+  /* Animation for submenu arrows */
   .submenu-toggle:checked + label svg {
     @apply rotate-180;
   }
@@ -31,7 +31,7 @@
     @apply block;
   }
 
-  /* Базовые стили для подменю */
+  /* Basic styles for submenu */
   .submenu {
     @apply hidden pl-4 space-y-2 mt-2;
   }

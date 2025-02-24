@@ -22,7 +22,6 @@ export class ConfigManager {
   }
 
   validateConfig(): boolean {
-    // Базовая валидация
     if (!this.config.outDir) {
       throw new Error('Output directory is required');
     }
