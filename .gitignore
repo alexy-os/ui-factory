@@ -20,7 +20,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Runtime data
 
-public/
 .manual/
 bun.lockb
 
