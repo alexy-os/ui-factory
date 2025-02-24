@@ -1,0 +1,48 @@
+{
+  "name": "ui-factory",
+  "description": "UI Factory is a modern approach to building static websites using React components and CSS-only interactions.",
+  "license": "MIT",
+  "author": "AlexY-OS",
+  "homepage": "https://github.com/alexy-os/ui-factory",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexy-os/layouter.git"
+  },
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "generate:styles": "tailwindcss -i ./src/index.css -o ./public/style.css --minify",
+    "generate:html": "tsx src/scripts/generate.ts",
+    "generate": "bun run generate:styles && bun run generate:html"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@radix-ui/react-slot": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8.4.35",
+    "tailwindcss": "3.4.16",
+    "tsx": "^4.7.1",
+    "typescript": "^5.0.0",
+    "vite": "^6.0.0"
+  }
+}

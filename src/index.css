@@ -1,0 +1,5 @@
+/* Base styles */
+@import "./styles/base.css";
+
+/* Components */
+@import "./styles/components/navigation.css";
