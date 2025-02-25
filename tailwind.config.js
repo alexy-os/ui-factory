@@ -6,6 +6,7 @@ module.exports = {
         './src/semantic/**/*.{ts,tsx}',
         './components/**/*.{ts,tsx}',
         './app/**/*.{ts,tsx}',
+		'./public/**/*.html',
     ],
     prefix: "",
     theme: {

@@ -9,7 +9,7 @@
     "url": "https://github.com/alexy-os/layouter.git"
   },
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,7 @@
     "generate:semantic-styles": "tailwindcss -i ./src/semantic/index.css -o ./public/style-semantic.css --minify",
     "generate:html": "tsx src/scripts/generate.ts",
     "generate:semantic": "tsx src/semantic/generate.ts",
+    "generate:semantic-html": "tsx src/semantic/generate-semantic-html.ts",
     "generate": "bun run generate:styles && bun run generate:html && bun run generate:semantic"
   },
   "workspaces": [
@@ -27,8 +28,10 @@
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-slot": "^1.1.2",
+    "@types/jsdom": "^21.1.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "jsdom": "^26.0.0",
     "lucide-react": "^0.475.0",
     "node-fetch": "^3.3.2",
     "react": "^19.0.0",
