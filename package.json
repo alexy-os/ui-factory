@@ -19,6 +19,7 @@
     "generate:semantic-styles": "tailwindcss -i ./src/semantic/index.css -o ./public/style-semantic.css --minify",
     "generate:html": "tsx src/scripts/generate.ts",
     "generate:semantic": "tsx src/semantic/generate.ts",
+    "generate:semantic-map": "tsx src/semantic/generate-semantic-map.ts",
     "generate:semantic-html": "tsx src/semantic/generate-semantic-html.ts",
     "generate": "bun run generate:styles && bun run generate:html && bun run generate:semantic"
   },

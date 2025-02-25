@@ -5,7 +5,7 @@ import * as util from 'util';
 const execAsync = util.promisify(exec);
 
 export async function compileCss(): Promise<void> {
-  const inputPath = path.join(process.cwd(), 'src/semantic/style-semantic.source.css');
+  const inputPath = path.join(process.cwd(), 'src/semantic/index.css');
   const outputPath = path.join(process.cwd(), 'public/style-semantic.css');
 
   try {

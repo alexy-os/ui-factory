@@ -8,15 +8,19 @@ import * as ts from 'typescript';
 interface SemanticRendererOptions {
   semanticMapPath?: string;
   outputDir?: string;
+  componentsDir?: string;
 }
 
 export class SemanticRenderer {
   private semanticMap: Record<string, string> = {};
   private outputDir: string;
+  private semanticMapPath: string;
+  private componentsDir: string;
   
   constructor(options: SemanticRendererOptions = {}) {
     this.outputDir = options.outputDir || path.join(process.cwd(), 'public');
     this.semanticMapPath = options.semanticMapPath || path.join(process.cwd(), 'src/semantic/semantic-map.json');
+    this.componentsDir = options.componentsDir || path.join(process.cwd(), 'src/semantic/components');
   }
   
   async initialize(): Promise<void> {
@@ -45,14 +49,28 @@ export class SemanticRenderer {
       const newClassNames: string[] = [];
       
       // Проверяем каждый класс
-      classNames.forEach(className => {
-        // Если есть семантический аналог, используем его
-        if (this.semanticMap[className]) {
-          newClassNames.push(this.semanticMap[className]);
-        } else {
+      for (let i = 0; i < classNames.length; i++) {
+        const className = classNames[i];
+        
+        // Проверяем составные классы (группы классов, которые должны заменяться вместе)
+        let found = false;
+        for (const [tailwindGroup, semanticClass] of Object.entries(this.semanticMap)) {
+          const groupClasses = tailwindGroup.split(' ');
+          
+          // Проверяем, совпадает ли группа классов
+          if (groupClasses.every((cls, index) => classNames[i + index] === cls)) {
+            newClassNames.push(semanticClass);
+            i += groupClasses.length - 1; // Пропускаем обработанные классы
+            found = true;
+            break;
+          }
+        }
+        
+        // Если не нашли соответствия, оставляем оригинальный класс
+        if (!found) {
           newClassNames.push(className);
         }
-      });
+      }
       
       // Обновляем атрибут class
       element.setAttribute('class', newClassNames.join(' '));
@@ -66,12 +84,15 @@ export class SemanticRenderer {
     props: Record<string, any> = {},
     outputPath: string
   ): Promise<void> {
+    // Создаем компонент с семантическими пропсами
+    const semanticProps = { ...props, semantic: true };
+    
     // Рендерим компонент в HTML
     const reactHtml = ReactDOMServer.renderToString(
-      React.createElement(component, props)
+      React.createElement(component, semanticProps)
     );
     
-    // Трансформируем классы
+    // Трансформируем оставшиеся классы
     const transformedHtml = this.transformClassNames(reactHtml);
     
     // Создаем полный HTML документ
@@ -96,6 +117,8 @@ export class SemanticRenderer {
     
     // Записываем файл
     await fs.writeFile(path.join(this.outputDir, outputPath), fullHtml, 'utf-8');
+    
+    console.log(`✅ Rendered ${outputPath}`);
   }
 
   // Добавляем метод для анализа компонента через AST
