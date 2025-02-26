@@ -3,66 +3,85 @@ import * as React from "react";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 
+// Define the variant configurations once to avoid duplication
+const variantConfigs = {
+  button: {
+    base: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  },
+  badge: {
+    base: "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+    variants: {
+      variant: {
+        default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+        outline: "text-foreground",
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  },
+  card: {
+    base: "rounded-md p-4 shadow",
+    variants: {
+      variant: {
+        default: "bg-white border border-gray-200",
+        secondary: "bg-gray-100 border border-gray-300",
+      },
+      size: {
+        sm: "max-w-sm",
+        lg: "max-w-lg",
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "sm"
+    }
+  }
+};
+
 // Universal cva map for various components
 const universalVariants = {
   button: cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+    variantConfigs.button.base,
     {
-      variants: {
-        variant: {
-          default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-          destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-          outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-          secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-          ghost: "hover:bg-accent hover:text-accent-foreground",
-          link: "text-primary underline-offset-4 hover:underline",
-        },
-        size: {
-          default: "h-9 px-4 py-2",
-          sm: "h-8 rounded-md px-3 text-xs",
-          lg: "h-10 rounded-md px-8",
-          icon: "h-9 w-9",
-        },
-      },
-      defaultVariants: {
-        variant: "default" as const,
-        size: "default" as const,
-      },
+      variants: variantConfigs.button.variants,
+      defaultVariants: variantConfigs.button.defaultVariants as any,
     }
   ),
   badge: cva(
-    "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+    variantConfigs.badge.base,
     {
-      variants: {
-        variant: {
-          default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
-          secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-          destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-          outline: "text-foreground",
-        },
-      },
-      defaultVariants: {
-        variant: "default" as const,
-      },
+      variants: variantConfigs.badge.variants,
+      defaultVariants: variantConfigs.badge.defaultVariants as any,
     }
   ),
   card: cva(
-    "rounded-md p-4 shadow",
+    variantConfigs.card.base,
     {
-      variants: {
-        variant: {
-          default: "bg-white border border-gray-200",
-          secondary: "bg-gray-100 border border-gray-300",
-        },
-        size: {
-          sm: "max-w-sm",
-          lg: "max-w-lg",
-        },
-      },
-      defaultVariants: {
-        variant: "default" as const,
-        size: "sm" as const,
-      },
+      variants: variantConfigs.card.variants,
+      defaultVariants: variantConfigs.card.defaultVariants as any,
     }
   ),
 };
@@ -148,60 +167,16 @@ const generateCSS = (variantsMap: typeof universalVariants) => {
   let css = "";
   
   // Iterate through each component type (button, badge, card)
-  Object.entries(variantsMap).forEach(([component, cvaFn]) => {
-    css += `.${component} { @apply transition duration-200; }\n`;
-    
-    // Access the original configuration that was passed to cva
-    // We need to reconstruct this from our knowledge of how the universalVariants is structured
-    const variantConfig = {
-      button: {
-        variant: {
-          default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-          destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-          outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-          secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-          ghost: "hover:bg-accent hover:text-accent-foreground",
-          link: "text-primary underline-offset-4 hover:underline",
-        },
-        size: {
-          default: "h-9 px-4 py-2",
-          sm: "h-8 rounded-md px-3 text-xs",
-          lg: "h-10 rounded-md px-8",
-          icon: "h-9 w-9",
-        }
-      },
-      badge: {
-        variant: {
-          default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
-          secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-          destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-          outline: "text-foreground",
-        }
-      },
-      card: {
-        variant: {
-          default: "bg-white border border-gray-200",
-          secondary: "bg-gray-100 border border-gray-300",
-        },
-        size: {
-          sm: "max-w-sm",
-          lg: "max-w-lg",
-        }
-      }
-    };
-    
-    // Get the variants for this component
-    const componentVariants = variantConfig[component as keyof typeof variantConfig];
+  Object.entries(variantConfigs).forEach(([component, config]) => {
+    css += `.${component} { @apply ${config.base} transition duration-200; }\n`;
     
     // Generate CSS for each variant type (variant, size, etc.)
-    if (componentVariants) {
-      Object.entries(componentVariants).forEach(([variantType, options]) => {
-        // Generate CSS for each option in this variant type
-        Object.entries(options).forEach(([optionName, classes]) => {
-          css += `.${component}-${optionName} { @apply ${classes}; }\n`;
-        });
+    Object.entries(config.variants).forEach(([variantType, options]) => {
+      // Generate CSS for each option in this variant type
+      Object.entries(options).forEach(([optionName, classes]) => {
+        css += `.${component}-${optionName} { @apply ${classes}; }\n`;
       });
-    }
+    });
   });
   
   return css;
