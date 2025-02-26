@@ -1,0 +1,11 @@
+{
+  "section-hero": "w-full py-16 lg:py-32",
+  "section-container": "container mx-auto px-4 md:px-6 lg:px-8",
+  "section-grid": "grid grid-cols-1 md:grid-cols-2 items-center gap-8",
+  "div-flex-flex-col-gap-4": "flex gap-4 flex-col",
+  "div-flex-justify-center": "flex justify-center",
+  "h2-title": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
+  "p-description": "text-base text-muted-foreground max-w-2xl",
+  "div-buttons": "flex flex-col md:flex-row gap-4",
+  "div-gap-8-grid-grid-cols-2": "grid grid-cols-2 gap-8"
+}
