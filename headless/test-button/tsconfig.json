@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@test-button/atom": ["atom/src"],
+      "@test-button/atom/*": ["atom/src/*"],
+      "@test-button/molecule": ["molecule/src"],
+      "@test-button/molecule/*": ["molecule/src/*"],
+      "@test-button/organism": ["organism/src"],
+      "@test-button/organism/*": ["organism/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+} 
