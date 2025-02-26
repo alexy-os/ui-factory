@@ -7,15 +7,25 @@ import { buttonBaseStyle } from "./Button.css";
 // Button component props
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
+  // Special props to control style inheritance
+  ignoreBaseStyle?: boolean;
 }
 
 // Headless Button component
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => {
-    const { asChild = false, className, children, ...buttonProps } = props;
+    const { 
+      asChild = false, 
+      className, 
+      children, 
+      ignoreBaseStyle = false,
+      ...buttonProps 
+    } = props;
     
-    // Combine classes
-    const buttonClassName = twMerge(buttonBaseStyle, className);
+    // Combine classes - allow option to ignore base styles
+    const buttonClassName = ignoreBaseStyle 
+      ? className 
+      : twMerge(buttonBaseStyle, className);
     
     if (asChild) {
       return (

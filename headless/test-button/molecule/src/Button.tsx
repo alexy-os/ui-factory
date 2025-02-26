@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button as HeadlessButton, ButtonProps as HeadlessButtonProps } from "@test-button/atom";
 import { buttonStyles } from "./button.styles";
+import { twMerge } from "tailwind-merge";
 
 // Extended Button props
 export interface ButtonProps extends HeadlessButtonProps {
@@ -21,13 +22,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     } = props;
     
     // Generate the class name using tailwind-variants
-    const classNames = buttonStyles({ variant, size, className });
+    const variantClasses = buttonStyles({ variant, size });
+    
+    // Merge with any additional classNames
+    const combinedClassNames = className ? twMerge(variantClasses, className) : variantClasses;
     
     return (
       <HeadlessButton
         ref={ref}
-        className={classNames}
+        className={combinedClassNames}
         asChild={asChild}
+        ignoreBaseStyle={true}
         {...buttonProps}
       >
         {children}
