@@ -84,24 +84,24 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-  <section className="section-py-16-w-full-lg-py-32">
-    <div className="section-container">
-      <div className="section-grid">
-        <div className="flex gap-4 flex-col">
+  <section className="section-hero">
+    <div className="section-container-mx-auto-px-4-lg-px-8-md-px-6">
+      <div className="section-gap-8-grid-grid-cols-1-items-center-md-grid-cols-2">
+        <div className="div-flex-flex-col-gap-4">
           {badge &&
-          <div className="flex justify-center">
+          <div className="div-flex-justify-center">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="flex gap-4 flex-col">
-            <h2 className="h2-title">
+          <div className="div-flex-flex-col-gap-4">
+            <h2 className="h2-font-bold-max-w-2xl-text-3xl-lg-text-5xl-md-text-4xl">
                 {title}
             </h2>
-            <p className="hero-description">
+            <p className="p-max-w-2xl-text-base-text-muted-foreground">
               {description}
             </p>
           </div>
-          <div className="flex-columns">
+          <div className="div-flex-flex-col-gap-4-lg-gap-8-md-flex-row-md-gap-6">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -109,7 +109,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="grid-columns">
+        <div className="div-gap-8-grid-grid-cols-2">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}

@@ -1,0 +1,9 @@
+.section-hero { @apply w-full py-16 lg:py-32; }
+.section-container-mx-auto-px-4-lg-px-8-md-px-6 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
+.section-gap-8-grid-grid-cols-1-items-center-md-grid-cols-2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
+.div-flex-flex-col-gap-4 { @apply flex gap-4 flex-col; }
+.div-flex-justify-center { @apply flex justify-center; }
+.h2-font-bold-max-w-2xl-text-3xl-lg-text-5xl-md-text-4xl { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
+.p-max-w-2xl-text-base-text-muted-foreground { @apply text-base text-muted-foreground max-w-2xl; }
+.div-flex-flex-col-gap-4-lg-gap-8-md-flex-row-md-gap-6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
+.div-gap-8-grid-grid-cols-2 { @apply grid grid-cols-2 gap-8; }

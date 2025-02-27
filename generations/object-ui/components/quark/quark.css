@@ -1,0 +1,9 @@
+.3216wf { @apply w-full py-16 lg:py-32; }
+.c86ma4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
+.8g1ic2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
+.ffc4 { @apply flex gap-4 flex-col; }
+.fjc { @apply flex justify-center; }
+.fb5243 { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
+.2tbtmf { @apply text-base text-muted-foreground max-w-2xl; }
+.ffc48fr6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
+.8g2 { @apply grid grid-cols-2 gap-8; }
