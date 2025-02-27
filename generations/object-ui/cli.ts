@@ -5,7 +5,6 @@ import path from 'path';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 
-// Расширенная структура имен файлов
 const FILE_NAMES = {
   sourceDir: 'source',
   outputDir: 'components',
@@ -16,7 +15,6 @@ const FILE_NAMES = {
   cssOutputSemantic: 'semantic',
 }
 
-// Расширенная конфигурация
 const CONFIG = {
   paths: {
     classObject: path.resolve(`./generations/object-ui/${FILE_NAMES.classObject}.ts`),
@@ -60,30 +58,25 @@ const CONFIG = {
   },
 };
 
-// Создаем необходимые директории
 [CONFIG.paths.resultDir, CONFIG.paths.semanticDir, CONFIG.paths.quarkDir].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 });
 
-// Определение типа для объекта классов
 type ClassEntry = {
   quark: string;
   semantic: string;
   classes: string;
 };
 
-// Загрузка существующего объекта классов или создание нового
 let classObject: Record<string, ClassEntry> = {};
 try {
   if (fs.existsSync(CONFIG.paths.classObject)) {
     const classObjectContent = fs.readFileSync(CONFIG.paths.classObject, 'utf-8');
-    // Извлекаем объект из файла TypeScript
-    const objectMatch = classObjectContent.match(/export\s+const\s+classObject\s*=\s*({[\s\S]*});/);
+        const objectMatch = classObjectContent.match(/export\s+const\s+classObject\s*=\s*({[\s\S]*});/);
     if (objectMatch && objectMatch[1]) {
-      // Используем eval для преобразования строки в объект (в продакшене лучше использовать более безопасные методы)
-      classObject = eval(`(${objectMatch[1]})`);
+            classObject = eval(`(${objectMatch[1]})`);
     }
   }
 } catch (error) {
@@ -121,17 +114,14 @@ const generateShortKey = (classes: string) => {
   return normalizedClasses
     .split(' ')
     .map(cls => {
-      // Для классов с модификаторами (например, lg:flex) берем первые буквы после двоеточия
-      const parts = cls.split(':');
+            const parts = cls.split(':');
       const baseCls = parts[parts.length - 1];
       
-      // Для специальных классов с цифрами
-      if (baseCls.match(/\d+/)) {
+            if (baseCls.match(/\d+/)) {
         return baseCls.replace(/[^\d]/g, '') || '';
       }
       
-      // Берем первые буквы слов
-      return baseCls
+            return baseCls
         .split('-')
         .map(word => word[0])
         .join('')
@@ -165,30 +155,25 @@ const updateClassObject = (tag: string, ...classes: string[]) => {
   const normalizedClasses = normalizeClassString(merged);
   const reverseMap = buildReverseMap();
   
-  // Проверяем существующие маппинги
-  if (reverseMap[normalizedClasses]) {
+    if (reverseMap[normalizedClasses]) {
     const existingKey = reverseMap[normalizedClasses];
     console.log(`Found existing entry for classes: ${existingKey}`);
     return existingKey;
   }
   
-  // Генерируем ключи
-  const quarkKey = generateShortKey(merged);
+    const quarkKey = generateShortKey(merged);
   const semanticKey = generateSemanticKey(tag, merged);
   
-  // Создаем ключ для объекта
-  const objectKey = semanticKey;
+    const objectKey = semanticKey;
   
-  // Если ключа еще нет в маппинге, добавляем
-  if (!classObject[objectKey]) {
+    if (!classObject[objectKey]) {
     classObject[objectKey] = {
       quark: quarkKey,
       semantic: semanticKey,
       classes: merged
     };
     
-    // Сохраняем обновленный объект в файл
-    saveClassObject();
+        saveClassObject();
     
     console.log(`Added new class mapping: ${objectKey} -> ${merged}`);
   }
@@ -268,8 +253,7 @@ const cleanupClassObject = () => {
   
   Object.entries(valueMap).forEach(([normalizedValue, keys]) => {
     if (keys.length > 1) {
-      // Предпочитаем семантический ключ, если есть
-      const preferredKey = keys[0];
+            const preferredKey = keys[0];
       
       if (preferredKey) {
         keys.forEach(key => {
@@ -296,12 +280,10 @@ const generateCSS = () => {
     semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
   });
   
-  // Сохраняем CSS файлы
-  fs.writeFileSync(CONFIG.paths.cssOutputQuark, quarkCSS);
-  fs.writeFileSync(CONFIG.paths.cssOutputSemantic, semanticCSS);
+    {/*fs.writeFileSync(CONFIG.paths.cssOutputQuark, quarkCSS);
+  fs.writeFileSync(CONFIG.paths.cssOutputSemantic, semanticCSS);*/}
   
-  // Копируем CSS в директории компонентов
-  fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
+    fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
   fs.writeFileSync(path.join(CONFIG.paths.semanticDir, `${FILE_NAMES.cssOutputSemantic}.css`), semanticCSS);
   
   console.log(`Generated Quark CSS saved to ${CONFIG.paths.cssOutputQuark}`);
@@ -327,8 +309,7 @@ const transformComponents = () => {
     
     const reverseMap = buildReverseMap();
     
-    // Трансформация для Quark
-    const classRegexQuark = /className=["']([^"']+)["']/g;
+        const classRegexQuark = /className=["']([^"']+)["']/g;
     let matchQuark;
     let lastIndexQuark = 0;
     let transformedContentQuark = '';
@@ -344,8 +325,7 @@ const transformComponents = () => {
       
       let quarkName = '';
       
-      // Ищем соответствующую запись в classObject
-      for (const [key, entry] of Object.entries(classObject)) {
+            for (const [key, entry] of Object.entries(classObject)) {
         if (normalizeClassString(entry.classes) === normalizedClasses) {
           quarkName = entry.quark;
           break;
@@ -353,8 +333,7 @@ const transformComponents = () => {
       }
       
       if (!quarkName) {
-        // Если не нашли, используем оригинальные классы
-        transformedContentQuark += `className="${originalClasses}"`;
+                transformedContentQuark += `className="${originalClasses}"`;
       } else {
         transformedContentQuark += `className="${quarkName}"`;
       }
@@ -364,8 +343,7 @@ const transformComponents = () => {
     
     transformedContentQuark += content.substring(lastIndexQuark);
     
-    // Трансформация для Semantic
-    const classRegexSemantic = /className=["']([^"']+)["']/g;
+        const classRegexSemantic = /className=["']([^"']+)["']/g;
     let matchSemantic;
     let lastIndexSemantic = 0;
     let transformedContentSemantic = '';
@@ -381,8 +359,7 @@ const transformComponents = () => {
       
       let semanticName = '';
       
-      // Ищем соответствующую запись в classObject
-      for (const [key, entry] of Object.entries(classObject)) {
+            for (const [key, entry] of Object.entries(classObject)) {
         if (normalizeClassString(entry.classes) === normalizedClasses) {
           semanticName = entry.semantic;
           break;
@@ -390,8 +367,7 @@ const transformComponents = () => {
       }
       
       if (!semanticName) {
-        // Если не нашли, используем оригинальные классы
-        transformedContentSemantic += `className="${originalClasses}"`;
+                transformedContentSemantic += `className="${originalClasses}"`;
       } else {
         transformedContentSemantic += `className="${semanticName}"`;
       }
@@ -401,8 +377,7 @@ const transformComponents = () => {
     
     transformedContentSemantic += content.substring(lastIndexSemantic);
     
-    // Сохраняем трансформированные компоненты
-    const quarkOutputPath = path.join(CONFIG.paths.quarkDir, `${component.name}.tsx`);
+        const quarkOutputPath = path.join(CONFIG.paths.quarkDir, `${component.name}.tsx`);
     const semanticOutputPath = path.join(CONFIG.paths.semanticDir, `${component.name}.tsx`);
     
     fs.writeFileSync(quarkOutputPath, transformedContentQuark);

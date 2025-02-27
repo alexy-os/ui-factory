@@ -119,17 +119,14 @@ const generateShortKey = (classes: string) => {
   return normalizedClasses
     .split(' ')
     .map(cls => {
-      // Для классов с модификаторами (например, lg:flex) берем первые буквы после двоеточия
-      const parts = cls.split(':');
+            const parts = cls.split(':');
       const baseCls = parts[parts.length - 1];
       
-      // Для специальных классов с цифрами
-      if (baseCls.match(/\d+/)) {
+            if (baseCls.match(/\d+/)) {
         return baseCls.replace(/[^\d]/g, '') || '';
       }
       
-      // Берем первые буквы слов
-      return baseCls
+            return baseCls
         .split('-')
         .map(word => word[0])
         .join('')
@@ -144,18 +141,15 @@ const updateClassMap = (tag: string, ...classes: string[]) => {
   const normalizedClasses = normalizeClassString(merged);
   const reverseMap = buildReverseMap();
   
-  // Проверяем существующие маппинги
-  if (reverseMap[normalizedClasses]) {
+    if (reverseMap[normalizedClasses]) {
     const existingKey = reverseMap[normalizedClasses];
     console.log(`Found existing semantic name for classes: ${existingKey} -> ${merged}`);
     return existingKey;
   }
   
-  // Генерируем короткий ключ
-  const shortKey = generateShortKey(merged);
+    const shortKey = generateShortKey(merged);
   
-  // Если ключа еще нет в маппинге, добавляем
-  if (!classMap[shortKey]) {
+    if (!classMap[shortKey]) {
     classMap[shortKey] = merged;
     
     fs.writeFileSync(CONFIG.paths.classMap, JSON.stringify(classMap, null, 2));
