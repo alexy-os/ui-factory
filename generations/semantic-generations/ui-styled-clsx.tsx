@@ -1,4 +1,4 @@
-// bun headless/test-generations/ui-styled-clsx.tsx
+// bun generations/semantic-generations/ui-styled-clsx.tsx
 import styled from "styled-components";
 import clsx from "clsx";
 import React from "react";

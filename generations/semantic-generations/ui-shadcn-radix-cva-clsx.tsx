@@ -1,4 +1,4 @@
-// bun headless/test-generations/ui-shadcn-radix-cva-clsx.tsx
+// bun generations/semantic-generations/ui-shadcn-radix-cva-clsx.tsx
 import * as React from "react";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";

@@ -40,7 +40,7 @@ bun run generate:ui
 ## Directory Structure
 
 ```
-headless/semantic-ui/
+generations/semantic-ui/
 ├── cli.ts                # Command-line tool for analysis and generation
 ├── classMap.json         # Generated mapping of utility classes to semantic names
 ├── semantic.css          # Generated CSS with @apply directives
@@ -60,7 +60,7 @@ The tool scans components specified in the configuration (in `cli.ts`) and extra
 // Configuration in cli.ts
 components: [
   {
-    path: './headless/semantic-ui/resolved/HeroSplit.tsx',
+    path: './generations/semantic-ui/resolved/HeroSplit.tsx',
     name: 'HeroSplit',
   },
   // Add more components here
@@ -231,11 +231,11 @@ To add a new component for analysis:
 ```typescript
 components: [
   {
-    path: './headless/semantic-ui/resolved/HeroSplit.tsx',
+    path: './generations/semantic-ui/resolved/HeroSplit.tsx',
     name: 'HeroSplit',
   },
   {
-    path: './headless/semantic-ui/resolved/NewComponent.tsx',
+    path: './generations/semantic-ui/resolved/NewComponent.tsx',
     name: 'NewComponent',
   },
 ],

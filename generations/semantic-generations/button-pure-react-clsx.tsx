@@ -1,3 +1,4 @@
+// bun generations/semantic-generations/button-pure-react-clsx.tsx
 import clsx from "clsx";
 import ReactDOMServer from 'react-dom/server';
 
