@@ -25,6 +25,8 @@
     "generate:semantic-html": "tsx src/semantic/generate-semantic-html.ts",
     "generate:semantic-analyze": "bun run ./headless/semantic-ui/cli.ts analyze",
     "generate:semantic-css": "bun run ./headless/semantic-ui/cli.ts generate",
+    "generate:semantic-transform": "bun run ./headless/semantic-ui/cli.ts transform",
+    "generate:ui": "bun run generate:semantic-analyze && bun run generate:semantic-css && bun run generate:semantic-transform",
     "generate": "bun run generate:styles && bun run generate:html && bun run generate:semantic"
   },
   "workspaces": [

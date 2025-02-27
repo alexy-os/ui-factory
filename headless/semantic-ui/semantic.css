@@ -4,6 +4,6 @@
 .div-flex-flex-col-gap-4 { @apply flex gap-4 flex-col; }
 .div-flex-justify-center { @apply flex justify-center; }
 .h2-title { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
-.p-description { @apply text-base text-muted-foreground max-w-2xl; }
-.div-buttons { @apply flex flex-col md:flex-row gap-4; }
-.div-gap-8-grid-grid-cols-2 { @apply grid grid-cols-2 gap-8; }
+.hero-description { @apply text-base text-muted-foreground max-w-2xl; }
+.grid-columns { @apply grid grid-cols-2 gap-8; }
+.flex-columns { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
