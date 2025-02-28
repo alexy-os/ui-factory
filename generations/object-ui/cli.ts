@@ -71,15 +71,15 @@ let classObject: Record<string, ClassEntry> = {};
 try {
   if (fs.existsSync(CONFIG.paths.classObject)) {
     const classObjectContent = fs.readFileSync(CONFIG.paths.classObject, 'utf-8');
-        const objectMatch = classObjectContent.match(/export\s+const\s+classObject\s*=\s*({[\s\S]*});/);
+    const objectMatch = classObjectContent.match(/export\s+const\s+classObject\s*=\s*({[\s\S]*});/);
     if (objectMatch && objectMatch[1]) {
-            classObject = eval(`(${objectMatch[1]})`);
-            
-                        Object.keys(classObject).forEach(key => {
-              if (!classObject[key].components) {
-                classObject[key].components = {};
-              }
-            });
+      classObject = eval(`(${objectMatch[1]})`);
+      
+      Object.keys(classObject).forEach(key => {
+        if (!classObject[key].components) {
+          classObject[key].components = {};
+        }
+      });
     }
   }
 } catch (error) {
@@ -117,14 +117,14 @@ const generateShortKey = (classes: string) => {
   return normalizedClasses
     .split(' ')
     .map(cls => {
-            const parts = cls.split(':');
+      const parts = cls.split(':');
       const baseCls = parts[parts.length - 1];
       
-            if (baseCls.match(/\d+/)) {
+      if (baseCls.match(/\d+/)) {
         return baseCls.replace(/[^\d]/g, '') || '';
       }
       
-            return baseCls
+      return baseCls
         .split('-')
         .map(word => word[0])
         .join('')
@@ -164,7 +164,7 @@ const updateClassObject = (tag: string, classes: string, componentInfo: { name: 
     objectKey = reverseMap[normalizedClasses];
     console.log(`Found existing entry for classes: ${objectKey}`);
     
-        if (!classObject[objectKey].components[componentInfo.name]) {
+    if (!classObject[objectKey].components[componentInfo.name]) {
       classObject[objectKey].components[componentInfo.name] = {
         path: componentInfo.path,
         name: componentInfo.name
@@ -217,76 +217,33 @@ export const classObject = ${JSON.stringify(classObject, null, 2)};
 };
 
 const TAILWIND_CLASS_PATTERNS = {
-    static: /(?:class|className)=["']([^"']+)["']/g,
-  
-    reactDynamic: /className=\{(?:clsx|cn|classNames)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+  static: /(?:class|className)=["']([^"']+)["']/g,
+  reactDynamic: /className=\{(?:clsx|cn|classNames)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
   reactTemplate: /className=\{`([^`]+)`\}/g,
-  
-    vueBinding: /:class="(?:\[?['`]([^'`]+)['`]\]?)"/g,
-  
-    svelteClass: /class=["']([^"']+)["']/g,
-  
-  // HTML/Handlebars
-  htmlClass: /class=["']([^"']+)["']/g,
-  
-    cvaObject: /const\s+(\w+)(?:Variants)?\s*=\s*cva\(\s*["'`]([^"'`]+)["'`]/g,
-  cvaVariants: /variants\s*:\s*{([^}]+)}/g,
-  cvaVariantValues: /["'`]([^"'`]+)["'`]\s*:\s*["'`]([^"'`]+)["'`]/g
+  vueBinding: /:class="(?:\[?['`]([^'`]+)['`]\]?)"/g,
+  svelteClass: /class=["']([^"']+)["']/g,
+  htmlClass: /class=["']([^"']+)["']/g
 };
 
-const extractClassesFromStyleObjects = (content: string): Array<{ name: string; classes: string }> => {
-  const styleObjects: Array<{ name: string; classes: string }> = [];
-  
-    const cvaPattern = TAILWIND_CLASS_PATTERNS.cvaObject;
-  let cvaMatch;
-  
-  while ((cvaMatch = cvaPattern.exec(content)) !== null) {
-    const objectName = cvaMatch[1];
-    const baseClasses = cvaMatch[2];
-    
-        styleObjects.push({
-      name: objectName,
-      classes: baseClasses
-    });
-    
-        const variantsSection = content.substring(cvaMatch.index);
-    const variantsMatch = TAILWIND_CLASS_PATTERNS.cvaVariants.exec(variantsSection);
-    
-    if (variantsMatch) {
-      const variantsContent = variantsMatch[1];
-      let variantValueMatch;
-      const variantValuesPattern = TAILWIND_CLASS_PATTERNS.cvaVariantValues;
-      
-            variantValuesPattern.lastIndex = 0;
-      
-      while ((variantValueMatch = variantValuesPattern.exec(variantsContent)) !== null) {
-                styleObjects.push({
-          name: `${objectName}_${variantValueMatch[1]}`,
-          classes: variantValueMatch[2]
-        });
-      }
-    }
-  }
-  
-  return styleObjects;
-};
+interface TailwindClassMatch {
+  tag: string;
+  classes: string;
+  position: number;
+}
 
-const extractTailwindClasses = (content: string, filePath: string, componentInfo: { name: string; path: string }): TailwindClassMatch[] => {
+interface FoundClass {
+  component: string;
+  tag: string;
+  classes: string;
+}
+
+const extractTailwindClasses = (content: string, filePath: string): TailwindClassMatch[] => {
   const foundClasses: TailwindClassMatch[] = [];
   const fileExt = path.extname(filePath).toLowerCase();
   
-    const styleObjects = extractClassesFromStyleObjects(content);
-  for (const styleObject of styleObjects) {
-    const tag = 'div';     foundClasses.push({
-      tag,
-      classes: styleObject.classes,
-      position: 0,       source: 'styleObject',
-      objectName: styleObject.name
-    });
-  }
+  const patterns: RegExp[] = [];
+  patterns.push(TAILWIND_CLASS_PATTERNS.static);
   
-    const patterns: RegExp[] = [];
-  patterns.push(TAILWIND_CLASS_PATTERNS.static);   
   if (['.jsx', '.tsx'].includes(fileExt)) {
     patterns.push(TAILWIND_CLASS_PATTERNS.reactDynamic);
     patterns.push(TAILWIND_CLASS_PATTERNS.reactTemplate);
@@ -298,21 +255,21 @@ const extractTailwindClasses = (content: string, filePath: string, componentInfo
     patterns.push(TAILWIND_CLASS_PATTERNS.htmlClass);
   }
   
-    for (const pattern of patterns) {
+  for (const pattern of patterns) {
     let match;
-    pattern.lastIndex = 0;     
+    pattern.lastIndex = 0;
+    
     while ((match = pattern.exec(content)) !== null) {
       const prevLines = content.substring(0, match.index).split('\n').slice(-CONFIG.tagDetection.contextLines).join('\n');
       const tag = detectTagFromContext(prevLines);
       
-                  if (match[1]) {
-                        const classes = twMerge(match[1]);
+      if (match[1]) {
+        const classes = twMerge(match[1]);
         
         foundClasses.push({
           tag,
           classes,
-          position: match.index,
-          source: 'inlineClass'
+          position: match.index
         });
       }
     }
@@ -320,22 +277,6 @@ const extractTailwindClasses = (content: string, filePath: string, componentInfo
   
   return foundClasses;
 };
-
-interface TailwindClassMatch {
-  tag: string;
-  classes: string;
-  position: number;
-  source?: 'inlineClass' | 'styleObject';
-  objectName?: string;
-}
-
-interface FoundClass {
-  component: string;
-  tag: string;
-  classes: string;
-  source?: 'inlineClass' | 'styleObject';
-  objectName?: string;
-}
 
 const scanDirectory = (dir: string): Array<{ path: string; name: string; relativePath: string }> => {
   const components: Array<{ path: string; name: string; relativePath: string }> = [];
@@ -349,9 +290,9 @@ const scanDirectory = (dir: string): Array<{ path: string; name: string; relativ
       const relativeFilePath = path.join(relativeDirPath, file.name);
       
       if (file.isDirectory()) {
-                scan(filePath, relativeFilePath);
+        scan(filePath, relativeFilePath);
       } else if (file.isFile() && /\.(tsx|jsx|vue|svelte|html|hbs|handlebars)$/.test(file.name)) {
-                const componentName = path.basename(file.name, path.extname(file.name));
+        const componentName = path.basename(file.name, path.extname(file.name));
         components.push({
           path: filePath,
           name: componentName,
@@ -375,7 +316,7 @@ const analyzeComponents = () => {
   let totalClasses = 0;
   const allFoundClasses: FoundClass[] = [];
   
-    const components = scanDirectory(CONFIG.paths.sourceDir);
+  const components = scanDirectory(CONFIG.paths.sourceDir);
   
   console.log(`Found ${components.length} components to analyze`);
   
@@ -395,15 +336,13 @@ const analyzeComponents = () => {
       path: component.relativePath
     };
     
-        const foundClasses = extractTailwindClasses(content, filePath, componentInfo);
+    const foundClasses = extractTailwindClasses(content, filePath);
     
-    foundClasses.forEach(({ tag, classes, source, objectName }) => {
+    foundClasses.forEach(({ tag, classes }) => {
       allFoundClasses.push({
         component: component.name,
         tag,
-        classes,
-        source,
-        objectName
+        classes
       });
       
       updateClassObject(tag, classes, componentInfo);
@@ -434,7 +373,7 @@ const cleanupClassObject = () => {
   
   Object.entries(valueMap).forEach(([normalizedValue, keys]) => {
     if (keys.length > 1) {
-            const preferredKey = keys[0];
+      const preferredKey = keys[0];
       
       if (preferredKey) {
         keys.forEach(key => {
@@ -455,7 +394,7 @@ const cleanupClassObject = () => {
 const transformComponents = () => {
   let transformedCount = 0;
   
-    const components = scanDirectory(CONFIG.paths.sourceDir);
+  const components = scanDirectory(CONFIG.paths.sourceDir);
   
   for (const component of components) {
     const filePath = component.path;
@@ -470,15 +409,13 @@ const transformComponents = () => {
     
     let content = fs.readFileSync(filePath, 'utf-8');
     
-        const quarkOutputDir = path.join(CONFIG.paths.quarkDir, relativeDirPath);
+    const quarkOutputDir = path.join(CONFIG.paths.quarkDir, relativeDirPath);
     const semanticOutputDir = path.join(CONFIG.paths.semanticDir, relativeDirPath);
     
     ensureDirectoryExists(quarkOutputDir);
     ensureDirectoryExists(semanticOutputDir);
     
-    const reverseMap = buildReverseMap();
-    
-        const classRegexQuark = /className=["']([^"']+)["']/g;
+    const classRegexQuark = /className=["']([^"']+)["']/g;
     let matchQuark;
     let lastIndexQuark = 0;
     let transformedContentQuark = '';
@@ -512,7 +449,7 @@ const transformComponents = () => {
     
     transformedContentQuark += content.substring(lastIndexQuark);
     
-        const classRegexSemantic = /className=["']([^"']+)["']/g;
+    const classRegexSemantic = /className=["']([^"']+)["']/g;
     let matchSemantic;
     let lastIndexSemantic = 0;
     let transformedContentSemantic = '';
@@ -546,7 +483,7 @@ const transformComponents = () => {
     
     transformedContentSemantic += content.substring(lastIndexSemantic);
     
-        const quarkOutputPath = path.join(quarkOutputDir, `${component.name}${path.extname(component.path)}`);
+    const quarkOutputPath = path.join(quarkOutputDir, `${component.name}${path.extname(component.path)}`);
     const semanticOutputPath = path.join(semanticOutputDir, `${component.name}${path.extname(component.path)}`);
     
     fs.writeFileSync(quarkOutputPath, transformedContentQuark);
@@ -572,7 +509,7 @@ const generateCSS = () => {
     semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
   });
   
-    fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
+  fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
   fs.writeFileSync(path.join(CONFIG.paths.semanticDir, `${FILE_NAMES.cssOutputSemantic}.css`), semanticCSS);
   
   console.log(`Generated Quark CSS saved to ${path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`)}`);

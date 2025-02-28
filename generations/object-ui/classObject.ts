@@ -37,7 +37,7 @@ export const classObject = {
   },
   "div-flex-flex-col-gap-4": {
     "quark": "ffc4",
-    "semantic": "div-flex-flex-col-gap-4",
+    "semantic": "section-column",
     "classes": "flex gap-4 flex-col",
     "components": {
       "HeroSplit": {
@@ -48,7 +48,7 @@ export const classObject = {
   },
   "div-flex-justify-center": {
     "quark": "fjc",
-    "semantic": "div-flex-justify-center",
+    "semantic": "flex-center",
     "classes": "flex justify-center",
     "components": {
       "HeroSplit": {
@@ -59,7 +59,7 @@ export const classObject = {
   },
   "h2-font-bold-max-w-2xl-text-3xl-lg-text-5xl-md-text-4xl": {
     "quark": "fb5243",
-    "semantic": "h2-font-bold-max-w-2xl-text-3xl-lg-text-5xl-md-text-4xl",
+    "semantic": "h2-title",
     "classes": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
     "components": {
       "HeroSplit": {
@@ -70,7 +70,7 @@ export const classObject = {
   },
   "p-max-w-2xl-text-base-text-muted-foreground": {
     "quark": "2tbtmf",
-    "semantic": "p-max-w-2xl-text-base-text-muted-foreground",
+    "semantic": "description",
     "classes": "text-base text-muted-foreground max-w-2xl",
     "components": {
       "HeroSplit": {
@@ -81,7 +81,7 @@ export const classObject = {
   },
   "div-flex-flex-col-gap-4-lg-gap-8-md-flex-row-md-gap-6": {
     "quark": "ffc48fr6",
-    "semantic": "div-flex-flex-col-gap-4-lg-gap-8-md-flex-row-md-gap-6",
+    "semantic": "flex-column",
     "classes": "flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8",
     "components": {
       "HeroSplit": {
@@ -92,7 +92,7 @@ export const classObject = {
   },
   "div-gap-8-grid-grid-cols-2": {
     "quark": "8g2",
-    "semantic": "div-gap-8-grid-grid-cols-2",
+    "semantic": "grid-columns",
     "classes": "grid grid-cols-2 gap-8",
     "components": {
       "HeroSplit": {

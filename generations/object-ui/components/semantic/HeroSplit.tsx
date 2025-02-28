@@ -87,21 +87,21 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   <section className="section-full">
     <div className="section-container">
       <div className="section-columns">
-        <div className="div-flex-flex-col-gap-4">
+        <div className="section-column">
           {badge &&
-          <div className="div-flex-justify-center">
+          <div className="flex-center">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="div-flex-flex-col-gap-4">
-            <h2 className="h2-font-bold-max-w-2xl-text-3xl-lg-text-5xl-md-text-4xl">
+          <div className="section-column">
+            <h2 className="h2-title">
                 {title}
             </h2>
-            <p className="p-max-w-2xl-text-base-text-muted-foreground">
+            <p className="description">
               {description}
             </p>
           </div>
-          <div className="div-flex-flex-col-gap-4-lg-gap-8-md-flex-row-md-gap-6">
+          <div className="flex-column">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -109,7 +109,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="div-gap-8-grid-grid-cols-2">
+        <div className="grid-columns">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}
