@@ -190,9 +190,91 @@ export const classObject = ${JSON.stringify(classObject, null, 2)};
   fs.writeFileSync(CONFIG.paths.classObject, fileContent);
 };
 
+// Определим типы для нашей функции извлечения классов
+interface TailwindClassMatch {
+  tag: string;
+  classes: string;
+  position: number;
+}
+
+// Оптимизированные паттерны для извлечения Tailwind-классов
+const TAILWIND_CLASS_PATTERNS = {
+  // Базовый паттерн для статических классов во всех фреймворках
+  static: /(?:class|className)=["']([^"']+)["']/g,
+  
+  // React/JSX специфичные паттерны
+  reactDynamic: /className=\{(?:clsx|cn|classNames)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+  reactTemplate: /className=\{`([^`]+)`\}/g,
+  
+  // Vue специфичные паттерны
+  vueBinding: /:class="(?:\[?['`]([^'`]+)['`]\]?)"/g,
+  
+  // Svelte специфичные паттерны
+  svelteClass: /class=["']([^"']+)["']/g,
+  
+  // HTML/Handlebars
+  htmlClass: /class=["']([^"']+)["']/g
+};
+
+// Функция для извлечения и нормализации Tailwind-классов
+const extractTailwindClasses = (content: string, filePath: string): TailwindClassMatch[] => {
+  const foundClasses: TailwindClassMatch[] = [];
+  const fileExt = path.extname(filePath).toLowerCase();
+  
+  // Выбираем паттерны в зависимости от типа файла
+  const patterns: RegExp[] = [];
+  patterns.push(TAILWIND_CLASS_PATTERNS.static); // Базовый паттерн для всех
+  
+  if (['.jsx', '.tsx'].includes(fileExt)) {
+    patterns.push(TAILWIND_CLASS_PATTERNS.reactDynamic);
+    patterns.push(TAILWIND_CLASS_PATTERNS.reactTemplate);
+  } else if (['.vue'].includes(fileExt)) {
+    patterns.push(TAILWIND_CLASS_PATTERNS.vueBinding);
+  } else if (['.svelte'].includes(fileExt)) {
+    patterns.push(TAILWIND_CLASS_PATTERNS.svelteClass);
+  } else if (['.html', '.hbs', '.handlebars'].includes(fileExt)) {
+    patterns.push(TAILWIND_CLASS_PATTERNS.htmlClass);
+  }
+  
+  // Применяем все подходящие паттерны
+  for (const pattern of patterns) {
+    let match;
+    pattern.lastIndex = 0; // Сбрасываем индекс регулярного выражения
+    
+    while ((match = pattern.exec(content)) !== null) {
+      const prevLines = content.substring(0, match.index).split('\n').slice(-CONFIG.tagDetection.contextLines).join('\n');
+      const tag = detectTagFromContext(prevLines);
+      
+      // Извлекаем классы из совпадения
+      // match[1] содержит группу захвата с классами
+      if (match[1]) {
+        // Используем tailwind-merge для нормализации классов
+        // Это поможет с разрешением конфликтов и дубликатов
+        const classes = twMerge(match[1]);
+        
+        foundClasses.push({
+          tag,
+          classes,
+          position: match.index
+        });
+      }
+    }
+  }
+  
+  return foundClasses;
+};
+
+// Обновим интерфейс для результатов анализа компонентов
+interface FoundClass {
+  component: string;
+  tag: string;
+  classes: string;
+}
+
+// Обновленная функция анализа компонентов
 const analyzeComponents = () => {
   let totalClasses = 0;
-  const allFoundClasses: Array<{component: string, tag: string, classes: string}> = [];
+  const allFoundClasses: FoundClass[] = [];
   
   for (const component of CONFIG.components) {
     const filePath = path.resolve(component.path);
@@ -203,30 +285,20 @@ const analyzeComponents = () => {
     }
     
     console.log(`Analyzing component: ${component.name} (${filePath})`);
-    
     const content = fs.readFileSync(filePath, 'utf-8');
     
-    const classRegex = /className=["']([^"']+)["']/g;
-    let match;
-    const foundClasses: Array<{tag: string, classes: string}> = [];
+    // Используем новую функцию для извлечения Tailwind-классов
+    const foundClasses = extractTailwindClasses(content, filePath);
     
-    while ((match = classRegex.exec(content)) !== null) {
-      const prevLines = content.substring(0, match.index).split('\n').slice(-CONFIG.tagDetection.contextLines).join('\n');
-      const tag = detectTagFromContext(prevLines);
-      
-      foundClasses.push({
-        tag,
-        classes: match[1]
-      });
-      
+    foundClasses.forEach(({ tag, classes }) => {
       allFoundClasses.push({
         component: component.name,
         tag,
-        classes: match[1]
+        classes
       });
       
-      updateClassObject(tag, match[1]);
-    }
+      updateClassObject(tag, classes);
+    });
     
     console.log(`Found ${foundClasses.length} className declarations in ${component.name}`);
     totalClasses += foundClasses.length;
