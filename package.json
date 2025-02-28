@@ -34,7 +34,7 @@
     "generate:object-analyze": "bun run ./generations/object-ui/cli.ts analyze",
     "generate:object-css": "bun run ./generations/object-ui/cli.ts generate",
     "generate:object-transform": "bun run ./generations/object-ui/cli.ts transform",
-    "generate:object": "bun run ./generations/object-ui/cli.ts generate && bun run ./generations/object-ui/cli.ts transform && bun run ./generations/object-ui/cli.ts analyze",
+    "generate:object": "bun run ./generations/object-ui/cli.ts analyze && bun run ./generations/object-ui/cli.ts generate && bun run ./generations/object-ui/cli.ts transform",
     "generate": "bun run generate:styles && bun run generate:html && bun run generate:semantic"
   },
   "workspaces": [

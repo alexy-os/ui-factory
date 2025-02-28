@@ -3,7 +3,6 @@
 import fs from 'fs';
 import path from 'path';
 import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
 
 const FILE_NAMES = {
   sourceDir: 'source',
@@ -23,14 +22,8 @@ const CONFIG = {
     quarkDir: path.resolve(`./generations/object-ui/${FILE_NAMES.outputDir}/${FILE_NAMES.quarkDir}`),
     cssOutputQuark: path.resolve(`./generations/object-ui/${FILE_NAMES.cssOutputQuark}.css`),
     cssOutputSemantic: path.resolve(`./generations/object-ui/${FILE_NAMES.cssOutputSemantic}.css`),
+    sourceDir: path.resolve(`./generations/object-ui/${FILE_NAMES.sourceDir}`),
   },
-  
-  components: [
-    {
-      path: `./generations/object-ui/${FILE_NAMES.sourceDir}/HeroSplit.tsx`,
-      name: 'HeroSplit',
-    },
-  ],
   
   tagDetection: {
     contextMap: {
@@ -68,6 +61,10 @@ type ClassEntry = {
   quark: string;
   semantic: string;
   classes: string;
+  components: Record<string, {
+    path: string;
+    name: string;
+  }>;
 };
 
 let classObject: Record<string, ClassEntry> = {};
@@ -77,6 +74,12 @@ try {
         const objectMatch = classObjectContent.match(/export\s+const\s+classObject\s*=\s*({[\s\S]*});/);
     if (objectMatch && objectMatch[1]) {
             classObject = eval(`(${objectMatch[1]})`);
+            
+                        Object.keys(classObject).forEach(key => {
+              if (!classObject[key].components) {
+                classObject[key].components = {};
+              }
+            });
     }
   }
 } catch (error) {
@@ -149,33 +152,56 @@ const generateSemanticKey = (tag: string, classes: string) => {
   return `${tag}-${sortedBase}${sortedModifiers ? "-" + sortedModifiers : ""}`;
 };
 
-const updateClassObject = (tag: string, ...classes: string[]) => {
-  const merged = twMerge(clsx(classes));
+const updateClassObject = (tag: string, classes: string, componentInfo: { name: string; path: string }) => {
+  const merged = twMerge(classes);
   
   const normalizedClasses = normalizeClassString(merged);
   const reverseMap = buildReverseMap();
   
-    if (reverseMap[normalizedClasses]) {
-    const existingKey = reverseMap[normalizedClasses];
-    console.log(`Found existing entry for classes: ${existingKey}`);
-    return existingKey;
-  }
+  let objectKey = '';
   
+  if (reverseMap[normalizedClasses]) {
+    objectKey = reverseMap[normalizedClasses];
+    console.log(`Found existing entry for classes: ${objectKey}`);
+    
+        if (!classObject[objectKey].components[componentInfo.name]) {
+      classObject[objectKey].components[componentInfo.name] = {
+        path: componentInfo.path,
+        name: componentInfo.name
+      };
+      saveClassObject();
+      console.log(`Added component ${componentInfo.name} to existing class mapping: ${objectKey}`);
+    }
+  } else {
     const quarkKey = generateShortKey(merged);
-  const semanticKey = generateSemanticKey(tag, merged);
-  
-    const objectKey = semanticKey;
-  
+    const semanticKey = generateSemanticKey(tag, merged);
+    
+    objectKey = semanticKey;
+    
     if (!classObject[objectKey]) {
-    classObject[objectKey] = {
-      quark: quarkKey,
-      semantic: semanticKey,
-      classes: merged
-    };
-    
-        saveClassObject();
-    
-    console.log(`Added new class mapping: ${objectKey} -> ${merged}`);
+      classObject[objectKey] = {
+        quark: quarkKey,
+        semantic: semanticKey,
+        classes: merged,
+        components: {
+          [componentInfo.name]: {
+            path: componentInfo.path,
+            name: componentInfo.name
+          }
+        }
+      };
+      
+      saveClassObject();
+      
+      console.log(`Added new class mapping: ${objectKey} -> ${merged}`);
+    } else if (!classObject[objectKey].components[componentInfo.name]) {
+      classObject[objectKey].components[componentInfo.name] = {
+        path: componentInfo.path,
+        name: componentInfo.name
+      };
+      saveClassObject();
+      console.log(`Added component ${componentInfo.name} to existing class mapping: ${objectKey}`);
+    }
   }
 
   return objectKey;
@@ -190,41 +216,77 @@ export const classObject = ${JSON.stringify(classObject, null, 2)};
   fs.writeFileSync(CONFIG.paths.classObject, fileContent);
 };
 
-// Определим типы для нашей функции извлечения классов
-interface TailwindClassMatch {
-  tag: string;
-  classes: string;
-  position: number;
-}
-
-// Оптимизированные паттерны для извлечения Tailwind-классов
 const TAILWIND_CLASS_PATTERNS = {
-  // Базовый паттерн для статических классов во всех фреймворках
-  static: /(?:class|className)=["']([^"']+)["']/g,
+    static: /(?:class|className)=["']([^"']+)["']/g,
   
-  // React/JSX специфичные паттерны
-  reactDynamic: /className=\{(?:clsx|cn|classNames)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+    reactDynamic: /className=\{(?:clsx|cn|classNames)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
   reactTemplate: /className=\{`([^`]+)`\}/g,
   
-  // Vue специфичные паттерны
-  vueBinding: /:class="(?:\[?['`]([^'`]+)['`]\]?)"/g,
+    vueBinding: /:class="(?:\[?['`]([^'`]+)['`]\]?)"/g,
   
-  // Svelte специфичные паттерны
-  svelteClass: /class=["']([^"']+)["']/g,
+    svelteClass: /class=["']([^"']+)["']/g,
   
   // HTML/Handlebars
-  htmlClass: /class=["']([^"']+)["']/g
+  htmlClass: /class=["']([^"']+)["']/g,
+  
+    cvaObject: /const\s+(\w+)(?:Variants)?\s*=\s*cva\(\s*["'`]([^"'`]+)["'`]/g,
+  cvaVariants: /variants\s*:\s*{([^}]+)}/g,
+  cvaVariantValues: /["'`]([^"'`]+)["'`]\s*:\s*["'`]([^"'`]+)["'`]/g
 };
 
-// Функция для извлечения и нормализации Tailwind-классов
-const extractTailwindClasses = (content: string, filePath: string): TailwindClassMatch[] => {
+const extractClassesFromStyleObjects = (content: string): Array<{ name: string; classes: string }> => {
+  const styleObjects: Array<{ name: string; classes: string }> = [];
+  
+    const cvaPattern = TAILWIND_CLASS_PATTERNS.cvaObject;
+  let cvaMatch;
+  
+  while ((cvaMatch = cvaPattern.exec(content)) !== null) {
+    const objectName = cvaMatch[1];
+    const baseClasses = cvaMatch[2];
+    
+        styleObjects.push({
+      name: objectName,
+      classes: baseClasses
+    });
+    
+        const variantsSection = content.substring(cvaMatch.index);
+    const variantsMatch = TAILWIND_CLASS_PATTERNS.cvaVariants.exec(variantsSection);
+    
+    if (variantsMatch) {
+      const variantsContent = variantsMatch[1];
+      let variantValueMatch;
+      const variantValuesPattern = TAILWIND_CLASS_PATTERNS.cvaVariantValues;
+      
+            variantValuesPattern.lastIndex = 0;
+      
+      while ((variantValueMatch = variantValuesPattern.exec(variantsContent)) !== null) {
+                styleObjects.push({
+          name: `${objectName}_${variantValueMatch[1]}`,
+          classes: variantValueMatch[2]
+        });
+      }
+    }
+  }
+  
+  return styleObjects;
+};
+
+const extractTailwindClasses = (content: string, filePath: string, componentInfo: { name: string; path: string }): TailwindClassMatch[] => {
   const foundClasses: TailwindClassMatch[] = [];
   const fileExt = path.extname(filePath).toLowerCase();
   
-  // Выбираем паттерны в зависимости от типа файла
-  const patterns: RegExp[] = [];
-  patterns.push(TAILWIND_CLASS_PATTERNS.static); // Базовый паттерн для всех
+    const styleObjects = extractClassesFromStyleObjects(content);
+  for (const styleObject of styleObjects) {
+    const tag = 'div';     foundClasses.push({
+      tag,
+      classes: styleObject.classes,
+      position: 0,       source: 'styleObject',
+      objectName: styleObject.name
+    });
+  }
   
+    const patterns: RegExp[] = [];
+  patterns.push(TAILWIND_CLASS_PATTERNS.static);   
   if (['.jsx', '.tsx'].includes(fileExt)) {
     patterns.push(TAILWIND_CLASS_PATTERNS.reactDynamic);
     patterns.push(TAILWIND_CLASS_PATTERNS.reactTemplate);
@@ -236,26 +298,21 @@ const extractTailwindClasses = (content: string, filePath: string): TailwindClas
     patterns.push(TAILWIND_CLASS_PATTERNS.htmlClass);
   }
   
-  // Применяем все подходящие паттерны
-  for (const pattern of patterns) {
+    for (const pattern of patterns) {
     let match;
-    pattern.lastIndex = 0; // Сбрасываем индекс регулярного выражения
-    
+    pattern.lastIndex = 0;     
     while ((match = pattern.exec(content)) !== null) {
       const prevLines = content.substring(0, match.index).split('\n').slice(-CONFIG.tagDetection.contextLines).join('\n');
       const tag = detectTagFromContext(prevLines);
       
-      // Извлекаем классы из совпадения
-      // match[1] содержит группу захвата с классами
-      if (match[1]) {
-        // Используем tailwind-merge для нормализации классов
-        // Это поможет с разрешением конфликтов и дубликатов
-        const classes = twMerge(match[1]);
+                  if (match[1]) {
+                        const classes = twMerge(match[1]);
         
         foundClasses.push({
           tag,
           classes,
-          position: match.index
+          position: match.index,
+          source: 'inlineClass'
         });
       }
     }
@@ -264,40 +321,92 @@ const extractTailwindClasses = (content: string, filePath: string): TailwindClas
   return foundClasses;
 };
 
-// Обновим интерфейс для результатов анализа компонентов
+interface TailwindClassMatch {
+  tag: string;
+  classes: string;
+  position: number;
+  source?: 'inlineClass' | 'styleObject';
+  objectName?: string;
+}
+
 interface FoundClass {
   component: string;
   tag: string;
   classes: string;
+  source?: 'inlineClass' | 'styleObject';
+  objectName?: string;
 }
 
-// Обновленная функция анализа компонентов
+const scanDirectory = (dir: string): Array<{ path: string; name: string; relativePath: string }> => {
+  const components: Array<{ path: string; name: string; relativePath: string }> = [];
+  const sourceBasePath = CONFIG.paths.sourceDir;
+  
+  const scan = (currentDir: string, relativeDirPath: string = '') => {
+    const files = fs.readdirSync(currentDir, { withFileTypes: true });
+    
+    for (const file of files) {
+      const filePath = path.join(currentDir, file.name);
+      const relativeFilePath = path.join(relativeDirPath, file.name);
+      
+      if (file.isDirectory()) {
+                scan(filePath, relativeFilePath);
+      } else if (file.isFile() && /\.(tsx|jsx|vue|svelte|html|hbs|handlebars)$/.test(file.name)) {
+                const componentName = path.basename(file.name, path.extname(file.name));
+        components.push({
+          path: filePath,
+          name: componentName,
+          relativePath: relativeFilePath
+        });
+      }
+    }
+  };
+  
+  scan(dir);
+  return components;
+};
+
+const ensureDirectoryExists = (dirPath: string) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+};
+
 const analyzeComponents = () => {
   let totalClasses = 0;
   const allFoundClasses: FoundClass[] = [];
   
-  for (const component of CONFIG.components) {
-    const filePath = path.resolve(component.path);
+    const components = scanDirectory(CONFIG.paths.sourceDir);
+  
+  console.log(`Found ${components.length} components to analyze`);
+  
+  for (const component of components) {
+    const filePath = component.path;
     
     if (!fs.existsSync(filePath)) {
       console.error(`File not found: ${filePath}`);
       continue;
     }
     
-    console.log(`Analyzing component: ${component.name} (${filePath})`);
+    console.log(`Analyzing component: ${component.name} (${component.relativePath})`);
     const content = fs.readFileSync(filePath, 'utf-8');
     
-    // Используем новую функцию для извлечения Tailwind-классов
-    const foundClasses = extractTailwindClasses(content, filePath);
+    const componentInfo = {
+      name: component.name,
+      path: component.relativePath
+    };
     
-    foundClasses.forEach(({ tag, classes }) => {
+        const foundClasses = extractTailwindClasses(content, filePath, componentInfo);
+    
+    foundClasses.forEach(({ tag, classes, source, objectName }) => {
       allFoundClasses.push({
         component: component.name,
         tag,
-        classes
+        classes,
+        source,
+        objectName
       });
       
-      updateClassObject(tag, classes);
+      updateClassObject(tag, classes, componentInfo);
     });
     
     console.log(`Found ${foundClasses.length} className declarations in ${component.name}`);
@@ -343,41 +452,29 @@ const cleanupClassObject = () => {
   saveClassObject();
 };
 
-const generateCSS = () => {
-  let quarkCSS = '';
-  let semanticCSS = '';
-  
-  Object.entries(classObject).forEach(([key, entry]) => {
-    quarkCSS += `.${entry.quark} { @apply ${entry.classes}; }\n`;
-    semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
-  });
-  
-    {/*fs.writeFileSync(CONFIG.paths.cssOutputQuark, quarkCSS);
-  fs.writeFileSync(CONFIG.paths.cssOutputSemantic, semanticCSS);*/}
-  
-    fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
-  fs.writeFileSync(path.join(CONFIG.paths.semanticDir, `${FILE_NAMES.cssOutputSemantic}.css`), semanticCSS);
-  
-  console.log(`Generated Quark CSS saved to ${CONFIG.paths.cssOutputQuark}`);
-  console.log(`Generated Semantic CSS saved to ${CONFIG.paths.cssOutputSemantic}`);
-  
-  return { quarkCSS, semanticCSS };
-};
-
 const transformComponents = () => {
   let transformedCount = 0;
   
-  for (const component of CONFIG.components) {
-    const filePath = path.resolve(component.path);
+    const components = scanDirectory(CONFIG.paths.sourceDir);
+  
+  for (const component of components) {
+    const filePath = component.path;
+    const relativeDirPath = path.dirname(component.relativePath);
     
     if (!fs.existsSync(filePath)) {
       console.error(`File not found: ${filePath}`);
       continue;
     }
     
-    console.log(`Transforming component: ${component.name} (${filePath})`);
+    console.log(`Transforming component: ${component.name} (${component.relativePath})`);
     
     let content = fs.readFileSync(filePath, 'utf-8');
+    
+        const quarkOutputDir = path.join(CONFIG.paths.quarkDir, relativeDirPath);
+    const semanticOutputDir = path.join(CONFIG.paths.semanticDir, relativeDirPath);
+    
+    ensureDirectoryExists(quarkOutputDir);
+    ensureDirectoryExists(semanticOutputDir);
     
     const reverseMap = buildReverseMap();
     
@@ -397,7 +494,7 @@ const transformComponents = () => {
       
       let quarkName = '';
       
-            for (const [key, entry] of Object.entries(classObject)) {
+      for (const [key, entry] of Object.entries(classObject)) {
         if (normalizeClassString(entry.classes) === normalizedClasses) {
           quarkName = entry.quark;
           break;
@@ -405,7 +502,7 @@ const transformComponents = () => {
       }
       
       if (!quarkName) {
-                transformedContentQuark += `className="${originalClasses}"`;
+        transformedContentQuark += `className="${originalClasses}"`;
       } else {
         transformedContentQuark += `className="${quarkName}"`;
       }
@@ -431,7 +528,7 @@ const transformComponents = () => {
       
       let semanticName = '';
       
-            for (const [key, entry] of Object.entries(classObject)) {
+      for (const [key, entry] of Object.entries(classObject)) {
         if (normalizeClassString(entry.classes) === normalizedClasses) {
           semanticName = entry.semantic;
           break;
@@ -439,7 +536,7 @@ const transformComponents = () => {
       }
       
       if (!semanticName) {
-                transformedContentSemantic += `className="${originalClasses}"`;
+        transformedContentSemantic += `className="${originalClasses}"`;
       } else {
         transformedContentSemantic += `className="${semanticName}"`;
       }
@@ -449,8 +546,8 @@ const transformComponents = () => {
     
     transformedContentSemantic += content.substring(lastIndexSemantic);
     
-        const quarkOutputPath = path.join(CONFIG.paths.quarkDir, `${component.name}.tsx`);
-    const semanticOutputPath = path.join(CONFIG.paths.semanticDir, `${component.name}.tsx`);
+        const quarkOutputPath = path.join(quarkOutputDir, `${component.name}${path.extname(component.path)}`);
+    const semanticOutputPath = path.join(semanticOutputDir, `${component.name}${path.extname(component.path)}`);
     
     fs.writeFileSync(quarkOutputPath, transformedContentQuark);
     fs.writeFileSync(semanticOutputPath, transformedContentSemantic);
@@ -464,6 +561,24 @@ const transformComponents = () => {
   console.log(`Transformed ${transformedCount} components`);
   
   return transformedCount > 0;
+};
+
+const generateCSS = () => {
+  let quarkCSS = '';
+  let semanticCSS = '';
+  
+  Object.entries(classObject).forEach(([key, entry]) => {
+    quarkCSS += `.${entry.quark} { @apply ${entry.classes}; }\n`;
+    semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
+  });
+  
+    fs.writeFileSync(path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`), quarkCSS);
+  fs.writeFileSync(path.join(CONFIG.paths.semanticDir, `${FILE_NAMES.cssOutputSemantic}.css`), semanticCSS);
+  
+  console.log(`Generated Quark CSS saved to ${path.join(CONFIG.paths.quarkDir, `${FILE_NAMES.cssOutputQuark}.css`)}`);
+  console.log(`Generated Semantic CSS saved to ${path.join(CONFIG.paths.semanticDir, `${FILE_NAMES.cssOutputSemantic}.css`)}`);
+  
+  return { quarkCSS, semanticCSS };
 };
 
 const command = process.argv[2];
