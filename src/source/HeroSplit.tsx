@@ -1,7 +1,7 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Badge, type BadgeProps } from "@/components/ui/badge";
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Badge, type BadgeProps } from "@ui-factory/ui-shadcn/components/ui/badge";
+import { Button, type ButtonProps } from "@ui-factory/ui-shadcn/components/ui/button";
 
 type Content = {
   badge?: BadgeProps & {
