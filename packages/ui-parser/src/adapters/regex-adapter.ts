@@ -46,7 +46,7 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
         // Создаем запись о классе
         const classEntry: EnhancedClassEntry = {
           quark: this.generateQuarkName(classes),
-          semantic: this.generateSemanticName(componentName, elementType),
+          semantic: this.generateSemanticName(componentName, elementType, classes),
           classes,
           componentName,
           elementType,
@@ -99,7 +99,7 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
         // Создаем запись о классе
         const classEntry: EnhancedClassEntry = {
           quark: this.generateQuarkName(constValue),
-          semantic: this.generateSemanticName(componentName, elementType),
+          semantic: this.generateSemanticName(componentName, elementType, constValue),
           classes: constValue,
           componentName,
           elementType,
@@ -213,8 +213,17 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
   /**
    * Генерирует семантическое имя
    */
-  private generateSemanticName(componentName: string, elementType: string): string {
-    return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}`;
+  private generateSemanticName(componentName: string, elementType: string, classes: string): string {
+    const normalizedClasses = this.normalizeClassString(classes);
+    const classIdentifier = normalizedClasses
+      .split(' ')
+      .map(cls => {
+        const baseCls = cls.split(':').pop() || '';
+        return baseCls.replace(/[\[\]]/g, '');
+      })
+      .join('-');
+
+    return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
   }
   
   /**

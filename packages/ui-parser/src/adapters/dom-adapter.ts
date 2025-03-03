@@ -159,7 +159,7 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
       // Создаем объект с подробной информацией
       const classEntry: EnhancedClassEntry = {
         quark: this.generateQuarkName(classes),
-        semantic: this.generateSemanticName(componentName, elementType),
+        semantic: this.generateSemanticName(componentName, elementType, classes), // Передаем classes
         classes,
         componentName,
         elementType,
@@ -207,8 +207,18 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
   /**
    * Генерирует семантическое имя
    */
-  private generateSemanticName(componentName: string, elementType: string): string {
-    return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}`;
+  private generateSemanticName(componentName: string, elementType: string, classes: string): string {
+    const normalizedClasses = this.normalizeClassString(classes);
+    const classIdentifier = normalizedClasses
+      .split(' ')
+      .map(cls => {
+        // Убираем модификаторы (например, hover:, focus:)
+        const baseCls = cls.split(':').pop() || '';
+        return baseCls.replace(/[\[\]]/g, ''); // Убираем квадратные скобки если есть
+      })
+      .join('-');
+  
+    return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
   }
   
   /**

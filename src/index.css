@@ -3,3 +3,6 @@
 
 /* Components */
 @import "./styles/components/navigation.css";
+
+/* Semantic */
+@import "./components/semantic.css";
