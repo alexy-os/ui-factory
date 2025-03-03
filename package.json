@@ -6,8 +6,11 @@
   "homepage": "https://github.com/alexy-os/ui-factory",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexy-os/layouter.git"
+    "url": "https://github.com/alexy-os/ui-factory.git"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "private": true,
   "version": "0.0.4",
   "type": "module",
@@ -21,11 +24,13 @@
     "generate:object-css": "bun run ./generations/object-ui/cli.ts generate",
     "generate:object-transform": "bun run ./generations/object-ui/cli.ts transform",
     "generate:object": "bun run ./generations/object-ui/cli.ts analyze && bun run ./generations/object-ui/cli.ts generate && bun run ./generations/object-ui/cli.ts transform",
-    "generate": "bun run generate:styles && generate:object"
+    "generate": "bun run generate:styles && generate:object",
+    "ui-parser:analyze": "bun ./packages/ui-parser/src/cli/bin.ts analyze",
+    "ui-parser:generate": "bun ./packages/ui-parser/src/cli/bin.ts generate",
+    "ui-parser:transform": "bun ./packages/ui-parser/src/cli/bin.ts transform",
+    "ui-parser:all": "bun ./packages/ui-parser/src/cli/bin.ts all",
+    "ui-parser:build": "cd packages/ui-parser && npm run build"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-slot": "^1.1.2",

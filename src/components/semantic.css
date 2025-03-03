@@ -1,0 +1,6 @@
+.semantic-herosplit-section { @apply w-full py-16 lg:py-32; }
+.semantic-herosplit-div { @apply bg-muted rounded-md aspect-square; }
+.semantic-herosplit-h2 { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
+.semantic-herosplit-p { @apply text-base text-muted-foreground max-w-2xl; }
+.semantic-herosplit-button { @apply inline-flex justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-8 items-center gap-2; }
+.semantic-herosplit-svg { @apply lucide lucide-github; }
