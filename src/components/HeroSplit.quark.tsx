@@ -1,3 +1,4 @@
+import React from "react";
 import { BookOpen, Github } from "lucide-react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button, type ButtonProps } from "@/components/ui/button";
@@ -29,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "text-sm font-medium"
+    className: "badge text-sm font-medium"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -84,24 +85,24 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-  <section className="3216wf">
-    <div className="c86ma4">
-      <div className="8g1ic2">
-        <div className="ffc4">
+  <section className="q-3216wf">
+    <div className="q-c86ma4">
+      <div className="q-8g1ic2">
+        <div className="q-ffc4">
           {badge &&
-          <div className="fjc">
+          <div className="q-fjc">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="ffc4">
-            <h2 className="fb5243">
+          <div className="q-ffc4">
+            <h2 className="q-fb5243">
                 {title}
             </h2>
-            <p className="2tbtmf">
+            <p className="q-2tbtmf">
               {description}
             </p>
           </div>
-          <div className="ffc48fr6">
+          <div className="q-ffc48fr6">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -109,7 +110,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="8g2">
+        <div className="q-8g2">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}

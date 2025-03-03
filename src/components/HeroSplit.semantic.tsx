@@ -1,3 +1,4 @@
+import React from "react";
 import { BookOpen, Github } from "lucide-react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button, type ButtonProps } from "@/components/ui/button";
@@ -29,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "text-sm font-medium"
+    className: "badge text-sm font-medium"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -84,24 +85,24 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-  <section className="w-full py-16 lg:py-32">
-    <div className="container mx-auto px-4 md:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-        <div className="flex gap-4 flex-col">
+  <section className="semantic-herosplit-section">
+    <div className="semantic-herosplit-div">
+      <div className="semantic-herosplit-div">
+        <div className="semantic-herosplit-div">
           {badge &&
-          <div className="flex justify-center">
+          <div className="semantic-herosplit-div">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="flex gap-4 flex-col">
-            <h2 className="max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold">
+          <div className="semantic-herosplit-div">
+            <h2 className="semantic-herosplit-h2">
                 {title}
             </h2>
-            <p className="text-base text-muted-foreground max-w-2xl">
+            <p className="semantic-herosplit-p">
               {description}
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
+          <div className="semantic-herosplit-div">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -109,7 +110,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="semantic-herosplit-div">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}

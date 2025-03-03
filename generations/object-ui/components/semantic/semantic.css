@@ -1,9 +1,0 @@
-.section-full { @apply w-full py-16 lg:py-32; }
-.section-container { @apply container mx-auto px-4 md:px-6 lg:px-8; }
-.section-columns { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
-.section-column { @apply flex gap-4 flex-col; }
-.flex-center { @apply flex justify-center; }
-.h2-title { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
-.description { @apply text-base text-muted-foreground max-w-2xl; }
-.flex-column { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
-.grid-columns { @apply grid grid-cols-2 gap-8; }

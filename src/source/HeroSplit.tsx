@@ -1,3 +1,4 @@
+import React from "react";
 import { BookOpen, Github } from "lucide-react";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button, type ButtonProps } from "@/components/ui/button";
@@ -29,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "text-sm font-medium"
+    className: "badge text-sm font-medium"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -101,7 +102,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
               {description}
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}

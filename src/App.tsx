@@ -1,7 +1,7 @@
-import { NavbarMegaMenu } from "@/examples/NavbarMegaMenu"
-
 export default function App() {
   return (
-    <NavbarMegaMenu />
+    <div>
+      hello world
+    </div>
   )
 } 
