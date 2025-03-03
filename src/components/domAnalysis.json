@@ -1,0 +1,272 @@
+[
+  {
+    "quark": "q-3216wf",
+    "semantic": "semantic-herosplit-section",
+    "classes": "w-full py-16 lg:py-32",
+    "componentName": "HeroSplit",
+    "elementType": "section",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-c86ma4",
+    "semantic": "semantic-herosplit-div",
+    "classes": "container mx-auto px-4 md:px-6 lg:px-8",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-8g1ic2",
+    "semantic": "semantic-herosplit-div",
+    "classes": "grid grid-cols-1 md:grid-cols-2 items-center gap-8",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-ffc4",
+    "semantic": "semantic-herosplit-div",
+    "classes": "flex gap-4 flex-col",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-fjc",
+    "semantic": "semantic-herosplit-div",
+    "classes": "flex justify-center",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-bon22rrfsific2505rmtftxtc",
+    "semantic": "semantic-herosplit-div",
+    "classes": "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-ffc4",
+    "semantic": "semantic-herosplit-div",
+    "classes": "flex gap-4 flex-col",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-fb5243",
+    "semantic": "semantic-herosplit-h2",
+    "classes": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
+    "componentName": "HeroSplit",
+    "elementType": "h2",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-2tbtmf",
+    "semantic": "semantic-herosplit-p",
+    "classes": "text-base text-muted-foreground max-w-2xl",
+    "componentName": "HeroSplit",
+    "elementType": "p",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-ffc48fr6",
+    "semantic": "semantic-herosplit-div",
+    "classes": "flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-pen04bp50penon1rrfm21090ificjc8rmstpftstcwn",
+    "semantic": "semantic-herosplit-button",
+    "classes": "inline-flex justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 items-center gap-2",
+    "componentName": "HeroSplit",
+    "elementType": "button",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-llbo",
+    "semantic": "semantic-herosplit-svg",
+    "classes": "lucide lucide-book-open",
+    "componentName": "HeroSplit",
+    "elementType": "svg",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-pen04bbbbi50penon1rrfm210batafificjc8rmsststcwn",
+    "semantic": "semantic-herosplit-button",
+    "classes": "inline-flex justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-8 items-center gap-2",
+    "componentName": "HeroSplit",
+    "elementType": "button",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-llg",
+    "semantic": "semantic-herosplit-svg",
+    "classes": "lucide lucide-github",
+    "componentName": "HeroSplit",
+    "elementType": "svg",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-8g2",
+    "semantic": "semantic-herosplit-div",
+    "classes": "grid grid-cols-2 gap-8",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-asbmrm",
+    "semantic": "semantic-herosplit-div",
+    "classes": "bg-muted rounded-md aspect-square",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-bmrm2",
+    "semantic": "semantic-herosplit-div",
+    "classes": "bg-muted rounded-md row-span-2",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-asbmrm",
+    "semantic": "semantic-herosplit-div",
+    "classes": "bg-muted rounded-md aspect-square",
+    "componentName": "HeroSplit",
+    "elementType": "div",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  }
+]

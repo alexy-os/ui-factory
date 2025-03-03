@@ -19,17 +19,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "generate:styles": "tailwindcss -i ./src/index.css -o ./public/style.css --minify",
-    "generate:semantic-styles": "tailwindcss -i ./src/semantic/index.css -o ./public/style-semantic.css --minify",
-    "generate:object-analyze": "bun run ./generations/object-ui/cli.ts analyze",
-    "generate:object-css": "bun run ./generations/object-ui/cli.ts generate",
-    "generate:object-transform": "bun run ./generations/object-ui/cli.ts transform",
-    "generate:object": "bun run ./generations/object-ui/cli.ts analyze && bun run ./generations/object-ui/cli.ts generate && bun run ./generations/object-ui/cli.ts transform",
-    "generate": "bun run generate:styles && generate:object",
     "ui-parser:analyze": "bun ./packages/ui-parser/src/cli/bin.ts analyze",
     "ui-parser:generate": "bun ./packages/ui-parser/src/cli/bin.ts generate",
     "ui-parser:transform": "bun ./packages/ui-parser/src/cli/bin.ts transform",
     "ui-parser:all": "bun ./packages/ui-parser/src/cli/bin.ts all",
-    "ui-parser:build": "cd packages/ui-parser && npm run build"
+    "ui-parser:build": "cd packages/ui-parser && tsc && vite build"
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.5",
