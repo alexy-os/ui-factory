@@ -1,26 +1,20 @@
 /**
- * Базовая запись о классе
+ * Расширенная запись о классе с дополнительной информацией
  */
-export interface ClassEntry {
+export interface EnhancedClassEntry {
   quark: string;
   semantic: string;
   classes: string;
-  components: Record<string, {
-    path: string;
-    name: string;
-  }>;
-}
-
-/**
- * Расширенная запись о классе с дополнительной информацией
- */
-export interface EnhancedClassEntry extends ClassEntry {
   componentName: string;     // Название компонента
   elementType: string;       // HTML тег
   variants: {                // Варианты компонента (если есть)
     [key: string]: string | undefined;
   };
   isPublic: boolean;         // Видимый элемент или вспомогательный
+  components: Record<string, {
+    path: string;
+    name: string;
+  }>;
 }
 
 /**

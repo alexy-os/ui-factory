@@ -1,7 +1,7 @@
 [
   {
     "quark": "q-p3p1wf",
-    "semantic": "semantic-herosplit-section-py-32-py-16-w-full",
+    "semantic": "sc-herosplit-section-py-32-py-16-w-full",
     "classes": "w-full py-16 lg:py-32",
     "componentName": "HeroSplit",
     "elementType": "section",
@@ -16,7 +16,7 @@
   },
   {
     "quark": "q-cp8p6map4",
-    "semantic": "semantic-herosplit-div-container-px-8-px-6-mx-auto-px-4",
+    "semantic": "sc-herosplit-div-container-px-8-px-6-mx-auto-px-4",
     "classes": "container mx-auto px-4 md:px-6 lg:px-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -31,7 +31,7 @@
   },
   {
     "quark": "q-g8ggc1icgc2",
-    "semantic": "semantic-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2",
+    "semantic": "sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2",
     "classes": "grid grid-cols-1 md:grid-cols-2 items-center gap-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -46,7 +46,7 @@
   },
   {
     "quark": "q-ffcg4",
-    "semantic": "semantic-herosplit-div-flex-flex-col-gap-4",
+    "semantic": "sc-herosplit-div-flex-flex-col-gap-4",
     "classes": "flex gap-4 flex-col",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -61,7 +61,7 @@
   },
   {
     "quark": "q-fjc",
-    "semantic": "semantic-herosplit-div-flex-justify-center",
+    "semantic": "sc-herosplit-div-flex-justify-center",
     "classes": "flex justify-center",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -76,7 +76,7 @@
   },
   {
     "quark": "q-fbt5mw2t4t3",
-    "semantic": "semantic-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl",
+    "semantic": "sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl",
     "classes": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
     "componentName": "HeroSplit",
     "elementType": "h2",
@@ -91,7 +91,7 @@
   },
   {
     "quark": "q-mw2tbtmf",
-    "semantic": "semantic-herosplit-p-max-w-2xl-text-base-text-muted-foreground",
+    "semantic": "sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground",
     "classes": "text-base text-muted-foreground max-w-2xl",
     "componentName": "HeroSplit",
     "elementType": "p",
@@ -106,7 +106,7 @@
   },
   {
     "quark": "q-ffcg4g8frg6",
-    "semantic": "semantic-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6",
+    "semantic": "sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6",
     "classes": "flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -121,7 +121,7 @@
   },
   {
     "quark": "q-g8ggc2",
-    "semantic": "semantic-herosplit-div-gap-8-grid-grid-cols-2",
+    "semantic": "sc-herosplit-div-gap-8-grid-grid-cols-2",
     "classes": "grid grid-cols-2 gap-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -136,7 +136,7 @@
   },
   {
     "quark": "q-fmts",
-    "semantic": "semantic-herosplit-div-font-medium-text-sm",
+    "semantic": "sc-herosplit-div-font-medium-text-sm",
     "classes": "text-sm font-medium",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -151,7 +151,7 @@
   },
   {
     "quark": "q-g2ic",
-    "semantic": "semantic-herosplit-button-gap-2-items-center",
+    "semantic": "sc-herosplit-button-gap-2-items-center",
     "classes": "items-center gap-2",
     "componentName": "HeroSplit",
     "elementType": "button",
@@ -166,7 +166,7 @@
   },
   {
     "quark": "q-asbmrm",
-    "semantic": "semantic-herosplit-img-aspect-square-bg-muted-rounded-md",
+    "semantic": "sc-herosplit-img-aspect-square-bg-muted-rounded-md",
     "classes": "bg-muted rounded-md aspect-square",
     "componentName": "HeroSplit",
     "elementType": "img",
@@ -181,7 +181,7 @@
   },
   {
     "quark": "q-bmrmrs2",
-    "semantic": "semantic-herosplit-img-bg-muted-rounded-md-row-span-2",
+    "semantic": "sc-herosplit-img-bg-muted-rounded-md-row-span-2",
     "classes": "bg-muted rounded-md row-span-2",
     "componentName": "HeroSplit",
     "elementType": "img",

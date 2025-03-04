@@ -5,11 +5,11 @@ UI Parser is a tool for analyzing, generating, and transforming UI components. I
 ## Features
 
 - **Component Analysis**: Analyzes React components and extracts class names
-- **CSS Generation**: Generates semantic and quark CSS classes
-- **Component Transformation**: Transforms components by replacing class names with semantic or quark classes
-- **Multiple Adapters**: Supports different methods for extracting classes (DOM, Regex)
+- **CSS Generation**: Generates semantic and quark CSS classes directly from analysis results
+- **Component Transformation**: Transforms components by replacing class names
+- **Multiple Adapters**: Supports different methods for extracting classes
 
-## Installation
+## File Structure
 
 ```bash
 npm install @ui-factory/ui-parser
@@ -62,7 +62,6 @@ configManager.updateConfig({
   paths: {
     sourceDir: './src/components',
     componentOutput: './src/output',
-    classObject: './src/output/classObject.ts',
     domAnalysisResults: './src/output/domAnalysis.json',
   },
   classNames: {

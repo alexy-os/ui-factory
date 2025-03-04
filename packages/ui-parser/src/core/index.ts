@@ -50,19 +50,34 @@ export class UIParser {
   public async all(options = {}) {
     console.log('Starting UI Parser all operations...');
     
-    // Анализ
-    console.log('Step 1: Analyzing components...');
-    await this.analyze(options);
-    
-    // Генерация
-    console.log('Step 2: Generating CSS...');
-    this.generate(options);
-    
-    // Трансформация
-    console.log('Step 3: Transforming components...');
-    this.transform(options);
-    
-    console.log('All operations completed successfully!');
+    try {
+      // Анализ
+      console.log('Step 1: Analyzing components...');
+      const analysisResults = await this.analyze(options);
+      console.log(`Found ${analysisResults.length} class entries`);
+      
+      // Генерация CSS
+      console.log('\nStep 2: Generating CSS...');
+      const cssResults = this.generate(options);
+      console.log(`Generated quark.css (${cssResults.quarkCSS.length} bytes)`);
+      console.log(`Generated semantic.css (${cssResults.semanticCSS.length} bytes)`);
+      
+      // Трансформация
+      console.log('\nStep 3: Transforming components...');
+      const transformResults = this.transform(options);
+      console.log(`Transformed ${transformResults.componentsTransformed} components`);
+      
+      console.log('\nAll operations completed successfully!');
+      
+      return {
+        analysisResults,
+        cssResults,
+        transformResults
+      };
+    } catch (error) {
+      console.error('Error during operations:', error);
+      throw error;
+    }
   }
 }
 

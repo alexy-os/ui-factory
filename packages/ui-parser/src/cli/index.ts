@@ -74,12 +74,10 @@ export class CLI {
       .option('-f, --format <format>', 'CSS format (css, scss, less)')
       .option('-m, --minify', 'Minify CSS output')
       .action((options) => {
-        // Обновляем конфигурацию, если указаны опции
         if (options.output) {
           configManager.updatePaths({ componentOutput: options.output });
         }
         
-        // Запускаем генерацию
         uiParser.generate({
           outputPath: options.output,
           format: options.format,
@@ -132,14 +130,12 @@ export class CLI {
       .option('-o, --output <path>', 'Output directory for results')
       .option('-v, --verbose', 'Verbose output')
       .action(async (options) => {
-        // Обновляем конфигурацию с правильными путями
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         const outputDir = options.output || configManager.getConfig().paths.componentOutput;
         
         configManager.updatePaths({
           sourceDir,
           componentOutput: outputDir,
-          classObject: path.join(outputDir, 'classObject.ts'),
           domAnalysisResults: path.join(outputDir, 'domAnalysis.json')
         });
 

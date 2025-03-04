@@ -30,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "semantic-herosplit-div-font-medium-text-sm"
+    className: "sc-herosplit-div-font-medium-text-sm"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -40,7 +40,7 @@ const content: Content = {
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "semantic-herosplit-button-gap-2-items-center",
+      className: "sc-herosplit-button-gap-2-items-center",
       icon: <BookOpen />
     },
     {
@@ -48,28 +48,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "semantic-herosplit-button-gap-2-items-center",
+      className: "sc-herosplit-button-gap-2-items-center",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "semantic-herosplit-div-gap-8-grid-grid-cols-2",
+      className: "sc-herosplit-div-gap-8-grid-grid-cols-2",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "semantic-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "sc-herosplit-img-aspect-square-bg-muted-rounded-md"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "semantic-herosplit-img-bg-muted-rounded-md-row-span-2"
+          className: "sc-herosplit-img-bg-muted-rounded-md-row-span-2"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "semantic-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "sc-herosplit-img-aspect-square-bg-muted-rounded-md"
         }
       ]
     }
@@ -85,24 +85,24 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-  <section className="semantic-herosplit-section-py-32-py-16-w-full">
-    <div className="semantic-herosplit-div-container-px-8-px-6-mx-auto-px-4">
-      <div className="semantic-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
-        <div className="semantic-herosplit-div-flex-flex-col-gap-4">
+  <section className="sc-herosplit-section-py-32-py-16-w-full">
+    <div className="sc-herosplit-div-container-px-8-px-6-mx-auto-px-4">
+      <div className="sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
+        <div className="sc-herosplit-div-flex-flex-col-gap-4">
           {badge &&
-          <div className="semantic-herosplit-div-flex-justify-center">
+          <div className="sc-herosplit-div-flex-justify-center">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="semantic-herosplit-div-flex-flex-col-gap-4">
-            <h2 className="semantic-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
+          <div className="sc-herosplit-div-flex-flex-col-gap-4">
+            <h2 className="sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
                 {title}
             </h2>
-            <p className="semantic-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
+            <p className="sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
               {description}
             </p>
           </div>
-          <div className="semantic-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
+          <div className="sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -110,7 +110,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="semantic-herosplit-div-gap-8-grid-grid-cols-2">
+        <div className="sc-herosplit-div-gap-8-grid-grid-cols-2">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}

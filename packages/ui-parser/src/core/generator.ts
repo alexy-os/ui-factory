@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { CONFIG } from '../config';
-import { ClassEntry, CSSGenerationResult, GenerationOptions } from './types';
+import { EnhancedClassEntry, CSSGenerationResult, GenerationOptions } from './types';
 
 /**
  * Класс для генерации CSS
@@ -22,42 +22,29 @@ export class CSSGenerator {
   }
   
   /**
-   * Загружает объект классов
+   * Загружает результаты анализа
    */
-  public loadClassObject(): Record<string, ClassEntry> {
+  private loadAnalysisResults(): EnhancedClassEntry[] {
     try {
       if (fs.existsSync(CONFIG.paths.domAnalysisResults)) {
         const jsonContent = fs.readFileSync(CONFIG.paths.domAnalysisResults, 'utf-8');
-        const results = JSON.parse(jsonContent);
-        
-        // Преобразуем массив в объект с ключами semantic
-        const classObj: Record<string, ClassEntry> = {};
-        results.forEach((entry: any) => {
-          classObj[entry.semantic] = {
-            quark: entry.quark,
-            semantic: entry.semantic,
-            classes: entry.classes,
-            components: entry.components
-          };
-        });
-        
-        return classObj;
+        return JSON.parse(jsonContent);
       }
-      return {};
+      return [];
     } catch (error) {
-      console.error('Error loading class data:', error);
-      return {};
+      console.error('Error loading analysis results:', error);
+      return [];
     }
   }
   
   /**
    * Генерирует CSS с семантическими и кварк классами
    */
-  public generateCSS(classObject: Record<string, ClassEntry>): CSSGenerationResult {
+  private generateCSS(entries: EnhancedClassEntry[]): CSSGenerationResult {
     let quarkCSS = '';
     let semanticCSS = '';
     
-    Object.values(classObject).forEach(entry => {
+    entries.forEach(entry => {
       quarkCSS += `.${entry.quark} { @apply ${entry.classes}; }\n`;
       semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
     });
@@ -68,13 +55,9 @@ export class CSSGenerator {
   /**
    * Сохраняет сгенерированный CSS
    */
-  public saveCSS(css: CSSGenerationResult, options: GenerationOptions = {}): void {
-    const outputDir = path.dirname(CONFIG.paths.classObject);
-    
+  private saveCSS(css: CSSGenerationResult, outputDir: string): void {
     // Создаем директорию, если она не существует
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
+    fs.mkdirSync(outputDir, { recursive: true });
     
     // Сохраняем CSS файлы
     fs.writeFileSync(
@@ -91,41 +74,24 @@ export class CSSGenerator {
   }
   
   /**
-   * Сохраняет объект классов в файл
-   */
-  public saveClassObject(classObject: Record<string, ClassEntry>): void {
-    // Создаем директорию, если она не существует
-    const outputDir = path.dirname(CONFIG.paths.classObject);
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
-    
-    // Сохраняем объект классов
-    const fileContent = `// Generated class object mapping
-// DO NOT EDIT MANUALLY
-
-export const classObject = ${JSON.stringify(classObject, null, 2)};
-`;
-    fs.writeFileSync(CONFIG.paths.classObject, fileContent);
-    
-    console.log('Class object saved successfully');
-  }
-  
-  /**
    * Генерирует CSS и сохраняет файлы
    */
   public generate(options: GenerationOptions = {}): CSSGenerationResult {
-    // Загружаем объект классов
-    const classObject = this.loadClassObject();
+    const outputDir = options.outputPath || CONFIG.paths.componentOutput;
+    
+    // Загружаем результаты анализа
+    const entries = this.loadAnalysisResults();
+    
+    if (entries.length === 0) {
+      console.warn('No class entries found for CSS generation');
+      return { quarkCSS: '', semanticCSS: '' };
+    }
     
     // Генерируем CSS
-    const css = this.generateCSS(classObject);
+    const css = this.generateCSS(entries);
     
     // Сохраняем CSS
-    this.saveCSS(css, options);
-    
-    // Сохраняем объект классов
-    this.saveClassObject(classObject);
+    this.saveCSS(css, outputDir);
     
     return css;
   }

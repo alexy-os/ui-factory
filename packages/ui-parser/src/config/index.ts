@@ -12,7 +12,6 @@ export interface UIParserConfig {
   paths: {
     sourceDir: string;
     componentOutput: string;
-    classObject: string;
     domAnalysisResults: string;
   };
   classNames: {
@@ -35,11 +34,10 @@ export class ConfigManager {
       paths: {
         sourceDir: path.resolve(process.cwd(), './src/source'),
         componentOutput: path.resolve(process.cwd(), './src/components'),
-        classObject: path.resolve(process.cwd(), './src/components/classObject.ts'),
         domAnalysisResults: path.resolve(process.cwd(), './src/components/domAnalysis.json'),
       },
       classNames: {
-        semanticPrefix: 'semantic-',
+        semanticPrefix: 'sc-',
         quarkPrefix: 'q-',
       },
       extractor: 'regex' // По умолчанию используем regex | dom экстрактор
