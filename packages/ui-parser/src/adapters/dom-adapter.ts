@@ -6,6 +6,7 @@ import { promisify } from 'util';
 import { ClassExtractorAdapter } from './base-adapter';
 import { EnhancedClassEntry } from '../core/types';
 import { CONFIG } from '../config';
+import { deduplicateEntries } from '../utils/deduplication';
 
 const execAsync = promisify(exec);
 
@@ -29,18 +30,26 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
   async extractClasses(componentPath: string): Promise<EnhancedClassEntry[]> {
     console.log(`Analyzing component with DOM adapter: ${path.basename(componentPath)}`);
     
-    // Рендерим компонент и получаем DOM
-    const document = await this.renderComponentToDOM(componentPath);
-    
-    if (document) {
-      // Извлекаем классы из DOM
-      const entries = this.extractClassesFromDOM(document, componentPath);
-      console.log(`Found ${entries.length} class entries in rendered DOM`);
-      return entries;
+    try {
+      const document = await this.renderComponentToDOM(componentPath);
+      
+      if (document) {
+        const entries = this.extractClassesFromDOM(document, componentPath);
+        console.log(`Found ${entries.length} raw class entries in rendered DOM`);
+        
+        // Дедупликация записей
+        const uniqueEntries = deduplicateEntries(entries);
+        
+        console.log(`After deduplication: ${uniqueEntries.length} unique class entries`);
+        return uniqueEntries;
+      }
+      
+      console.log('Failed to render component');
+      return [];
+    } catch (error) {
+      console.error(`Error analyzing component:`, error);
+      return [];
     }
-    
-    console.log('Failed to render component');
-    return [];
   }
   
   /**

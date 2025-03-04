@@ -1,16 +1,13 @@
-.q-3216wf { @apply w-full py-16 lg:py-32; }
-.q-c86ma4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
-.q-8g1ic2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
-.q-ffc4 { @apply flex gap-4 flex-col; }
+.q-p3p1wf { @apply w-full py-16 lg:py-32; }
+.q-cp8p6map4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
+.q-g8ggc1icgc2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
+.q-ffcg4 { @apply flex gap-4 flex-col; }
 .q-fjc { @apply flex justify-center; }
-.q-pen3batafbd20b40br350fm1ificjcoh205rm0tftxt[swfwn { @apply inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground; }
-.q-fb5243 { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
-.q-2tbtmf { @apply text-base text-muted-foreground max-w-2xl; }
-.q-ffc48fr6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
-.q-4pen0bd20bp4050penbr350fm210490ificjcon6rmsx0tpftst[swn { @apply inline-flex justify-center whitespace-nowrap text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-10 rounded-md px-6 has-[>svg]:px-4 items-center gap-2; }
-.q-llbo { @apply lucide lucide-book-open; }
-.q-4pen0bd20bbbbi4050penbr350fm2104batafificjcon6rmsx0tst[swn { @apply inline-flex justify-center whitespace-nowrap text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground h-10 rounded-md px-6 has-[>svg]:px-4 items-center gap-2; }
-.q-llg { @apply lucide lucide-github; }
-.q-8g2 { @apply grid grid-cols-2 gap-8; }
+.q-fbt5mw2t4t3 { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
+.q-mw2tbtmf { @apply text-base text-muted-foreground max-w-2xl; }
+.q-ffcg4g8frg6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
+.q-g8ggc2 { @apply grid grid-cols-2 gap-8; }
+.q-fmts { @apply text-sm font-medium; }
+.q-g2ic { @apply items-center gap-2; }
 .q-asbmrm { @apply bg-muted rounded-md aspect-square; }
-.q-bmrm2 { @apply bg-muted rounded-md row-span-2; }
+.q-bmrmrs2 { @apply bg-muted rounded-md row-span-2; }

@@ -30,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "badge text-sm font-medium"
+    className: "text-sm font-medium"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",

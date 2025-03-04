@@ -3,23 +3,47 @@ import path from 'path';
 import { ClassExtractorAdapter } from './base-adapter';
 import { EnhancedClassEntry } from '../core/types';
 import { CONFIG } from '../config';
+import { deduplicateEntries } from '../utils/deduplication';
+
+// Определяем типы для паттернов
+type PatternContextType = 'jsx' | 'const' | 'config' | 'dynamic' | 'template';
+
+interface PatternConfig {
+  pattern: RegExp;
+  contextType: PatternContextType;
+}
 
 // Паттерны для поиска классов в различных контекстах
-const CLASS_PATTERNS = {
+const CLASS_PATTERNS: Record<string, PatternConfig> = {
   // JSX className атрибуты
-  jsxClassName: /className=["']([^"']+)["']/g,
+  jsxClassName: {
+    pattern: /className=["']([^"']+)["']/g,
+    contextType: 'jsx'
+  },
   
   // Объявления констант с классами
-  constClassName: /className:\s*["']([^"']+)["']/g,
+  constClassName: {
+    pattern: /className:\s*["']([^"']+)["']/g,
+    contextType: 'const'
+  },
   
   // Объекты конфигурации с классами
-  configClassName: /\bclassName:\s*["']([^"']+)["']/g,
+  configClassName: {
+    pattern: /\bclassName:\s*["']([^"']+)["']/g,
+    contextType: 'config'
+  },
   
   // Динамические классы с clsx/cn
-  dynamicClassName: /className=\{(?:clsx|cn)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+  dynamicClassName: {
+    pattern: /className=\{(?:clsx|cn)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+    contextType: 'dynamic'
+  },
   
   // Шаблонные строки
-  templateClassName: /className=\{`([^`]+)`\}/g,
+  templateClassName: {
+    pattern: /className=\{`([^`]+)`\}/g,
+    contextType: 'template'
+  }
 } as const;
 
 /**
@@ -50,13 +74,14 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
       const classEntries: EnhancedClassEntry[] = [];
       
       // Обрабатываем все паттерны поиска классов
-      for (const [patternName, pattern] of Object.entries(CLASS_PATTERNS)) {
+      for (const [patternName, config] of Object.entries(CLASS_PATTERNS)) {
+        const { pattern, contextType } = config;
         let match;
         while ((match = pattern.exec(content)) !== null) {
           const classes = match[1];
           
-          // Определяем тип элемента
-          const elementType = this.determineElementType(content, match.index);
+          // Определяем тип элемента с учетом контекста
+          const elementType = this.determineElementType(content, match.index, contextType);
           
           // Создаем запись о классе
           const classEntry: EnhancedClassEntry = {
@@ -76,12 +101,17 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
           };
           
           classEntries.push(classEntry);
-          console.log(`Found classes using ${patternName}: ${classes}`);
+          console.log(`Found classes using ${patternName} (${contextType}): ${classes}`);
         }
       }
       
-      console.log(`Found ${classEntries.length} class entries with regex`);
-      return classEntries;
+      console.log(`Found ${classEntries.length} raw class entries with regex`);
+      
+      // Дедупликация записей
+      const uniqueEntries = deduplicateEntries(classEntries);
+      
+      console.log(`After deduplication: ${uniqueEntries.length} unique class entries`);
+      return uniqueEntries;
     } catch (error) {
       console.error(`Error analyzing component with regex:`, error);
       return [];
@@ -91,16 +121,30 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
   /**
    * Определяет тип элемента на основе контекста
    */
-  private determineElementType(content: string, position: number): string {
-    // Ищем открывающий тег перед позицией className
-    const beforeContent = content.substring(0, position);
-    const tagMatch = beforeContent.match(/<([a-zA-Z][a-zA-Z0-9]*)(?:\s|>)[^<]*$/);
-    
-    if (tagMatch) {
-      return tagMatch[1].toLowerCase();
+  private determineElementType(content: string, position: number, contextType: PatternContextType): string {
+    // Для JSX контекста и шаблонных строк ищем ближайший открывающий тег
+    if (contextType === 'jsx' || contextType === 'template' || contextType === 'dynamic') {
+      const beforeContent = content.substring(0, position);
+      const tagMatch = beforeContent.match(/<([a-zA-Z][a-zA-Z0-9]*)(?:\s|>)[^<]*$/);
+      
+      if (tagMatch) {
+        return tagMatch[1].toLowerCase();
+      }
     }
     
-    // По умолчанию div
+    // Для констант и конфигураций используем контекстное определение
+    if (contextType === 'const' || contextType === 'config') {
+      const beforeContent = content.substring(0, position);
+      // Ищем в ближайшем контексте (до 200 символов)
+      const contextWindow = beforeContent.slice(-200);
+      
+      if (contextWindow.match(/Button|btn|button/i)) return 'button';
+      if (contextWindow.match(/Link|anchor|a>/i)) return 'a';
+      if (contextWindow.match(/heading|h[1-6]/i)) return 'h2';
+      if (contextWindow.match(/paragraph|p>/i)) return 'p';
+      if (contextWindow.match(/image|img/i)) return 'img';
+    }
+    
     return 'div';
   }
   

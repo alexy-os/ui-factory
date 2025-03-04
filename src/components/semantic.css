@@ -7,5 +7,7 @@
 .semantic-herosplit-p-max-w-2xl-text-base-text-muted-foreground { @apply text-base text-muted-foreground max-w-2xl; }
 .semantic-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
 .semantic-herosplit-div-gap-8-grid-grid-cols-2 { @apply grid grid-cols-2 gap-8; }
-.semantic-herosplit-div-aspect-square-bg-muted-rounded-md { @apply bg-muted rounded-md aspect-square; }
-.semantic-herosplit-div-bg-muted-rounded-md-row-span-2 { @apply bg-muted rounded-md row-span-2; }
+.semantic-herosplit-div-font-medium-text-sm { @apply text-sm font-medium; }
+.semantic-herosplit-button-gap-2-items-center { @apply items-center gap-2; }
+.semantic-herosplit-img-aspect-square-bg-muted-rounded-md { @apply bg-muted rounded-md aspect-square; }
+.semantic-herosplit-img-bg-muted-rounded-md-row-span-2 { @apply bg-muted rounded-md row-span-2; }

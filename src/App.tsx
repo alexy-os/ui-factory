@@ -1,5 +1,5 @@
-//import { HeroSplit } from "@/components/HeroSplit.quark";
-import { HeroSplit } from "@/components/HeroSplit.semantic";
+import { HeroSplit } from "@/components/HeroSplit.quark";
+//import { HeroSplit } from "@/components/HeroSplit.semantic";
 //import { HeroSplit } from "@/source/HeroSplit";
 
 export default function App() {

@@ -75,21 +75,6 @@
     }
   },
   {
-    "quark": "q-ffcg4",
-    "semantic": "semantic-herosplit-div-flex-flex-col-gap-4",
-    "classes": "flex gap-4 flex-col",
-    "componentName": "HeroSplit",
-    "elementType": "div",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
     "quark": "q-fbt5mw2t4t3",
     "semantic": "semantic-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl",
     "classes": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
@@ -150,9 +135,9 @@
     }
   },
   {
-    "quark": "q-bfmts",
-    "semantic": "semantic-herosplit-div-badge-font-medium-text-sm",
-    "classes": "badge text-sm font-medium",
+    "quark": "q-fmts",
+    "semantic": "semantic-herosplit-div-font-medium-text-sm",
+    "classes": "text-sm font-medium",
     "componentName": "HeroSplit",
     "elementType": "div",
     "variants": {},
@@ -166,40 +151,10 @@
   },
   {
     "quark": "q-g2ic",
-    "semantic": "semantic-herosplit-div-gap-2-items-center",
+    "semantic": "semantic-herosplit-button-gap-2-items-center",
     "classes": "items-center gap-2",
     "componentName": "HeroSplit",
-    "elementType": "div",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-g2ic",
-    "semantic": "semantic-herosplit-bookopen-gap-2-items-center",
-    "classes": "items-center gap-2",
-    "componentName": "HeroSplit",
-    "elementType": "bookopen",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-g8ggc2",
-    "semantic": "semantic-herosplit-github-gap-8-grid-grid-cols-2",
-    "classes": "grid grid-cols-2 gap-8",
-    "componentName": "HeroSplit",
-    "elementType": "github",
+    "elementType": "button",
     "variants": {},
     "isPublic": true,
     "components": {
@@ -211,10 +166,10 @@
   },
   {
     "quark": "q-asbmrm",
-    "semantic": "semantic-herosplit-github-aspect-square-bg-muted-rounded-md",
+    "semantic": "semantic-herosplit-img-aspect-square-bg-muted-rounded-md",
     "classes": "bg-muted rounded-md aspect-square",
     "componentName": "HeroSplit",
-    "elementType": "github",
+    "elementType": "img",
     "variants": {},
     "isPublic": true,
     "components": {
@@ -226,130 +181,10 @@
   },
   {
     "quark": "q-bmrmrs2",
-    "semantic": "semantic-herosplit-github-bg-muted-rounded-md-row-span-2",
+    "semantic": "semantic-herosplit-img-bg-muted-rounded-md-row-span-2",
     "classes": "bg-muted rounded-md row-span-2",
     "componentName": "HeroSplit",
-    "elementType": "github",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-asbmrm",
-    "semantic": "semantic-herosplit-github-aspect-square-bg-muted-rounded-md",
-    "classes": "bg-muted rounded-md aspect-square",
-    "componentName": "HeroSplit",
-    "elementType": "github",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-bfmts",
-    "semantic": "semantic-herosplit-div-badge-font-medium-text-sm",
-    "classes": "badge text-sm font-medium",
-    "componentName": "HeroSplit",
-    "elementType": "div",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-g2ic",
-    "semantic": "semantic-herosplit-div-gap-2-items-center",
-    "classes": "items-center gap-2",
-    "componentName": "HeroSplit",
-    "elementType": "div",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-g2ic",
-    "semantic": "semantic-herosplit-bookopen-gap-2-items-center",
-    "classes": "items-center gap-2",
-    "componentName": "HeroSplit",
-    "elementType": "bookopen",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-g8ggc2",
-    "semantic": "semantic-herosplit-github-gap-8-grid-grid-cols-2",
-    "classes": "grid grid-cols-2 gap-8",
-    "componentName": "HeroSplit",
-    "elementType": "github",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-asbmrm",
-    "semantic": "semantic-herosplit-github-aspect-square-bg-muted-rounded-md",
-    "classes": "bg-muted rounded-md aspect-square",
-    "componentName": "HeroSplit",
-    "elementType": "github",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-bmrmrs2",
-    "semantic": "semantic-herosplit-github-bg-muted-rounded-md-row-span-2",
-    "classes": "bg-muted rounded-md row-span-2",
-    "componentName": "HeroSplit",
-    "elementType": "github",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
-    "quark": "q-asbmrm",
-    "semantic": "semantic-herosplit-github-aspect-square-bg-muted-rounded-md",
-    "classes": "bg-muted rounded-md aspect-square",
-    "componentName": "HeroSplit",
-    "elementType": "github",
+    "elementType": "img",
     "variants": {},
     "isPublic": true,
     "components": {

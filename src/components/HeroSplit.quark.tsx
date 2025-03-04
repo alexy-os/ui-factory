@@ -30,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "badge text-sm font-medium"
+    className: "text-sm font-medium"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -85,24 +85,24 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-  <section className="q-3216wf">
-    <div className="q-c86ma4">
-      <div className="q-8g1ic2">
-        <div className="q-ffc4">
+  <section className="q-p3p1wf">
+    <div className="q-cp8p6map4">
+      <div className="q-g8ggc1icgc2">
+        <div className="q-ffcg4">
           {badge &&
           <div className="q-fjc">
             <Badge variant="outline">{badge.text}</Badge>
           </div>
           }
-          <div className="q-ffc4">
-            <h2 className="q-fb5243">
+          <div className="q-ffcg4">
+            <h2 className="q-fbt5mw2t4t3">
                 {title}
             </h2>
-            <p className="q-2tbtmf">
+            <p className="q-mw2tbtmf">
               {description}
             </p>
           </div>
-          <div className="q-ffc48fr6">
+          <div className="q-ffcg4g8frg6">
             {buttons?.map((button) => (
               <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
                 {button.text} {button.icon}
@@ -110,7 +110,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
             ))}
           </div>
         </div>
-        <div className="q-8g2">
+        <div className="q-g8ggc2">
           {images.grid.items?.map((image) => (
             <div key={image.id} className={image.className}></div>
           ))}
