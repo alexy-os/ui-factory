@@ -1,3 +1,9 @@
+.sc-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors { @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50; }
+.sc-button-div-bg-primary-bg-primary-80-text-white { @apply bg-primary text-white hover:bg-primary/80; }
+.sc-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80; }
+.sc-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
+.sc-button-div-bg-accent-text-accent-foreground { @apply hover:bg-accent hover:text-accent-foreground; }
+.sc-button-div-underline-text-primary-underline-offset-4 { @apply text-primary underline-offset-4 hover:underline; }
 .sc-herosplit-section-py-32-py-16-w-full { @apply w-full py-16 lg:py-32; }
 .sc-herosplit-div-container-px-8-px-6-mx-auto-px-4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
 .sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }

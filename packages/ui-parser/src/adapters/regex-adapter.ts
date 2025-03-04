@@ -43,6 +43,12 @@ const CLASS_PATTERNS: Record<string, PatternConfig> = {
   templateClassName: {
     pattern: /className=\{`([^`]+)`\}/g,
     contextType: 'template'
+  },
+
+  // Паттерн для tailwind-variants
+  tvVariants: {
+    pattern: /tv\(\s*\{([\s\S]*?)\}\s*\)/gs, // g и s флаги для многострочного поиска
+    contextType: 'config'
   }
 } as const;
 
@@ -64,8 +70,6 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
    * Анализирует компонент и извлекает классы через регулярные выражения
    */
   async extractClasses(componentPath: string): Promise<EnhancedClassEntry[]> {
-    //console.log(`Analyzing component with Regex adapter: ${path.basename(componentPath)}`);
-    
     try {
       const content = fs.readFileSync(componentPath, 'utf-8');
       const componentName = path.basename(componentPath, path.extname(componentPath));
@@ -73,49 +77,87 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
       
       const classEntries: EnhancedClassEntry[] = [];
       
-      // Обрабатываем все паттерны поиска классов
+      // Обработка tv конфигурации
+      const tvMatches = content.match(/tv\(\s*\{([\s\S]*?)\}\s*\)/g);
+      if (tvMatches) {
+        for (const tvMatch of tvMatches) {
+          // Извлекаем base классы
+          const baseMatch = tvMatch.match(/base:\s*["']([^"']+)["']/);
+          if (baseMatch) {
+            const baseClasses = baseMatch[1];
+            classEntries.push(this.createClassEntry(baseClasses, componentName, componentDir, 'div'));
+          }
+
+          // Извлекаем варианты
+          const variantsMatch = tvMatch.match(/variants:\s*({[\s\S]*?})/);
+          if (variantsMatch) {
+            const variantsStr = variantsMatch[1];
+            // Ищем все варианты внутри variants объекта
+            const variantMatches = variantsStr.matchAll(/(\w+):\s*{([^}]+)}/g);
+            
+            for (const [_, variantName, variantContent] of variantMatches) {
+              // Ищем все значения вариантов
+              const valueMatches = variantContent.matchAll(/(\w+):\s*["']([^"']+)["']/g);
+              
+              for (const [__, valueName, classes] of valueMatches) {
+                classEntries.push(
+                  this.createClassEntry(
+                    classes,
+                    componentName,
+                    componentDir,
+                    'div',
+                    { [variantName]: valueName }
+                  )
+                );
+              }
+            }
+          }
+        }
+      }
+
+      // Обработка обычных className
       for (const [patternName, config] of Object.entries(CLASS_PATTERNS)) {
         const { pattern, contextType } = config;
         let match;
         while ((match = pattern.exec(content)) !== null) {
-          const classes = match[1];
-          
-          // Определяем тип элемента с учетом контекста
-          const elementType = this.determineElementType(content, match.index, contextType);
-          
-          // Создаем запись о классе
-          const classEntry: EnhancedClassEntry = {
-            quark: this.generateQuarkName(classes),
-            semantic: this.generateSemanticName(componentName, elementType, classes),
-            classes,
-            componentName,
-            elementType,
-            variants: {},
-            isPublic: true,
-            components: {
-              [componentName]: {
-                path: componentDir,
-                name: componentName
-              }
-            }
-          };
-          
-          classEntries.push(classEntry);
-          // console.log(`Found classes using ${patternName} (${contextType}): ${classes}`);
+          if (patternName !== 'tvVariants') { // Пропускаем tv паттерн, так как уже обработали
+            const classes = match[1];
+            const elementType = this.determineElementType(content, match.index, contextType);
+            classEntries.push(this.createClassEntry(classes, componentName, componentDir, elementType));
+          }
         }
       }
-      
-      //console.log(`Found ${classEntries.length} raw class entries with regex`);
-      
-      // Дедупликация записей
+
       const uniqueEntries = deduplicateEntries(classEntries);
-      
-      //console.log(`After deduplication: ${uniqueEntries.length} unique class entries`);
       return uniqueEntries;
     } catch (error) {
       console.error(`Error analyzing component with regex:`, error);
       return [];
     }
+  }
+  
+  private createClassEntry(
+    classes: string,
+    componentName: string,
+    componentDir: string,
+    elementType: string,
+    variants: Record<string, string> = {}
+  ): EnhancedClassEntry {
+    return {
+      quark: this.generateQuarkName(classes),
+      semantic: this.generateSemanticName(componentName, elementType, classes),
+      classes: classes.trim(),
+      componentName,
+      elementType,
+      variants,
+      isPublic: true,
+      components: {
+        [componentName]: {
+          path: componentDir,
+          name: componentName
+        }
+      }
+    };
   }
   
   /**

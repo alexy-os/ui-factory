@@ -1,3 +1,9 @@
+.q-o5penonr1rrfmg2ificjcrmtstc { @apply inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50; }
+.q-bpbptw { @apply bg-primary text-white hover:bg-primary/80; }
+.q-bsbstsf { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80; }
+.q-bbbbibataf { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
+.q-bataf { @apply hover:bg-accent hover:text-accent-foreground; }
+.q-utpuo4 { @apply text-primary underline-offset-4 hover:underline; }
 .q-p3p1wf { @apply w-full py-16 lg:py-32; }
 .q-cp8p6map4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
 .q-g8ggc1icgc2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
