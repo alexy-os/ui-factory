@@ -1,7 +1,6 @@
 import * as React from "react";
-import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Slot } from "./Slot";
+import { Slot } from "../slot";
 import { buttonBaseStyle } from "./Button.css";
 
 // Button component props

@@ -1,19 +1,24 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Badge, type BadgeProps } from "@ui-factory/ui-shadcn/components/ui/badge";
-import { Button, type ButtonProps } from "@ui-factory/ui-shadcn/components/ui/button";
+import { Button } from "./Button";
+import type { ButtonProps } from "./Button";
 
 type Content = {
-  badge?: BadgeProps & {
+  button?: {
     text: string;
+    variant?: ButtonProps["variant"];
+    className?: string;
   };
   title: string;
   description: string;
-  buttons?: (ButtonProps & {
+  buttons?: {
     id: string;
     text: string;
+    variant?: ButtonProps["variant"];
+    size?: ButtonProps["size"];
+    className?: string;
     icon?: React.ReactNode;
-  })[];
+  }[];
   images: {
     grid: {
       className: string;
@@ -27,10 +32,10 @@ type Content = {
 };
 
 const content: Content = {
-  badge: {
+  button: {
     text: "We're building",
     variant: "outline",
-    className: "sc-herosplit-div-font-medium-text-sm"
+    className: "sc-herosplit-button-font-medium-text-sm"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -54,7 +59,7 @@ const content: Content = {
   ],
   images: {
     grid: {
-      className: "sc-herosplit-div-gap-8-grid-grid-cols-2",
+      className: "sc-herosplit-button-gap-8-grid-grid-cols-2",
       items: [
         {
           id: "image1",
@@ -79,42 +84,49 @@ const content: Content = {
 type HeroSplitWithGalleryProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>;
 
 export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
-  const { badge, title, description, buttons, images } = {
+  const { button, title, description, buttons, images, className, ...rest } = {
     ...content,
     ...props,
   };
 
   return ( 
-  <section className="sc-herosplit-section-py-32-py-16-w-full">
-    <div className="sc-herosplit-div-container-px-8-px-6-mx-auto-px-4">
-      <div className="sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
-        <div className="sc-herosplit-div-flex-flex-col-gap-4">
-          {badge &&
-          <div className="sc-herosplit-div-flex-justify-center">
-            <Badge variant="outline">{badge.text}</Badge>
-          </div>
-          }
+    <section className="sc-herosplit-section-py-32-py-16-w-full" {...rest}>
+      <div className="sc-herosplit-div-container-px-8-px-6-mx-auto-px-4">
+        <div className="sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
           <div className="sc-herosplit-div-flex-flex-col-gap-4">
-            <h2 className="sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
+            {button && (
+              <div className="sc-herosplit-div-flex-justify-center">
+                <Button variant={button.variant} className={button.className}>
+                  {button.text}
+                </Button>
+              </div>
+            )}
+            <div className="sc-herosplit-div-flex-flex-col-gap-4">
+              <h2 className="sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
                 {title}
-            </h2>
-            <p className="sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
-              {description}
-            </p>
+              </h2>
+              <p className="sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
+                {description}
+              </p>
+            </div>
+            <div className="sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
+              {buttons?.map((button) => (
+                <Button 
+                  key={button.id}
+                  variant={button.variant}
+                  size={button.size}
+                  className={button.className}
+                >
+                  {button.text} {button.icon}
+                </Button>
+              ))}
+            </div>
           </div>
-          <div className="sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
-            {buttons?.map((button) => (
-              <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
-                {button.text} {button.icon}
-              </Button>
+          <div className={images.grid.className}>
+            {images.grid.items?.map((image) => (
+              <div key={image.id} className={image.className}></div>
             ))}
           </div>
-        </div>
-        <div className="sc-herosplit-div-gap-8-grid-grid-cols-2">
-          {images.grid.items?.map((image) => (
-            <div key={image.id} className={image.className}></div>
-          ))}
-        </div>
         </div>
       </div>
     </section>

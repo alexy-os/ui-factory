@@ -6,8 +6,8 @@
 .q-fbt5mw2t4t3 { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
 .q-mw2tbtmf { @apply text-base text-muted-foreground max-w-2xl; }
 .q-ffcg4g8frg6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
-.q-g8ggc2 { @apply grid grid-cols-2 gap-8; }
 .q-fmts { @apply text-sm font-medium; }
 .q-g2ic { @apply items-center gap-2; }
+.q-g8ggc2 { @apply grid grid-cols-2 gap-8; }
 .q-asbmrm { @apply bg-muted rounded-md aspect-square; }
 .q-bmrmrs2 { @apply bg-muted rounded-md row-span-2; }

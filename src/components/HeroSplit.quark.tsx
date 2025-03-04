@@ -1,19 +1,24 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Badge, type BadgeProps } from "@ui-factory/ui-shadcn/components/ui/badge";
-import { Button, type ButtonProps } from "@ui-factory/ui-shadcn/components/ui/button";
+import { Button } from "./Button";
+import type { ButtonProps } from "./Button";
 
 type Content = {
-  badge?: BadgeProps & {
+  button?: {
     text: string;
+    variant?: ButtonProps["variant"];
+    className?: string;
   };
   title: string;
   description: string;
-  buttons?: (ButtonProps & {
+  buttons?: {
     id: string;
     text: string;
+    variant?: ButtonProps["variant"];
+    size?: ButtonProps["size"];
+    className?: string;
     icon?: React.ReactNode;
-  })[];
+  }[];
   images: {
     grid: {
       className: string;
@@ -27,7 +32,7 @@ type Content = {
 };
 
 const content: Content = {
-  badge: {
+  button: {
     text: "We're building",
     variant: "outline",
     className: "q-fmts"
@@ -79,42 +84,49 @@ const content: Content = {
 type HeroSplitWithGalleryProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>;
 
 export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
-  const { badge, title, description, buttons, images } = {
+  const { button, title, description, buttons, images, className, ...rest } = {
     ...content,
     ...props,
   };
 
   return ( 
-  <section className="q-p3p1wf">
-    <div className="q-cp8p6map4">
-      <div className="q-g8ggc1icgc2">
-        <div className="q-ffcg4">
-          {badge &&
-          <div className="q-fjc">
-            <Badge variant="outline">{badge.text}</Badge>
-          </div>
-          }
+    <section className="q-p3p1wf" {...rest}>
+      <div className="q-cp8p6map4">
+        <div className="q-g8ggc1icgc2">
           <div className="q-ffcg4">
-            <h2 className="q-fbt5mw2t4t3">
+            {button && (
+              <div className="q-fjc">
+                <Button variant={button.variant} className={button.className}>
+                  {button.text}
+                </Button>
+              </div>
+            )}
+            <div className="q-ffcg4">
+              <h2 className="q-fbt5mw2t4t3">
                 {title}
-            </h2>
-            <p className="q-mw2tbtmf">
-              {description}
-            </p>
+              </h2>
+              <p className="q-mw2tbtmf">
+                {description}
+              </p>
+            </div>
+            <div className="q-ffcg4g8frg6">
+              {buttons?.map((button) => (
+                <Button 
+                  key={button.id}
+                  variant={button.variant}
+                  size={button.size}
+                  className={button.className}
+                >
+                  {button.text} {button.icon}
+                </Button>
+              ))}
+            </div>
           </div>
-          <div className="q-ffcg4g8frg6">
-            {buttons?.map((button) => (
-              <Button key={button.id} size={button.size} className={button.className} variant={button.variant}>
-                {button.text} {button.icon}
-              </Button>
+          <div className={images.grid.className}>
+            {images.grid.items?.map((image) => (
+              <div key={image.id} className={image.className}></div>
             ))}
           </div>
-        </div>
-        <div className="q-g8ggc2">
-          {images.grid.items?.map((image) => (
-            <div key={image.id} className={image.className}></div>
-          ))}
-        </div>
         </div>
       </div>
     </section>

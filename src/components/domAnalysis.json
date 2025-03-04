@@ -120,26 +120,11 @@
     }
   },
   {
-    "quark": "q-g8ggc2",
-    "semantic": "sc-herosplit-div-gap-8-grid-grid-cols-2",
-    "classes": "grid grid-cols-2 gap-8",
-    "componentName": "HeroSplit",
-    "elementType": "div",
-    "variants": {},
-    "isPublic": true,
-    "components": {
-      "HeroSplit": {
-        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
-        "name": "HeroSplit"
-      }
-    }
-  },
-  {
     "quark": "q-fmts",
-    "semantic": "sc-herosplit-div-font-medium-text-sm",
+    "semantic": "sc-herosplit-button-font-medium-text-sm",
     "classes": "text-sm font-medium",
     "componentName": "HeroSplit",
-    "elementType": "div",
+    "elementType": "button",
     "variants": {},
     "isPublic": true,
     "components": {
@@ -153,6 +138,21 @@
     "quark": "q-g2ic",
     "semantic": "sc-herosplit-button-gap-2-items-center",
     "classes": "items-center gap-2",
+    "componentName": "HeroSplit",
+    "elementType": "button",
+    "variants": {},
+    "isPublic": true,
+    "components": {
+      "HeroSplit": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "HeroSplit"
+      }
+    }
+  },
+  {
+    "quark": "q-g8ggc2",
+    "semantic": "sc-herosplit-button-gap-8-grid-grid-cols-2",
+    "classes": "grid grid-cols-2 gap-8",
     "componentName": "HeroSplit",
     "elementType": "button",
     "variants": {},
