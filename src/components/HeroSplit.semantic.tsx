@@ -1,7 +1,7 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Button } from "./Button.semantic";
-import type { ButtonProps } from "./Button.semantic";
+import { Button } from "./Button";
+import type { ButtonProps } from "./Button";
 
 type Content = {
   button?: {
@@ -90,7 +90,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-    <section className="sc-herosplit-section-py-32-py-16-w-full" {...rest}>
+    <section className="section-full" {...rest}>
       <div className="sc-herosplit-div-container-px-8-px-6-mx-auto-px-4">
         <div className="sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
           <div className="sc-herosplit-div-flex-flex-col-gap-4">
