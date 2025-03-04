@@ -1,18 +1,19 @@
 import { ClassExtractorAdapter } from './base-adapter';
 import { DOMExtractorAdapter } from './dom-adapter';
 import { RegexExtractorAdapter } from './regex-adapter';
+import { configManager } from '../config';
 
 /**
  * Фабрика адаптеров для извлечения классов
  */
 export class AdapterFactory {
   private static instance: AdapterFactory;
-  private adapters: ClassExtractorAdapter[] = [];
+  private adapters: Map<string, ClassExtractorAdapter> = new Map();
   
   private constructor() {
     // Регистрируем адаптеры
-    this.registerAdapter(new DOMExtractorAdapter());
-    this.registerAdapter(new RegexExtractorAdapter());
+    this.registerAdapter('dom', new DOMExtractorAdapter());
+    this.registerAdapter('regex', new RegexExtractorAdapter());
   }
   
   /**
@@ -28,31 +29,33 @@ export class AdapterFactory {
   /**
    * Регистрирует новый адаптер
    */
-  public registerAdapter(adapter: ClassExtractorAdapter): void {
-    this.adapters.push(adapter);
+  public registerAdapter(type: string, adapter: ClassExtractorAdapter): void {
+    this.adapters.set(type, adapter);
   }
   
   /**
    * Получает все зарегистрированные адаптеры
    */
   public getAdapters(): ClassExtractorAdapter[] {
-    return this.adapters;
+    return Array.from(this.adapters.values());
   }
   
   /**
    * Находит подходящий адаптер для компонента
    */
   public findAdapter(componentPath: string): ClassExtractorAdapter | null {
-    // Сначала пробуем DOM адаптер, затем остальные
-    for (const adapter of this.adapters) {
-      if (adapter instanceof DOMExtractorAdapter && adapter.supportsComponent(componentPath)) {
-        return adapter;
-      }
+    // Получаем предпочтительный тип экстрактора из конфигурации
+    const preferredType = configManager.getExtractor();
+    
+    // Пробуем использовать предпочтительный экстрактор
+    const preferredAdapter = this.adapters.get(preferredType);
+    if (preferredAdapter?.supportsComponent(componentPath)) {
+      return preferredAdapter;
     }
     
-    // Если DOM адаптер не подходит, пробуем остальные
-    for (const adapter of this.adapters) {
-      if (!(adapter instanceof DOMExtractorAdapter) && adapter.supportsComponent(componentPath)) {
+    // Если предпочтительный экстрактор не подходит, пробуем другие
+    for (const [type, adapter] of this.adapters.entries()) {
+      if (type !== preferredType && adapter.supportsComponent(componentPath)) {
         return adapter;
       }
     }

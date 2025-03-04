@@ -4,6 +4,24 @@ import { ClassExtractorAdapter } from './base-adapter';
 import { EnhancedClassEntry } from '../core/types';
 import { CONFIG } from '../config';
 
+// Паттерны для поиска классов в различных контекстах
+const CLASS_PATTERNS = {
+  // JSX className атрибуты
+  jsxClassName: /className=["']([^"']+)["']/g,
+  
+  // Объявления констант с классами
+  constClassName: /className:\s*["']([^"']+)["']/g,
+  
+  // Объекты конфигурации с классами
+  configClassName: /\bclassName:\s*["']([^"']+)["']/g,
+  
+  // Динамические классы с clsx/cn
+  dynamicClassName: /className=\{(?:clsx|cn)\(\s*(?:['"`]([^'"`]+)['"`](?:\s*,\s*['"`]([^'"`]+)['"`])*)\s*\)\}/g,
+  
+  // Шаблонные строки
+  templateClassName: /className=\{`([^`]+)`\}/g,
+} as const;
+
 /**
  * Адаптер для извлечения классов через регулярные выражения
  */
@@ -25,46 +43,42 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
     console.log(`Analyzing component with Regex adapter: ${path.basename(componentPath)}`);
     
     try {
-      // Читаем содержимое файла
       const content = fs.readFileSync(componentPath, 'utf-8');
       const componentName = path.basename(componentPath, path.extname(componentPath));
       const componentDir = path.dirname(componentPath);
       
-      // Находим все классы с помощью регулярного выражения
       const classEntries: EnhancedClassEntry[] = [];
       
-      // Регулярное выражение для поиска className в JSX
-      const classRegex = /className=["']([^"']+)["']/g;
-      let match;
-      
-      while ((match = classRegex.exec(content)) !== null) {
-        const classes = match[1];
-        
-        // Определяем тип элемента (приблизительно)
-        const elementType = this.determineElementType(content, match.index);
-        
-        // Создаем запись о классе
-        const classEntry: EnhancedClassEntry = {
-          quark: this.generateQuarkName(classes),
-          semantic: this.generateSemanticName(componentName, elementType, classes),
-          classes,
-          componentName,
-          elementType,
-          variants: {}, // Упрощаем - не определяем варианты
-          isPublic: true,
-          components: {
-            [componentName]: {
-              path: componentDir,
-              name: componentName
+      // Обрабатываем все паттерны поиска классов
+      for (const [patternName, pattern] of Object.entries(CLASS_PATTERNS)) {
+        let match;
+        while ((match = pattern.exec(content)) !== null) {
+          const classes = match[1];
+          
+          // Определяем тип элемента
+          const elementType = this.determineElementType(content, match.index);
+          
+          // Создаем запись о классе
+          const classEntry: EnhancedClassEntry = {
+            quark: this.generateQuarkName(classes),
+            semantic: this.generateSemanticName(componentName, elementType, classes),
+            classes,
+            componentName,
+            elementType,
+            variants: {},
+            isPublic: true,
+            components: {
+              [componentName]: {
+                path: componentDir,
+                name: componentName
+              }
             }
-          }
-        };
-        
-        classEntries.push(classEntry);
+          };
+          
+          classEntries.push(classEntry);
+          console.log(`Found classes using ${patternName}: ${classes}`);
+        }
       }
-      
-      // Ищем классы в константах
-      this.extractClassesFromConstants(content, componentName, componentDir, classEntries);
       
       console.log(`Found ${classEntries.length} class entries with regex`);
       return classEntries;
@@ -72,101 +86,6 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
       console.error(`Error analyzing component with regex:`, error);
       return [];
     }
-  }
-  
-  /**
-   * Извлекает классы из констант
-   */
-  private extractClassesFromConstants(
-    content: string, 
-    componentName: string, 
-    componentDir: string, 
-    classEntries: EnhancedClassEntry[]
-  ): void {
-    // Регулярное выражение для поиска констант с классами
-    const constRegex = /const\s+(\w+)\s*=\s*["']([^"']+)["']/g;
-    let match;
-    
-    while ((match = constRegex.exec(content)) !== null) {
-      const constName = match[1];
-      const constValue = match[2];
-      
-      // Проверяем, похоже ли значение на классы Tailwind
-      if (this.looksLikeTailwindClasses(constValue)) {
-        // Определяем тип элемента на основе имени константы
-        const elementType = this.determineElementTypeFromConstName(constName);
-        
-        // Создаем запись о классе
-        const classEntry: EnhancedClassEntry = {
-          quark: this.generateQuarkName(constValue),
-          semantic: this.generateSemanticName(componentName, elementType, constValue),
-          classes: constValue,
-          componentName,
-          elementType,
-          variants: {}, // Упрощаем - не определяем варианты
-          isPublic: true,
-          components: {
-            [componentName]: {
-              path: componentDir,
-              name: componentName
-            }
-          }
-        };
-        
-        classEntries.push(classEntry);
-      }
-    }
-  }
-  
-  /**
-   * Определяет, похожа ли строка на классы Tailwind
-   */
-  private looksLikeTailwindClasses(str: string): boolean {
-    // Проверяем наличие типичных классов Tailwind
-    const tailwindPatterns = [
-      /\b(flex|grid|block|inline|hidden)\b/,
-      /\b(w-|h-|m-|p-|text-|bg-|border-)/,
-      /\b(rounded|shadow|transition|transform)/
-    ];
-    
-    return tailwindPatterns.some(pattern => pattern.test(str));
-  }
-  
-  /**
-   * Определяет тип элемента на основе имени константы
-   */
-  private determineElementTypeFromConstName(constName: string): string {
-    const elementTypes = [
-      'div', 'span', 'button', 'a', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'ul', 'ol', 'li', 'table', 'tr', 'td', 'th', 'img', 'input', 'form'
-    ];
-    
-    const lowerConstName = constName.toLowerCase();
-    
-    // Проверяем, содержит ли имя константы тип элемента
-    for (const type of elementTypes) {
-      if (lowerConstName.includes(type)) {
-        return type;
-      }
-    }
-    
-    // Определяем тип на основе общих шаблонов именования
-    if (lowerConstName.includes('button') || lowerConstName.includes('btn')) {
-      return 'button';
-    } else if (lowerConstName.includes('container') || lowerConstName.includes('wrapper')) {
-      return 'div';
-    } else if (lowerConstName.includes('text') || lowerConstName.includes('label')) {
-      return 'span';
-    } else if (lowerConstName.includes('link')) {
-      return 'a';
-    } else if (lowerConstName.includes('heading') || lowerConstName.includes('title')) {
-      return 'h2';
-    } else if (lowerConstName.includes('paragraph')) {
-      return 'p';
-    }
-    
-    // По умолчанию div
-    return 'div';
   }
   
   /**
@@ -186,28 +105,35 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
   }
   
   /**
-   * Генерирует кварк-имя
+   * Генерирует quark имя
    */
   private generateQuarkName(classes: string): string {
     const normalizedClasses = this.normalizeClassString(classes);
     
-    return CONFIG.classNames.quarkPrefix + normalizedClasses
+    const quarkId = normalizedClasses
       .split(' ')
       .map(cls => {
         const parts = cls.split(':');
         const baseCls = parts[parts.length - 1];
         
-        if (baseCls.match(/\d+/)) {
-          return baseCls.replace(/[^\d]/g, '') || '';
+        const cleanCls = baseCls
+          .replace(/[\[\]\/\(\)]/g, '')
+          .replace(/[&>~=]/g, '')
+          .replace(/[^a-zA-Z0-9-_]/g, '');
+        
+        if (cleanCls.match(/^\d/)) {
+          return cleanCls.replace(/[^\d]/g, '');
         }
         
-        return baseCls
+        return cleanCls
           .split('-')
-          .map(word => word[0])
+          .map(word => word[0] || '')
           .join('')
           .toLowerCase();
       })
       .join('');
+
+    return `${CONFIG.classNames.quarkPrefix}${quarkId}`;
   }
   
   /**
@@ -219,8 +145,15 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
       .split(' ')
       .map(cls => {
         const baseCls = cls.split(':').pop() || '';
-        return baseCls.replace(/[\[\]]/g, '');
+        
+        return baseCls
+          .replace(/[\[\]\/\(\)]/g, '-')
+          .replace(/[&>~=]/g, '')
+          .replace(/[^a-zA-Z0-9-_]/g, '')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
       })
+      .filter(Boolean)
       .join('-');
 
     return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;

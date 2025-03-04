@@ -1,6 +1,11 @@
 import path from 'path';
 
 /**
+ * Тип экстрактора
+ */
+export type ExtractorType = 'dom' | 'regex';
+
+/**
  * Конфигурация UI Parser
  */
 export interface UIParserConfig {
@@ -14,6 +19,7 @@ export interface UIParserConfig {
     semanticPrefix: string;
     quarkPrefix: string;
   };
+  extractor: ExtractorType;
 }
 
 /**
@@ -35,7 +41,8 @@ export class ConfigManager {
       classNames: {
         semanticPrefix: 'semantic-',
         quarkPrefix: 'q-',
-      }
+      },
+      extractor: 'regex' // По умолчанию используем regex экстрактор
     };
   }
 
@@ -92,6 +99,14 @@ export class ConfigManager {
       ...this.config.classNames,
       ...classNames,
     };
+  }
+
+  public setExtractor(type: ExtractorType): void {
+    this.config.extractor = type;
+  }
+
+  public getExtractor(): ExtractorType {
+    return this.config.extractor;
   }
 }
 

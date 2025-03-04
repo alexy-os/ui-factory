@@ -180,28 +180,39 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
   }
   
   /**
-   * Генерирует кварк-имя
+   * Генерирует quark имя
    */
   private generateQuarkName(classes: string): string {
     const normalizedClasses = this.normalizeClassString(classes);
     
-    return CONFIG.classNames.quarkPrefix + normalizedClasses
+    const quarkId = normalizedClasses
       .split(' ')
       .map(cls => {
+        // Убираем модификаторы (hover:, focus: и т.д.)
         const parts = cls.split(':');
         const baseCls = parts[parts.length - 1];
         
-        if (baseCls.match(/\d+/)) {
-          return baseCls.replace(/[^\d]/g, '') || '';
+        // Очищаем от специальных символов и квадратных скобок
+        const cleanCls = baseCls
+          .replace(/[\[\]\/\(\)]/g, '') // удаляем [], /, ()
+          .replace(/[&>~=]/g, '')       // удаляем специальные CSS селекторы
+          .replace(/[^a-zA-Z0-9-_]/g, ''); // оставляем только буквы, цифры, дефис и подчеркивание
+        
+        if (cleanCls.match(/^\d/)) {
+          // Если начинается с цифры, оставляем только цифры
+          return cleanCls.replace(/[^\d]/g, '');
         }
         
-        return baseCls
+        // Для остальных случаев берем первые буквы каждого слова
+        return cleanCls
           .split('-')
-          .map(word => word[0])
+          .map(word => word[0] || '')
           .join('')
           .toLowerCase();
       })
       .join('');
+
+    return `${CONFIG.classNames.quarkPrefix}${quarkId}`;
   }
   
   /**
@@ -214,10 +225,18 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
       .map(cls => {
         // Убираем модификаторы (например, hover:, focus:)
         const baseCls = cls.split(':').pop() || '';
-        return baseCls.replace(/[\[\]]/g, ''); // Убираем квадратные скобки если есть
+        
+        // Очищаем от специальных символов
+        return baseCls
+          .replace(/[\[\]\/\(\)]/g, '-') // заменяем [], /, () на дефис
+          .replace(/[&>~=]/g, '')        // удаляем специальные CSS селекторы
+          .replace(/[^a-zA-Z0-9-_]/g, '') // оставляем только буквы, цифры, дефис и подчеркивание
+          .replace(/-+/g, '-')           // заменяем множественные дефисы на один
+          .replace(/^-|-$/g, '');        // убираем дефисы в начале и конце
       })
+      .filter(Boolean) // убираем пустые строки
       .join('-');
-  
+
     return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
   }
   

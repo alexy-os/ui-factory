@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { uiParser } from '../core/index.js';
-import { configManager } from '../config/index.js';
+import { configManager, ExtractorType } from '../config/index.js';
 
 /**
  * Класс для CLI интерфейса
@@ -22,15 +22,32 @@ export class CLI {
       .description('UI Parser CLI for analyzing and transforming UI components')
       .version('0.0.1');
     
+    // Добавляем команду для установки экстрактора
+    this.program
+      .command('set-extractor')
+      .description('Set the class extractor type (dom|regex)')
+      .argument('<type>', 'Extractor type: dom or regex')
+      .action((type: string) => {
+        if (type === 'dom' || type === 'regex') {
+          configManager.setExtractor(type as ExtractorType);
+          console.log(`Extractor set to: ${type}`);
+        } else {
+          console.error('Invalid extractor type. Use "dom" or "regex"');
+        }
+      });
+    
     // Команда analyze
     this.program
       .command('analyze')
       .description('Analyze components and extract classes')
       .option('-s, --source <path>', 'Source directory with components')
       .option('-o, --output <path>', 'Output path for analysis results')
+      .option('-e, --extractor <type>', 'Extractor type (dom|regex)', 'regex')
       .option('-v, --verbose', 'Verbose output')
       .action(async (options) => {
-        // Обновляем конфигурацию, если указаны опции
+        if (options.extractor) {
+          configManager.setExtractor(options.extractor as ExtractorType);
+        }
         if (options.source) {
           configManager.updatePaths({ sourceDir: options.source });
         }
@@ -38,7 +55,6 @@ export class CLI {
           configManager.updatePaths({ domAnalysisResults: options.output });
         }
         
-        // Запускаем анализ
         await uiParser.analyze({
           sourceDir: options.source,
           outputPath: options.output,
