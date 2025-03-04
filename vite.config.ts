@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@ui-factory/ui-headless": path.resolve(__dirname, "./packages/ui-headless")
     },
   },
   publicDir: 'public',

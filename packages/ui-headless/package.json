@@ -12,11 +12,11 @@
     },
     "./button": {
       "types": "./button/index.ts",
-      "default": "./button/index.ts"
+      "import": "./button/index.ts"
     },
     "./slot": {
       "types": "./slot/index.ts",
-      "default": "./slot/index.ts"
+      "import": "./slot/index.ts"
     }
   },
   "files": [
