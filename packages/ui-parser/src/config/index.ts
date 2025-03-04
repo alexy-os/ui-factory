@@ -42,7 +42,7 @@ export class ConfigManager {
         semanticPrefix: 'semantic-',
         quarkPrefix: 'q-',
       },
-      extractor: 'regex' // По умолчанию используем regex экстрактор
+      extractor: 'regex' // По умолчанию используем regex | dom экстрактор
     };
   }
 

@@ -129,14 +129,32 @@ export class ComponentAnalyzer {
       }
     }
     
-    // Сохраняем результаты в отдельный файл
-    fs.writeFileSync(
-      outputPath, 
-      JSON.stringify(results, null, 2)
-    );
-    
-    console.log(`Total class entries found: ${results.length}`);
-    console.log(`Results saved to: ${outputPath}`);
+    try {
+      // Убеждаемся, что outputPath - это путь к файлу, а не директории
+      const outputFilePath = outputPath.endsWith('.json') 
+        ? outputPath 
+        : path.join(outputPath, 'domAnalysis.json');
+
+      // Создаем директорию для результатов, если её нет
+      const outputDir = path.dirname(outputFilePath);
+      fs.mkdirSync(outputDir, { recursive: true });
+
+      // Сохраняем результаты в файл
+      fs.writeFileSync(
+        outputFilePath,
+        JSON.stringify(results, null, 2),
+        'utf-8'
+      );
+      
+      console.log(`Total class entries found: ${results.length}`);
+      console.log(`Results saved to: ${outputFilePath}`);
+
+      // Обновляем путь в конфигурации
+      CONFIG.paths.domAnalysisResults = outputFilePath;
+    } catch (error) {
+      console.error('Error saving analysis results:', error);
+      throw error;
+    }
     
     return results;
   }

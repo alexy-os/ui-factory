@@ -30,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "text-sm font-medium"
+    className: "q-fmts"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -40,7 +40,7 @@ const content: Content = {
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "items-center gap-2",
+      className: "q-g2ic",
       icon: <BookOpen />
     },
     {
@@ -48,28 +48,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "items-center gap-2",
+      className: "q-g2ic",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "grid grid-cols-2 gap-8",
+      className: "q-g8ggc2",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md aspect-square"
+          className: "q-asbmrm"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md row-span-2"
+          className: "q-bmrmrs2"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md aspect-square"
+          className: "q-asbmrm"
         }
       ]
     }

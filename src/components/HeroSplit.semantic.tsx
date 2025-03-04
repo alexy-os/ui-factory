@@ -30,7 +30,7 @@ const content: Content = {
   badge: {
     text: "We're building",
     variant: "outline",
-    className: "text-sm font-medium"
+    className: "semantic-herosplit-div-font-medium-text-sm"
   },
   title: "Build with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
@@ -40,7 +40,7 @@ const content: Content = {
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "items-center gap-2",
+      className: "semantic-herosplit-button-gap-2-items-center",
       icon: <BookOpen />
     },
     {
@@ -48,28 +48,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "items-center gap-2",
+      className: "semantic-herosplit-button-gap-2-items-center",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "grid grid-cols-2 gap-8",
+      className: "semantic-herosplit-div-gap-8-grid-grid-cols-2",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md aspect-square"
+          className: "semantic-herosplit-img-aspect-square-bg-muted-rounded-md"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md row-span-2"
+          className: "semantic-herosplit-img-bg-muted-rounded-md-row-span-2"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "bg-muted rounded-md aspect-square"
+          className: "semantic-herosplit-img-aspect-square-bg-muted-rounded-md"
         }
       ]
     }

@@ -1,6 +1,10 @@
 import { Command } from 'commander';
 import { uiParser } from '../core/index.js';
 import { configManager, ExtractorType } from '../config/index.js';
+import { DirectReplacer } from '../transformers/direct-replacer';
+import fs from 'fs';
+import path from 'path';
+import { EnhancedClassEntry } from '../core/types';
 
 /**
  * Класс для CLI интерфейса
@@ -90,7 +94,7 @@ export class CLI {
       .option('-s, --source <path>', 'Source directory with components')
       .option('-o, --output <path>', 'Output directory for transformed components')
       .option('-t, --type <type>', 'Transformation type (semantic, quark, both)', 'both')
-      .action((options) => {
+      .action(async (options) => {
         // Обновляем конфигурацию, если указаны опции
         if (options.source) {
           configManager.updatePaths({ sourceDir: options.source });
@@ -98,13 +102,26 @@ export class CLI {
         if (options.output) {
           configManager.updatePaths({ componentOutput: options.output });
         }
+
+        const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         
-        // Запускаем трансформацию
-        uiParser.transform({
-          sourceDir: options.source,
-          targetOutputDir: options.output,
-          transformationType: options.type
-        });
+        try {
+          // Получаем список компонентов для трансформации
+          const files = fs.readdirSync(sourceDir)
+            .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
+          
+          console.log(`Found ${files.length} components to transform`);
+          
+          // Трансформируем каждый компонент
+          for (const file of files) {
+            const componentPath = path.join(sourceDir, file);
+            await this.transformComponent(componentPath);
+          }
+          
+          console.log('\nAll components transformed successfully!');
+        } catch (error) {
+          console.error('Error during transformation:', error);
+        }
       });
     
     // Команда all
@@ -115,24 +132,47 @@ export class CLI {
       .option('-o, --output <path>', 'Output directory for results')
       .option('-v, --verbose', 'Verbose output')
       .action(async (options) => {
-        // Обновляем конфигурацию, если указаны опции
-        if (options.source) {
-          configManager.updatePaths({ sourceDir: options.source });
-        }
-        if (options.output) {
-          configManager.updatePaths({ 
-            componentOutput: options.output,
-            classObject: `${options.output}/classObject.ts`,
-            domAnalysisResults: `${options.output}/domAnalysis.json`
-          });
-        }
+        // Обновляем конфигурацию с правильными путями
+        const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
+        const outputDir = options.output || configManager.getConfig().paths.componentOutput;
         
-        // Запускаем все операции
-        await uiParser.all({
-          sourceDir: options.source,
-          outputPath: options.output,
-          verbose: options.verbose
+        configManager.updatePaths({
+          sourceDir,
+          componentOutput: outputDir,
+          classObject: path.join(outputDir, 'classObject.ts'),
+          domAnalysisResults: path.join(outputDir, 'domAnalysis.json')
         });
+
+        try {
+          // Шаг 1: Анализ
+          console.log('Step 1: Analyzing components...');
+          await uiParser.analyze({
+            sourceDir,
+            outputPath: outputDir,
+            verbose: options.verbose
+          });
+
+          // Шаг 2: Генерация CSS
+          console.log('\nStep 2: Generating CSS...');
+          await uiParser.generate({
+            outputPath: outputDir
+          });
+
+          // Шаг 3: Трансформация компонентов
+          console.log('\nStep 3: Transforming components...');
+          const files = fs.readdirSync(sourceDir)
+            .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
+
+          for (const file of files) {
+            const componentPath = path.join(sourceDir, file);
+            await this.transformComponent(componentPath);
+          }
+
+          console.log('\nAll operations completed successfully!');
+        } catch (error) {
+          console.error('Error during operations:', error);
+          throw error;
+        }
       });
   }
   
@@ -141,6 +181,80 @@ export class CLI {
    */
   public run(argv: string[] = process.argv) {
     this.program.parse(argv);
+  }
+
+  private async transformComponent(componentPath: string): Promise<void> {
+    console.log('\n=== Starting component transformation ===');
+    const componentName = path.basename(componentPath, path.extname(componentPath));
+    const componentDir = path.dirname(componentPath);
+    
+    console.log(`Component: ${componentName}`);
+    console.log(`Directory: ${componentDir}`);
+
+    // Используем путь из конфигурации для файла анализа
+    const analysisPath = configManager.getConfig().paths.domAnalysisResults;
+    console.log(`Looking for analysis file: ${analysisPath}`);
+    
+    if (!fs.existsSync(analysisPath)) {
+      console.error(`❌ Analysis file not found: ${analysisPath}`);
+      return;
+    }
+    console.log('✓ Analysis file found');
+
+    try {
+      // Загружаем результаты анализа
+      console.log('Loading class entries from analysis file...');
+      const classEntries: EnhancedClassEntry[] = JSON.parse(
+        fs.readFileSync(analysisPath, 'utf-8')
+      );
+      console.log(`✓ Loaded ${classEntries.length} class entries`);
+
+      // Определяем пути для выходных файлов
+      const outputDir = configManager.getConfig().paths.componentOutput;
+      const quarkOutput = path.join(outputDir, `${componentName}.quark.tsx`);
+      const semanticOutput = path.join(outputDir, `${componentName}.semantic.tsx`);
+      
+      console.log('\nOutput paths:');
+      console.log(`Quark: ${quarkOutput}`);
+      console.log(`Semantic: ${semanticOutput}`);
+
+      // Создаем директории если их нет
+      console.log('\nEnsuring output directories exist...');
+      fs.mkdirSync(path.dirname(quarkOutput), { recursive: true });
+      fs.mkdirSync(path.dirname(semanticOutput), { recursive: true });
+      console.log('✓ Directories created/verified');
+
+      // Создаем и применяем прямую замену классов
+      console.log('\nInitializing DirectReplacer...');
+      const directReplacer = new DirectReplacer(classEntries);
+      
+      console.log('Starting transformation...');
+      await directReplacer.transform({
+        sourceFile: componentPath,
+        quarkOutput,
+        semanticOutput,
+        classEntries
+      });
+
+      // Проверяем результаты
+      console.log('\nVerifying transformation results...');
+      if (fs.existsSync(quarkOutput) && fs.existsSync(semanticOutput)) {
+        const quarkSize = fs.statSync(quarkOutput).size;
+        const semanticSize = fs.statSync(semanticOutput).size;
+        
+        console.log(`✓ Quark file created (${quarkSize} bytes)`);
+        console.log(`✓ Semantic file created (${semanticSize} bytes)`);
+        
+        console.log('\n=== Transformation completed successfully ===');
+      } else {
+        console.error('❌ Output files not found after transformation');
+      }
+
+    } catch (error) {
+      console.error('\n❌ Error during transformation:');
+      console.error(error);
+      throw error;
+    }
   }
 }
 
