@@ -79,21 +79,30 @@ export class CSSGenerator {
   public generate(options: GenerationOptions = {}): CSSGenerationResult {
     const outputDir = options.outputPath || CONFIG.paths.componentOutput;
     
-    // Загружаем результаты анализа
-    const entries = this.loadAnalysisResults();
-    
-    if (entries.length === 0) {
-      console.warn('No class entries found for CSS generation');
-      return { quarkCSS: '', semanticCSS: '' };
+    try {
+      // Загружаем результаты анализа
+      const entries = this.loadAnalysisResults();
+      
+      if (entries.length === 0) {
+        throw new Error('No class entries found for CSS generation');
+      }
+      
+      // Генерируем CSS
+      const css = this.generateCSS(entries);
+      
+      // Сохраняем CSS
+      this.saveCSS(css, outputDir);
+      
+      // Логируем только итоговый результат
+      console.log(`✓ Generated CSS files:
+  - quark.css (${css.quarkCSS.length} bytes)
+  - semantic.css (${css.semanticCSS.length} bytes)`);
+      
+      return css;
+    } catch (error) {
+      console.error('❌ CSS generation failed:', error instanceof Error ? error.message : error);
+      throw error;
     }
-    
-    // Генерируем CSS
-    const css = this.generateCSS(entries);
-    
-    // Сохраняем CSS
-    this.saveCSS(css, outputDir);
-    
-    return css;
   }
 }
 

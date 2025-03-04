@@ -113,7 +113,7 @@ export class ComponentAnalyzer {
     console.log(`Found ${components.length} components to analyze`);
     
     for (const component of components) {
-      console.log(`Analyzing: ${component.name}`);
+      // console.log(`Analyzing: ${component.name}`);
       
       try {
         const analysisResult = await this.analyzeComponent(component.path);
@@ -146,7 +146,7 @@ export class ComponentAnalyzer {
         'utf-8'
       );
       
-      console.log(`Total class entries found: ${results.length}`);
+      // console.log(`Total class entries found: ${results.length}`);
       console.log(`Results saved to: ${outputFilePath}`);
 
       // Обновляем путь в конфигурации

@@ -64,7 +64,7 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
    * Анализирует компонент и извлекает классы через регулярные выражения
    */
   async extractClasses(componentPath: string): Promise<EnhancedClassEntry[]> {
-    console.log(`Analyzing component with Regex adapter: ${path.basename(componentPath)}`);
+    //console.log(`Analyzing component with Regex adapter: ${path.basename(componentPath)}`);
     
     try {
       const content = fs.readFileSync(componentPath, 'utf-8');
@@ -101,16 +101,16 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
           };
           
           classEntries.push(classEntry);
-          console.log(`Found classes using ${patternName} (${contextType}): ${classes}`);
+          // console.log(`Found classes using ${patternName} (${contextType}): ${classes}`);
         }
       }
       
-      console.log(`Found ${classEntries.length} raw class entries with regex`);
+      //console.log(`Found ${classEntries.length} raw class entries with regex`);
       
       // Дедупликация записей
       const uniqueEntries = deduplicateEntries(classEntries);
       
-      console.log(`After deduplication: ${uniqueEntries.length} unique class entries`);
+      //console.log(`After deduplication: ${uniqueEntries.length} unique class entries`);
       return uniqueEntries;
     } catch (error) {
       console.error(`Error analyzing component with regex:`, error);

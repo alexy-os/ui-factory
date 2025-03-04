@@ -28,7 +28,7 @@ export class DOMExtractorAdapter implements ClassExtractorAdapter {
    * Анализирует компонент и извлекает классы через DOM
    */
   async extractClasses(componentPath: string): Promise<EnhancedClassEntry[]> {
-    console.log(`Analyzing component with DOM adapter: ${path.basename(componentPath)}`);
+    //console.log(`Analyzing component with DOM adapter: ${path.basename(componentPath)}`);
     
     try {
       const document = await this.renderComponentToDOM(componentPath);
