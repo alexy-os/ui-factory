@@ -82,7 +82,7 @@ export class DirectReplacer {
       const escapedClasses = originalClasses.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const searchRegex = new RegExp(`(['"\`])${escapedClasses}\\1`, 'g');
       
-      result = result.replace(searchRegex, (match, quote) => {
+      result = result.replace(searchRegex, (_, quote) => {
         replacementCount++;
         return `${quote}${replacement}${quote}`;
       });
@@ -92,7 +92,7 @@ export class DirectReplacer {
   }
 
   public async transform(options: DirectReplacerOptions): Promise<void> {
-    const { sourceFile, quarkOutput, semanticOutput, classEntries } = options;
+    const { sourceFile, quarkOutput, semanticOutput } = options;
 
     try {
       if (!fs.existsSync(sourceFile)) {

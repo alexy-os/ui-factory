@@ -104,7 +104,6 @@ export class ComponentAnalyzer {
   public async analyzeAllComponents(options: AnalysisOptions = {}): Promise<EnhancedClassEntry[]> {
     const sourceDir = options.sourceDir || CONFIG.paths.sourceDir;
     const outputPath = options.outputPath || CONFIG.paths.domAnalysisResults;
-    const verbose = options.verbose || false;
     
     // Получаем список всех компонентов
     const components = this.scanDirectory(sourceDir);

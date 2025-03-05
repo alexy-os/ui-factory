@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { EnhancedClassEntry, ClassNameConfig, RegexExtractorConfig } from './types';
+import { EnhancedClassEntry, RegexExtractorConfig } from './types';
 import { deduplicateEntries } from './utils/deduplication';
 import { TailwindVariantsExtractor } from './extractors/tv-extractor';
 import { ClassNameExtractor } from './extractors/className-extractor';

@@ -89,7 +89,7 @@ export function updateQuarkClasses(classNames: string): string {
 /**
  * Преобразование классов по уровню семантики (от утилитарных к квантовым)
  */
-export function transformToQuark(utilityClasses: string, targetVersion?: string): string {
+export function transformToQuark(utilityClasses: string): string {
       
     return utilityClasses;
 } 

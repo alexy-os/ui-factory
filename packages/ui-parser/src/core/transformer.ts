@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { CONFIG } from '../config';
 import { componentAnalyzer } from './analyzer';
-import { cssGenerator } from './generator';
 import { EnhancedClassEntry, TransformationOptions, TransformationResult } from './types';
 
 /**

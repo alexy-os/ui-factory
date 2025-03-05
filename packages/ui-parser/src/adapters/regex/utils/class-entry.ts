@@ -1,13 +1,5 @@
 import { EnhancedClassEntry, ClassNameConfig } from '../types';
 
-// Configuration for class name generation
-const CONFIG = {
-  classNames: {
-    quarkPrefix: 'q-',
-    semanticPrefix: 's-'
-  }
-};
-
 /**
  * Creates an enhanced class entry from extracted class information
  */
