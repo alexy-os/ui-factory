@@ -1,7 +1,7 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Button } from "./Button.semantic";
-import type { ButtonProps } from "./Button.semantic";
+import { Button } from "@/components/Button.semantic";
+import type { ButtonProps } from "@/components/Button.semantic";
 
 type Content = {
   button?: {

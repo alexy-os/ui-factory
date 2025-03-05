@@ -1,6 +1,6 @@
 import { ClassExtractorAdapter } from './base-adapter';
 import { DOMExtractorAdapter } from './dom-adapter';
-import { RegexExtractorAdapter } from './regex-adapter';
+import { RegexExtractorAdapter } from './regex';
 import { configManager } from '../config';
 
 /**
@@ -70,4 +70,4 @@ export const adapterFactory = AdapterFactory.getInstance();
 // Экспортируем типы и классы
 export type { ClassExtractorAdapter } from './base-adapter';
 export { DOMExtractorAdapter } from './dom-adapter';
-export { RegexExtractorAdapter } from './regex-adapter'; 
+export { RegexExtractorAdapter } from './regex'; 
