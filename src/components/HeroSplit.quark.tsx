@@ -33,12 +33,12 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "Styling Approach",
+    text: "Quark Classes",
     variant: "outline",
     className: "q-fmts"
   },
-  title: "Three Ways to Style Components",
-  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
+  title: "Optimized Atomic CSS Classes",
+  description: "Quark classes represent the perfect balance between utility-first and semantic approaches. They maintain atomic nature for flexibility while optimizing class names for production, reducing bundle size and improving performance.",
   buttons: [
     {
       id: "button1",

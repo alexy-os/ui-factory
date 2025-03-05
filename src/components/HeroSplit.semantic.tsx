@@ -33,12 +33,12 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "Styling Approach",
+    text: "Semantic Classes",
     variant: "outline",
     className: "s-herosplit-button-font-medium-text-sm"
   },
-  title: "Three Ways to Style Components",
-  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
+  title: "Semantic-First Component Styling",
+  description: "Using semantic class names improves code readability and maintainability. Each class describes its purpose, making it easier for teams to understand and modify styles. Perfect for large-scale applications and design systems.",
   buttons: [
     {
       id: "button1",
