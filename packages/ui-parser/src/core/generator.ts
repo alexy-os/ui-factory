@@ -56,11 +56,9 @@ export class CSSGenerator {
    * Сохраняет сгенерированный CSS
    */
   private saveCSS(css: CSSGenerationResult, outputDir: string): void {
-    // Создаем директорию, если она не существует
-    fs.mkdirSync(outputDir, { recursive: true });
+        fs.mkdirSync(outputDir, { recursive: true });
     
-    // Сохраняем CSS файлы
-    fs.writeFileSync(
+        fs.writeFileSync(
       path.join(outputDir, 'quark.css'), 
       css.quarkCSS
     );
@@ -80,21 +78,17 @@ export class CSSGenerator {
     const outputDir = options.outputPath || CONFIG.paths.componentOutput;
     
     try {
-      // Загружаем результаты анализа
-      const entries = this.loadAnalysisResults();
+            const entries = this.loadAnalysisResults();
       
       if (entries.length === 0) {
         throw new Error('No class entries found for CSS generation');
       }
       
-      // Генерируем CSS
-      const css = this.generateCSS(entries);
+            const css = this.generateCSS(entries);
       
-      // Сохраняем CSS
-      this.saveCSS(css, outputDir);
+            this.saveCSS(css, outputDir);
       
-      // Логируем только итоговый результат
-      console.log(`✓ Generated CSS files:
+            console.log(`✓ Generated CSS files:
   - quark.css (${css.quarkCSS.length} bytes)
   - semantic.css (${css.semanticCSS.length} bytes)`);
       
@@ -106,7 +100,6 @@ export class CSSGenerator {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const cssGenerator = CSSGenerator.getInstance();
 
 export default cssGenerator; 

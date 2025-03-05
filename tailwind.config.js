@@ -1,5 +1,7 @@
+import { fontFamily } from "tailwindcss/defaultTheme"
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     darkMode: ["class"],
     content: [
         './src/**/*.{ts,tsx}',
@@ -55,5 +57,6 @@ module.exports = {
     			sm: 'calc(var(--radius) - 4px)'
     		}
     	}
-    }
+    },
+    plugins: [],
 }

@@ -4,23 +4,13 @@
 
 import semver from 'semver';
 
-// Тип для мета-информации о квантовом классе
 export interface QuarkMetadata {
-  name: string;         // Имя квантового класса
-  version: string;      // Версия семантики (semver)
-  deprecated?: boolean; // Флаг устаревшего класса
-  replacedBy?: string;  // На какой класс заменить
-  description?: string; // Описание класса
-  category?: string;    // Категория (layout, typography и т.д.)
-  cssProperties?: string[]; // CSS свойства, которые изменяет класс
-}
+  name: string;           version: string;        deprecated?: boolean;   replacedBy?: string;    description?: string;   category?: string;      cssProperties?: string[]; }
 
-// Интерфейс для записей о квантовых классах
 export interface QuarkRegistry {
   [className: string]: QuarkMetadata;
 }
 
-// Хранилище метаданных о квантовых классах
 let quarkRegistry: QuarkRegistry = {};
 
 /**
@@ -50,22 +40,18 @@ export function getQuarkMetadata(className: string): QuarkMetadata | null {
 export function findQuarks(criteria: Partial<QuarkMetadata>): string[] {
   return Object.entries(quarkRegistry)
     .filter(([_, meta]) => {
-      // Проверяем каждое свойство из критериев поиска
-      return Object.entries(criteria).every(([key, value]) => {
+            return Object.entries(criteria).every(([key, value]) => {
         const metaKey = key as keyof QuarkMetadata;
         
-        // Для версии используем semver
-        if (metaKey === 'version' && typeof value === 'string') {
+                if (metaKey === 'version' && typeof value === 'string') {
           return semver.satisfies(meta.version, value);
         }
         
-        // Для массивов проверяем пересечение
-        if (Array.isArray(meta[metaKey]) && Array.isArray(value)) {
+                if (Array.isArray(meta[metaKey]) && Array.isArray(value)) {
           return (meta[metaKey] as any[]).some(item => value.includes(item));
         }
         
-        // Для остальных полей - простое сравнение
-        return meta[metaKey] === value;
+                return meta[metaKey] === value;
       });
     })
     .map(([className]) => className);
@@ -80,8 +66,7 @@ export function getLatestQuarkVersion(className: string): string {
   
   if (!metadata) return className;
   
-  // Если класс устарел и есть замена, возвращаем её
-  if (metadata.deprecated && metadata.replacedBy) {
+    if (metadata.deprecated && metadata.replacedBy) {
     return getLatestQuarkVersion(metadata.replacedBy);
   }
   
@@ -105,9 +90,6 @@ export function updateQuarkClasses(classNames: string): string {
  * Преобразование классов по уровню семантики (от утилитарных к квантовым)
  */
 export function transformToQuark(utilityClasses: string, targetVersion?: string): string {
-  // Здесь должна быть логика преобразования из utilityClasses в quarkClasses
-  // На основе вашего classObject
-  
-  // Заглушка для примера
-  return utilityClasses;
+      
+    return utilityClasses;
 } 

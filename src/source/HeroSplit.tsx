@@ -33,12 +33,12 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "We're building",
+    text: "Styling Approach",
     variant: "outline",
     className: "text-sm font-medium"
   },
-  title: "Build with shadcn ui components",
-  description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
+  title: "Three Ways to Style Components",
+  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
   buttons: [
     {
       id: "button1",

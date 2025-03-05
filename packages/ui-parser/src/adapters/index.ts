@@ -11,8 +11,7 @@ export class AdapterFactory {
   private adapters: Map<string, ClassExtractorAdapter> = new Map();
   
   private constructor() {
-    // Регистрируем адаптеры
-    this.registerAdapter('dom', new DOMExtractorAdapter());
+        this.registerAdapter('dom', new DOMExtractorAdapter());
     this.registerAdapter('regex', new RegexExtractorAdapter());
   }
   
@@ -44,17 +43,14 @@ export class AdapterFactory {
    * Находит подходящий адаптер для компонента
    */
   public findAdapter(componentPath: string): ClassExtractorAdapter | null {
-    // Получаем предпочтительный тип экстрактора из конфигурации
-    const preferredType = configManager.getExtractor();
+        const preferredType = configManager.getExtractor();
     
-    // Пробуем использовать предпочтительный экстрактор
-    const preferredAdapter = this.adapters.get(preferredType);
+        const preferredAdapter = this.adapters.get(preferredType);
     if (preferredAdapter?.supportsComponent(componentPath)) {
       return preferredAdapter;
     }
     
-    // Если предпочтительный экстрактор не подходит, пробуем другие
-    for (const [type, adapter] of this.adapters.entries()) {
+        for (const [type, adapter] of this.adapters.entries()) {
       if (type !== preferredType && adapter.supportsComponent(componentPath)) {
         return adapter;
       }
@@ -64,10 +60,8 @@ export class AdapterFactory {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const adapterFactory = AdapterFactory.getInstance();
 
-// Экспортируем типы и классы
 export type { ClassExtractorAdapter } from './base-adapter';
 export { DOMExtractorAdapter } from './dom-adapter';
 export { RegexExtractorAdapter } from './regex'; 

@@ -51,19 +51,16 @@ export class UIParser {
     console.log('Starting UI Parser all operations...');
     
     try {
-      // Анализ
-      console.log('Step 1: Analyzing components...');
+            console.log('Step 1: Analyzing components...');
       const analysisResults = await this.analyze(options);
       console.log(`Found ${analysisResults.length} class entries`);
       
-      // Генерация CSS
-      console.log('\nStep 2: Generating CSS...');
+            console.log('\nStep 2: Generating CSS...');
       const cssResults = this.generate(options);
       console.log(`Generated quark.css (${cssResults.quarkCSS.length} bytes)`);
       console.log(`Generated semantic.css (${cssResults.semanticCSS.length} bytes)`);
       
-      // Трансформация
-      console.log('\nStep 3: Transforming components...');
+            console.log('\nStep 3: Transforming components...');
       const transformResults = this.transform(options);
       console.log(`Transformed ${transformResults.componentsTransformed} components`);
       
@@ -81,7 +78,6 @@ export class UIParser {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const uiParser = UIParser.getInstance();
 
 export default uiParser; 

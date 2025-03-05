@@ -25,6 +25,7 @@
     "ui-parser:build": "cd packages/ui-parser && tsc && vite build"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "jsdom": "^26.0.0",
     "lucide-react": "^0.475.0",
     "node-fetch": "^3.3.2",
@@ -34,13 +35,14 @@
     "tailwind-variants": "^0.2.0"
   },
   "devDependencies": {
-    "@ui-factory/ui-headless": "workspace:*",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@ui-factory/ui-headless": "workspace:*",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.0.1",
     "postcss": "^8.4.35",
+    "prettier": "^3.5.3",
     "tailwindcss": "3.4.16",
     "tsx": "^4.7.1",
     "typescript": "^5.0.0",

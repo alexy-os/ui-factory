@@ -29,8 +29,7 @@ export class ConfigManager {
   private config: UIParserConfig;
 
   private constructor() {
-    // Значения по умолчанию
-    this.config = {
+        this.config = {
       paths: {
         sourceDir: path.resolve(process.cwd(), './src/source'),
         componentOutput: path.resolve(process.cwd(), './src/components'),
@@ -40,8 +39,7 @@ export class ConfigManager {
         semanticPrefix: 'sc-',
         quarkPrefix: 'q-',
       },
-      extractor: 'regex' // По умолчанию используем regex | dom экстрактор
-    };
+      extractor: 'regex'     };
   }
 
   /**
@@ -108,7 +106,6 @@ export class ConfigManager {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const configManager = ConfigManager.getInstance();
 export const CONFIG = configManager.getConfig();
 

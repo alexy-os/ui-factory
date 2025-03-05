@@ -32,8 +32,7 @@ export class CLI {
       .description('UI Parser CLI for analyzing and transforming UI components')
       .version('0.0.1');
     
-    // Добавляем команду для установки экстрактора
-    this.program
+        this.program
       .command('set-extractor')
       .description('Set the class extractor type (dom|regex)')
       .argument('<type>', 'Extractor type: dom or regex')
@@ -46,8 +45,7 @@ export class CLI {
         }
       });
     
-    // Команда analyze
-    this.program
+        this.program
       .command('analyze')
       .description('Analyze components and extract classes')
       .option('-s, --source <path>', 'Source directory with components')
@@ -72,8 +70,7 @@ export class CLI {
         });
       });
     
-    // Команда generate
-    this.program
+        this.program
       .command('generate')
       .description('Generate CSS from analysis results')
       .option('-o, --output <path>', 'Output directory for CSS files')
@@ -91,16 +88,14 @@ export class CLI {
         });
       });
     
-    // Команда transform
-    this.program
+        this.program
       .command('transform')
       .description('Transform components by replacing classes')
       .option('-s, --source <path>', 'Source directory with components')
       .option('-o, --output <path>', 'Output directory for transformed components')
       .option('-t, --type <type>', 'Transformation type (semantic, quark, both)', 'both')
       .action(async (options) => {
-        // Обновляем конфигурацию, если указаны опции
-        if (options.source) {
+                if (options.source) {
           configManager.updatePaths({ sourceDir: options.source });
         }
         if (options.output) {
@@ -110,14 +105,12 @@ export class CLI {
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         
         try {
-          // Получаем список компонентов для трансформации
-          const files = fs.readdirSync(sourceDir)
+                    const files = fs.readdirSync(sourceDir)
             .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
           
           console.log(`Found ${files.length} components to transform`);
           
-          // Трансформируем каждый компонент
-          for (const file of files) {
+                    for (const file of files) {
             const componentPath = path.join(sourceDir, file);
             await this.transformComponent(componentPath);
           }
@@ -128,8 +121,7 @@ export class CLI {
         }
       });
     
-    // Команда all
-    this.program
+        this.program
       .command('all')
       .description('Run all operations: analyze, generate, transform')
       .option('-s, --source <path>', 'Source directory with components')
@@ -146,22 +138,19 @@ export class CLI {
         });
 
         try {
-          // Шаг 1: Анализ
-          console.log('Step 1: Analyzing components...');
+                    console.log('Step 1: Analyzing components...');
           await uiParser.analyze({
             sourceDir,
             outputPath: outputDir,
             verbose: options.verbose
           });
 
-          // Шаг 2: Генерация CSS
-          console.log('\nStep 2: Generating CSS...');
+                    console.log('\nStep 2: Generating CSS...');
           await uiParser.generate({
             outputPath: outputDir
           });
 
-          // Шаг 3: Трансформация компонентов
-          console.log('\nStep 3: Transforming components...');
+                    console.log('\nStep 3: Transforming components...');
           const files = fs.readdirSync(sourceDir)
             .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
 
@@ -222,16 +211,13 @@ export class CLI {
     try {
       console.log('🚀 Starting UI Parser...');
 
-      // Анализ
-      console.log('\n📊 Analyzing components...');
+            console.log('\n📊 Analyzing components...');
       await uiParser.analyze(options);
 
-      // Генерация CSS
-      console.log('\n🎨 Generating CSS...');
+            console.log('\n🎨 Generating CSS...');
       await uiParser.generate(options);
 
-      // Трансформация
-      console.log('\n🔄 Transforming components...');
+            console.log('\n🔄 Transforming components...');
       const files = fs.readdirSync(options.sourceDir || configManager.getConfig().paths.sourceDir)
         .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
 
@@ -247,7 +233,6 @@ export class CLI {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const cli = new CLI();
 
 export default cli; 

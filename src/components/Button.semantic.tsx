@@ -5,12 +5,12 @@ import { tv } from "tailwind-variants";
 
 // Define button variants using tailwind-variants
 const buttonStyles = tv({
-  base: "s-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
+  base: "button",
   variants: {
     variant: {
       primary: "s-button-div-bg-primary-bg-primary-80-text-white",
-      secondary: "s-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground",
-      outline: "s-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground",
+      secondary: "button-secondary",
+      outline: "button-hover",
       ghost: "s-button-div-bg-accent-text-accent-foreground",
       link: "s-button-div-underline-text-primary-underline-offset-4",
       default: "s-button-div-bg-primary-bg-primary-80-text-white",

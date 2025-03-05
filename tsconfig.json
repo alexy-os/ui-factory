@@ -31,7 +31,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@ui-factory/*": ["./packages/*"]
+      "@ui-factory/*": ["./packages/*"],
+      "@ui-factory/ui-shadcn/*": ["./packages/ui-shadcn/src/*"],
+      "@ui-factory/ui-shadcn": ["./packages/ui-shadcn/src"]
     }
   },
   "include": ["src", "packages"],

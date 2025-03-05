@@ -8,11 +8,9 @@ export class TailwindValidator {
    * Проверяет массив классов на валидность Tailwind
    */
   async filterTailwindClasses(classes: string[]): Promise<string[]> {
-    // Убираем дубликаты и пустые классы
-    const uniqueClasses = [...new Set(classes.filter(Boolean))];
+        const uniqueClasses = [...new Set(classes.filter(Boolean))];
     
-    // Проверяем кэш
-    const uncachedClasses = uniqueClasses.filter(
+        const uncachedClasses = uniqueClasses.filter(
       cls => !this.validClassesCache.has(cls)
     );
 
@@ -20,26 +18,22 @@ export class TailwindValidator {
       return uniqueClasses.filter(cls => this.validClassesCache.get(cls));
     }
 
-    // Создаем CSS для batch-проверки
-    const css = uncachedClasses
+        const css = uncachedClasses
       .map((cls, i) => `.test-${i} { @apply ${cls}; }`)
       .join('\n');
 
     try {
       await postcss([tailwindcss]).process(css);
-      // Все классы валидны, обновляем кэш
-      uncachedClasses.forEach(cls => this.validClassesCache.set(cls, true));
+            uncachedClasses.forEach(cls => this.validClassesCache.set(cls, true));
       return uniqueClasses;
     } catch (error) {
-      // Парсим ошибку для определения невалидных классов
-      const invalidClasses = new Set(
+            const invalidClasses = new Set(
         String(error)
           .match(/`([^`]+)`/g)
           ?.map(m => m.replace(/`/g, '')) || []
       );
 
-      // Обновляем кэш
-      uncachedClasses.forEach(cls => {
+            uncachedClasses.forEach(cls => {
         this.validClassesCache.set(cls, !invalidClasses.has(cls));
       });
 

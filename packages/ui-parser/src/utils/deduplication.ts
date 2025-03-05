@@ -10,11 +10,9 @@ export function deduplicateEntries(entries: EnhancedClassEntry[]): EnhancedClass
     const existingEntry = quarkMap.get(entry.quark);
     
     if (!existingEntry) {
-      // Если записи нет, добавляем новую
-      quarkMap.set(entry.quark, entry);
+            quarkMap.set(entry.quark, entry);
     } else {
-      // Если запись существует, объединяем компоненты
-      existingEntry.components = {
+            existingEntry.components = {
         ...existingEntry.components,
         ...entry.components
       };

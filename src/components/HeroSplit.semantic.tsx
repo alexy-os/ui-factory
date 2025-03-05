@@ -33,19 +33,19 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "We're building",
+    text: "Styling Approach",
     variant: "outline",
-    className: "s-herosplit-button-font-medium-text-sm"
+    className: "button-sm-medium"
   },
-  title: "Semantic UI with shadcn ui components",
-  description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
+  title: "Three Ways to Style Components",
+  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
   buttons: [
     {
       id: "button1",
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "s-herosplit-button-gap-2-items-center",
+      className: "button-items-center",
       icon: <BookOpen />
     },
     {
@@ -53,28 +53,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "s-herosplit-button-gap-2-items-center",
+      className: "button-items-center",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "s-herosplit-button-gap-8-grid-grid-cols-2",
+      className: "button-grid-cols",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "herosplit-img-aspect-square"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-bg-muted-rounded-md-row-span-2"
+          className: "herosplit-img-rounded"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "herosplit-img-aspect-square"
         }
       ]
     }
@@ -90,26 +90,26 @@ const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-    <section className="s-herosplit-section-py-32-py-16-w-full" {...rest}>
-      <div className="s-herosplit-div-container-px-8-px-6-mx-auto-px-4">
-        <div className="s-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
-          <div className="s-herosplit-div-flex-flex-col-gap-4">
+    <section className="section-full" {...rest}>
+      <div className="container">
+        <div className="herosplit-grid-cols">
+          <div className="herosplit-flex-col">
             {button && (
-              <div className="s-herosplit-div-flex-justify-center">
+              <div className="herosplit-justify-center">
                 <Button variant={button.variant} className={button.className}>
                   {button.text}
                 </Button>
               </div>
             )}
-            <div className="s-herosplit-div-flex-flex-col-gap-4">
-              <h2 className="s-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
+            <div className="herosplit-flex-col">
+              <h2 className="h2-title">
                 {title}
               </h2>
-              <p className="s-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
+              <p className="herosplit-description">
                 {description}
               </p>
             </div>
-            <div className="s-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
+            <div className="herosplit-buttons">
               {buttons?.map((button) => (
                 <Button 
                   key={button.id}
