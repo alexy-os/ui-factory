@@ -51,15 +51,15 @@ export function CodePreview({ code, title }: CodePreviewProps) {
       </DialogTrigger>
       <DialogPortal>
         <DialogOverlay className="bg-background/80 backdrop-blur-sm fixed inset-0" />
-        <DialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-background border rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-y-auto p-4 [&>button]:hidden [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30">
+        <DialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-background border border-border rounded-2xl shadow-lg w-full max-w-5xl max-h-[80vh] overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-transparent">
           <DialogHeader className="mb-2">
-            <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+            <DialogTitle className="font-semibold text-foreground">{title}</DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
               View the source code for this component
             </DialogDescription>
           </DialogHeader>
           <div className="relative">
-            <pre className={`p-3 bg-muted rounded-lg overflow-x-auto relative [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30 ${theme === 'dark' ? 'hljs-dark' : 'hljs-light'}`}>
+            <pre className={`p-3 bg-muted rounded-lg overflow-x-auto relative [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-transparent ${theme === 'dark' ? 'hljs-dark' : 'hljs-light'}`}>
               <code 
                 className="hljs language-jsx text-xs leading-5 block"
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}

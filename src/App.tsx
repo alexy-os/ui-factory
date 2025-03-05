@@ -9,14 +9,14 @@ import { ThemeToggle } from "@/app/theme-toggle";
 export default function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="ui-theme">
-      <div className="font-sans bg-background text-foreground antialiased min-h-screen">
-        <nav className="border-b border-border">
+      <div className="min-h-screen bg-secondary text-foreground pb-32">
+        <nav className="border-b border-border bg-background">
           <div className="container mx-auto px-4 h-16 flex items-center justify-end">
             <ThemeToggle />
           </div>
         </nav>
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="my-8 p-6 rounded-lg bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 border border-purple-500/20">
+        <div className="container mx-auto px-4 max-w-screen-xl">
+          <div className="my-16 lg:my-32 p-6 lg:p-12 rounded-xl bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-blue-500/10 border border-purple-500/20">
             <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               Explore Different Styling Approaches
             </h2>
@@ -39,19 +39,25 @@ export default function App() {
             <h1 className="text-2xl font-bold">Utility-First Classes</h1>
             <CodePreview code={codeExamples.utility} title="Utility-First Component" />
           </div>
-          <HeroSplit />
+          <div className="border border-border rounded-2xl shadow-sm bg-white dark:bg-background text-foreground">
+            <HeroSplit />
+          </div>
           
           <div className="flex items-center justify-between mt-12 mb-6">
             <h1 className="text-2xl font-bold">Semantic Classes</h1>
             <CodePreview code={codeExamples.semantic} title="Semantic Component" />
           </div>
-          <HeroSplitSemantic />
+          <div className="border border-border rounded-2xl shadow-sm bg-white dark:bg-background text-foreground">
+            <HeroSplitSemantic />
+          </div>
           
           <div className="flex items-center justify-between mt-12 mb-6">
             <h1 className="text-2xl font-bold">Quark Classes</h1>
             <CodePreview code={codeExamples.quark} title="Quark Component" />
           </div>
-          <HeroSplitQuark />
+          <div className="border border-border rounded-2xl shadow-sm bg-white dark:bg-background text-foreground">
+            <HeroSplitQuark />
+          </div>
         </div>
       </div>
     </ThemeProvider>

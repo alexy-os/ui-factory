@@ -9,18 +9,18 @@
 
 /* Code highlighting styles */
 .hljs-light {
-  background: hsl(var(--muted));
+  background: hsl(var(--secondary));
   color: hsl(var(--foreground));
 }
 
 .hljs-dark {
-  background: hsl(var(--muted));
+  background: hsl(var(--secondary));
   color: hsl(var(--foreground));
 }
 
 /* Dark theme syntax highlighting */
 .dark .hljs {
-  background: hsl(var(--muted));
+  background: hsl(var(--secondary));
   color: hsl(var(--foreground));
 }
 
@@ -57,7 +57,7 @@
 
 /* Light theme syntax highlighting */
 .light .hljs {
-  background: hsl(var(--muted));
+  background: hsl(var(--secondary));
   color: hsl(var(--foreground));
 }
 
