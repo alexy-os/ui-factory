@@ -88,16 +88,17 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
             classEntries.push(this.createClassEntry(baseClasses, componentName, componentDir, 'div'));
           }
 
-          // Извлекаем варианты
-          const variantsMatch = tvMatch.match(/variants:\s*({[\s\S]*?})/);
+          // Извлекаем все варианты из variants объекта
+          const variantsMatch = tvMatch.match(/variants:\s*({[\s\S]*?}(?=\s*[,}]\s*\}))/);
           if (variantsMatch) {
             const variantsStr = variantsMatch[1];
-            // Ищем все варианты внутри variants объекта
-            const variantMatches = variantsStr.matchAll(/(\w+):\s*{([^}]+)}/g);
             
-            for (const [_, variantName, variantContent] of variantMatches) {
-              // Ищем все значения вариантов
-              const valueMatches = variantContent.matchAll(/(\w+):\s*["']([^"']+)["']/g);
+            // Находим все группы вариантов (variant, size и т.д.)
+            const variantGroups = variantsStr.matchAll(/(\w+):\s*{([^}]+)}/g);
+            
+            for (const [_, groupName, groupContent] of variantGroups) {
+              // Для каждой группы находим все значения
+              const valueMatches = groupContent.matchAll(/(\w+):\s*["']([^"']+)["']/g);
               
               for (const [__, valueName, classes] of valueMatches) {
                 classEntries.push(
@@ -106,7 +107,7 @@ export class RegexExtractorAdapter implements ClassExtractorAdapter {
                     componentName,
                     componentDir,
                     'div',
-                    { [variantName]: valueName }
+                    { [groupName]: valueName }
                   )
                 );
               }

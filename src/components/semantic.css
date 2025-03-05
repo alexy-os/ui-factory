@@ -4,7 +4,10 @@
 .sc-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
 .sc-button-div-bg-accent-text-accent-foreground { @apply hover:bg-accent hover:text-accent-foreground; }
 .sc-button-div-underline-text-primary-underline-offset-4 { @apply text-primary underline-offset-4 hover:underline; }
-.section-full { @apply w-full py-16 lg:py-32; }
+.sc-button-div-h-8-px-3-text-xs { @apply h-8 px-3 text-xs; }
+.sc-button-div-h-10-px-4 { @apply h-10 px-4; }
+.sc-button-div-h-12-px-6-text-base { @apply h-12 px-6 text-base; }
+.sc-herosplit-section-py-32-py-16-w-full { @apply w-full py-16 lg:py-32; }
 .sc-herosplit-div-container-px-8-px-6-mx-auto-px-4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
 .sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
 .sc-herosplit-div-flex-flex-col-gap-4 { @apply flex gap-4 flex-col; }

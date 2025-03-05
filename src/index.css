@@ -6,3 +6,6 @@
 
 /* Semantic */
 @import "./components/semantic.css";
+
+/* Quark */
+@import "./components/quark.css";

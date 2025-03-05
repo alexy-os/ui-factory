@@ -16,9 +16,9 @@ export const buttonStyles = tv({
       default: "q-bpbptw",
     },
     size: {
-      sm: "h-8 px-3 text-xs",
-      md: "h-10 px-4",
-      lg: "h-12 px-6 text-base",
+      sm: "q-h8p3tx",
+      md: "q-h1p4",
+      lg: "q-h1p6tb",
     },
   },
   defaultVariants: {

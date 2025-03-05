@@ -16,9 +16,9 @@ export const buttonStyles = tv({
       default: "sc-button-div-bg-primary-bg-primary-80-text-white",
     },
     size: {
-      sm: "h-8 px-3 text-xs",
-      md: "h-10 px-4",
-      lg: "h-12 px-6 text-base",
+      sm: "sc-button-div-h-8-px-3-text-xs",
+      md: "sc-button-div-h-10-px-4",
+      lg: "sc-button-div-h-12-px-6-text-base",
     },
   },
   defaultVariants: {
