@@ -13,7 +13,7 @@ interface AllOptions {
 }
 
 /**
- * Класс для CLI интерфейса
+ * CLI class for the UI Parser
  */
 export class CLI {
   private program: Command;
@@ -24,7 +24,7 @@ export class CLI {
   }
   
   /**
-   * Настраивает программу CLI
+   * Configures the CLI program
    */
   private setupProgram() {
     this.program
@@ -168,7 +168,7 @@ export class CLI {
   }
   
   /**
-   * Запускает CLI
+   * Runs the CLI
    */
   public run(argv: string[] = process.argv) {
     this.program.parse(argv);

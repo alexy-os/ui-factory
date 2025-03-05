@@ -5,7 +5,7 @@ export class TailwindValidator {
   private validClassesCache = new Map<string, boolean>();
 
   /**
-   * Проверяет массив классов на валидность Tailwind
+   * Validates an array of classes for Tailwind compatibility
    */
   async filterTailwindClasses(classes: string[]): Promise<string[]> {
         const uniqueClasses = [...new Set(classes.filter(Boolean))];
@@ -42,7 +42,7 @@ export class TailwindValidator {
   }
 
   /**
-   * Фильтрует строку классов
+   * Filters class string
    */
   async filterClassString(classString: string): Promise<string> {
     const classes = classString.split(' ').filter(Boolean);

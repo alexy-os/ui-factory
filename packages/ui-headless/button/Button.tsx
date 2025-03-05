@@ -3,14 +3,14 @@ import { twMerge } from "tailwind-merge";
 import { Slot } from "../slot";
 import { buttonBaseStyle } from "./Button.css";
 
-// Button component props
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
-  // Special props to control style inheritance
+  
   ignoreBaseStyle?: boolean;
 }
 
-// Headless Button component
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => {
     const { 
@@ -21,7 +21,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ...buttonProps 
     } = props;
     
-    // Combine classes - allow option to ignore base styles
+    
     const buttonClassName = ignoreBaseStyle 
       ? className 
       : twMerge(buttonBaseStyle, className);

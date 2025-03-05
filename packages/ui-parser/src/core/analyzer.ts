@@ -10,7 +10,7 @@ import {
 } from './types';
 
 /**
- * Класс для анализа компонентов
+ * Class for component analysis
  */
 export class ComponentAnalyzer {
   private static instance: ComponentAnalyzer;
@@ -18,7 +18,7 @@ export class ComponentAnalyzer {
   private constructor() {}
   
   /**
-   * Получение экземпляра ComponentAnalyzer (Singleton)
+   * Get ComponentAnalyzer instance (Singleton)
    */
   public static getInstance(): ComponentAnalyzer {
     if (!ComponentAnalyzer.instance) {
@@ -28,15 +28,14 @@ export class ComponentAnalyzer {
   }
   
   /**
-   * Анализирует компонент и извлекает классы
+   * Analyzes component and extracts classes
    */
   public async analyzeComponent(componentPath: string): Promise<AnalysisResult> {
     const componentName = path.basename(componentPath, path.extname(componentPath));
     console.log(`Analyzing component: ${componentName}`);
     
     try {
-      // Находим подходящий адаптер
-      const adapter = adapterFactory.findAdapter(componentPath);
+            const adapter = adapterFactory.findAdapter(componentPath);
       
       if (!adapter) {
         return {
@@ -49,8 +48,7 @@ export class ComponentAnalyzer {
       
       console.log(`Using adapter: ${adapter.name}`);
       
-      // Извлекаем классы с помощью адаптера
-      const entries = await adapter.extractClasses(componentPath);
+            const entries = await adapter.extractClasses(componentPath);
       
       return {
         entries,
@@ -69,7 +67,7 @@ export class ComponentAnalyzer {
   }
   
   /**
-   * Сканирует директорию и находит компоненты
+   * Scans directory and finds components
    */
   public scanDirectory(dir: string): ComponentInfo[] {
     const components: ComponentInfo[] = [];
@@ -99,20 +97,19 @@ export class ComponentAnalyzer {
   }
   
   /**
-   * Анализирует все компоненты в директории
+   * Analyzes all components in the directory
    */
   public async analyzeAllComponents(options: AnalysisOptions = {}): Promise<EnhancedClassEntry[]> {
     const sourceDir = options.sourceDir || CONFIG.paths.sourceDir;
     const outputPath = options.outputPath || CONFIG.paths.domAnalysisResults;
     
-    // Получаем список всех компонентов
-    const components = this.scanDirectory(sourceDir);
+        const components = this.scanDirectory(sourceDir);
     const results: EnhancedClassEntry[] = [];
     
     console.log(`Found ${components.length} components to analyze`);
     
     for (const component of components) {
-      // console.log(`Analyzing: ${component.name}`);
+      
       
       try {
         const analysisResult = await this.analyzeComponent(component.path);
@@ -129,27 +126,23 @@ export class ComponentAnalyzer {
     }
     
     try {
-      // Убеждаемся, что outputPath - это путь к файлу, а не директории
-      const outputFilePath = outputPath.endsWith('.json') 
+            const outputFilePath = outputPath.endsWith('.json') 
         ? outputPath 
         : path.join(outputPath, 'domAnalysis.json');
 
-      // Создаем директорию для результатов, если её нет
-      const outputDir = path.dirname(outputFilePath);
+            const outputDir = path.dirname(outputFilePath);
       fs.mkdirSync(outputDir, { recursive: true });
 
-      // Сохраняем результаты в файл
-      fs.writeFileSync(
+            fs.writeFileSync(
         outputFilePath,
         JSON.stringify(results, null, 2),
         'utf-8'
       );
       
-      // console.log(`Total class entries found: ${results.length}`);
+      
       console.log(`Results saved to: ${outputFilePath}`);
 
-      // Обновляем путь в конфигурации
-      CONFIG.paths.domAnalysisResults = outputFilePath;
+            CONFIG.paths.domAnalysisResults = outputFilePath;
     } catch (error) {
       console.error('Error saving analysis results:', error);
       throw error;
@@ -159,7 +152,7 @@ export class ComponentAnalyzer {
   }
   
   /**
-   * Загружает результаты анализа из файла
+   * Loads analysis results from file
    */
   public loadAnalysisResults(filePath: string = CONFIG.paths.domAnalysisResults): EnhancedClassEntry[] {
     try {
@@ -175,7 +168,6 @@ export class ComponentAnalyzer {
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const componentAnalyzer = ComponentAnalyzer.getInstance();
 
 export default componentAnalyzer; 

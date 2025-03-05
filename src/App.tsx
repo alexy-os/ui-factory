@@ -1,10 +1,10 @@
 import { HeroSplitQuark } from "@/components/HeroSplit.quark";
 import { HeroSplitSemantic } from "@/components/HeroSplit.semantic";
 import { HeroSplit } from "@/source/HeroSplit";
-import { CodePreview } from "@/CodePreview";
-import { codeExamples } from "@/CodeExamples";
-import { ThemeProvider } from "@/theme-provider";
-import { ThemeToggle } from "@/theme-toggle";
+import { CodePreview } from "@/app/CodePreview";
+import { codeExamples } from "@/app/CodeExamples";
+import { ThemeProvider } from "@/app/theme-provider";
+import { ThemeToggle } from "@/app/theme-toggle";
 
 export default function App() {
   return (

@@ -2,11 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { EnhancedClassEntry } from '../core/types';
 
-interface DirectReplacerOptions {
-  sourceFile: string;
-  quarkOutput: string;
-  semanticOutput: string;
-  classEntries: EnhancedClassEntry[];
+/**
+ * Options for the DirectReplacer
+ */
+export interface DirectReplacerOptions {
+  sourceFile: string;           // Path to source component file
+  quarkOutput: string;          // Path for Quark version output
+  semanticOutput: string;       // Path for Semantic version output
+  classEntries?: EnhancedClassEntry[];  // Class entries for replacement
+  transformationType?: 'semantic' | 'quark' | 'both';  // Type of transformation
 }
 
 interface ReplacementResult {
@@ -15,9 +19,11 @@ interface ReplacementResult {
 }
 
 export class DirectReplacer {
+  // private classEntries: EnhancedClassEntry[];
   private classMap: Map<string, { quark: string; semantic: string }>;
 
   constructor(classEntries: EnhancedClassEntry[]) {
+    // this.classEntries = classEntries;
     const sortedEntries = classEntries
       .map(entry => ({
         original: entry.classes,
@@ -40,15 +46,15 @@ export class DirectReplacer {
   private updateImports(content: string, variant: 'quark' | 'semantic'): string {
     let result = content;
 
-    // Update component imports
+    
     const importRegex = /import\s+{([^}]+)}\s+from\s+['"]([^'"]+)['"]/g;
     result = result.replace(importRegex, (match, imports, importPath) => {
-      // Skip external imports (starting with @ or not starting with ./)
+      
       if (importPath.startsWith('@') || !importPath.startsWith('.')) {
         return match;
       }
 
-      // Add the variant extension to the import path
+      
       const updatedPath = importPath.endsWith(`.${variant}`)
         ? importPath
         : `${importPath}.${variant}`;
@@ -56,7 +62,7 @@ export class DirectReplacer {
       return `import {${imports}} from "${updatedPath}"`;
     });
 
-    // Update type imports
+    
     const typeImportRegex = /import\s+type\s+{([^}]+)}\s+from\s+['"]([^'"]+)['"]/g;
     result = result.replace(typeImportRegex, (match, imports, importPath) => {
       if (importPath.startsWith('@') || !importPath.startsWith('.')) {
@@ -91,35 +97,41 @@ export class DirectReplacer {
     return { result, replacementCount };
   }
 
+  /**
+   * Transform a component file
+   */
   public async transform(options: DirectReplacerOptions): Promise<void> {
     const { sourceFile, quarkOutput, semanticOutput } = options;
+    
+    // Use provided classEntries or fall back to the ones provided in constructor
+    // const entries = classEntries || this.classEntries;
 
     try {
       if (!fs.existsSync(sourceFile)) {
         throw new Error(`Source file not found: ${sourceFile}`);
       }
 
-      // Read the source file
+      
       const content = fs.readFileSync(sourceFile, 'utf-8');
       const componentName = path.basename(sourceFile, path.extname(sourceFile));
 
-      // Create versions with different classes
+      
       const quarkContent = this.replaceClassesInContent(content, true);
       const semanticContent = this.replaceClassesInContent(content, false);
 
-      // Update imports for each version
+      
       const quarkWithImports = this.updateImports(quarkContent.result, 'quark');
       const semanticWithImports = this.updateImports(semanticContent.result, 'semantic');
 
-      // Wrap the content in the correct export
+      
       const wrappedQuarkContent = this.wrapWithExport(quarkWithImports, componentName, 'Quark');
       const wrappedSemanticContent = this.wrapWithExport(semanticWithImports, componentName, 'Semantic');
 
-      // Create the output directories
+      
       const outputDir = path.dirname(quarkOutput);
       fs.mkdirSync(outputDir, { recursive: true });
 
-      // Save the files
+      
       fs.writeFileSync(quarkOutput, wrappedQuarkContent);
       fs.writeFileSync(semanticOutput, wrappedSemanticContent);
 
@@ -134,24 +146,24 @@ export class DirectReplacer {
    * Wraps component content with proper export
    */
   private wrapWithExport(content: string, componentName: string, variant: 'Quark' | 'Semantic'): string {
-    // Find the original export
+    
     const exportMatch = content.match(/export\s+(?:default\s+)?(?:function|const|class)\s+(\w+)/);
     
     if (!exportMatch) {
-      // If no explicit export is found, leave as is
+      
       return content;
     }
 
-    // Replace the original export with a named export
+    
     const modifiedContent = content.replace(
       /export\s+(?:default\s+)?(?=(?:function|const|class)\s+\w+)/,
       ''
     );
 
-    // Add the new export to the end of the file
+    
     return `${modifiedContent}
 
-// Export with variant name
+
 export { ${componentName} as ${componentName}${variant} };
 export default ${componentName};
 `;

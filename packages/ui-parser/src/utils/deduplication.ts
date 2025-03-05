@@ -1,7 +1,7 @@
 import { EnhancedClassEntry } from '../core/types';
 
 /**
- * Удаляет дубликаты записей по полю quark
+ * Removes duplicate entries by quark field
  */
 export function deduplicateEntries(entries: EnhancedClassEntry[]): EnhancedClassEntry[] {
   const quarkMap = new Map<string, EnhancedClassEntry>();

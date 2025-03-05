@@ -9,7 +9,7 @@ export function deduplicateEntries(entries: EnhancedClassEntry[]): EnhancedClass
     if (!uniqueMap.has(key)) {
       uniqueMap.set(key, entry);
     } else {
-      // Merge component information if entry already exists
+      
       const existing = uniqueMap.get(key)!;
       existing.components = {
         ...existing.components,

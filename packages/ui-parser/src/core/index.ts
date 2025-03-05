@@ -6,7 +6,7 @@ export * from './types.js';
 export { componentAnalyzer, cssGenerator, componentTransformer };
 
 /**
- * Основной класс UI Parser
+ * Main UIParser class
  */
 export class UIParser {
   private static instance: UIParser;
@@ -14,7 +14,7 @@ export class UIParser {
   private constructor() {}
   
   /**
-   * Получение экземпляра UIParser (Singleton)
+   * Get UIParser instance (Singleton)
    */
   public static getInstance(): UIParser {
     if (!UIParser.instance) {
@@ -24,28 +24,28 @@ export class UIParser {
   }
   
   /**
-   * Анализирует компоненты
+   * Analyzes components
    */
   public async analyze(options = {}) {
     return componentAnalyzer.analyzeAllComponents(options);
   }
   
   /**
-   * Генерирует CSS
+   * Generates CSS
    */
   public generate(options = {}) {
     return cssGenerator.generate(options);
   }
   
   /**
-   * Трансформирует компоненты
+   * Transforms components
    */
   public transform(options = {}) {
     return componentTransformer.transformComponents(options);
   }
   
   /**
-   * Выполняет все операции последовательно
+   * Performs all operations sequentially
    */
   public async all(options = {}) {
     console.log('Starting UI Parser all operations...');

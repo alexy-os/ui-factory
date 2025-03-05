@@ -2,10 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import { CONFIG } from '../config';
 import { componentAnalyzer } from './analyzer';
-import { EnhancedClassEntry, TransformationOptions, TransformationResult } from './types';
+import { 
+  EnhancedClassEntry,
+  TransformationResult,
+} from './types';
 
 /**
- * Класс для трансформации компонентов
+ * Define a new interface for component transformation options
+ */
+export interface ComponentTransformationOptions {
+  sourceDir?: string;
+  targetOutputDir?: string;
+  transformationType?: 'semantic' | 'quark' | 'both';
+  classEntries?: EnhancedClassEntry[];
+}
+
+/**
+ * Class for component transformation
  */
 export class ComponentTransformer {
   private static instance: ComponentTransformer;
@@ -13,7 +26,7 @@ export class ComponentTransformer {
   private constructor() {}
   
   /**
-   * Получение экземпляра ComponentTransformer (Singleton)
+   * Get ComponentTransformer instance (Singleton)
    */
   public static getInstance(): ComponentTransformer {
     if (!ComponentTransformer.instance) {
@@ -23,17 +36,15 @@ export class ComponentTransformer {
   }
   
   /**
-   * Трансформирует компоненты, заменяя классы на семантические или кварк
+   * Transforms components, replacing classes with semantic or quark
    */
-  public transformComponents(options: TransformationOptions = {}): TransformationResult {
+  public transformComponents(options: ComponentTransformationOptions = {}): TransformationResult {
     const sourceDir = options.sourceDir || CONFIG.paths.sourceDir;
     const targetOutputDir = options.targetOutputDir || CONFIG.paths.componentOutput;
     const transformationType = options.transformationType || 'both';
     
-    // Получаем список компонентов
     const components = componentAnalyzer.scanDirectory(sourceDir);
     
-    // Загружаем данные напрямую из JSON для более точного сопоставления
     let domAnalysisData: EnhancedClassEntry[] = [];
     try {
       const jsonContent = fs.readFileSync(CONFIG.paths.domAnalysisResults, 'utf-8');
@@ -51,17 +62,14 @@ export class ComponentTransformer {
       };
     }
     
-    // Создаем карту классов для быстрого поиска
     const classMap = new Map<string, { semantic: string, quark: string }>();
     
     domAnalysisData.forEach(entry => {
-      // Используем оригинальную строку классов как ключ
       classMap.set(entry.classes, {
         semantic: entry.semantic,
         quark: entry.quark
       });
       
-      // Также добавляем нормализованную версию для надежности
       const normalizedClasses = this.normalizeClassString(entry.classes);
       if (normalizedClasses !== entry.classes) {
         classMap.set(normalizedClasses, {
@@ -73,7 +81,6 @@ export class ComponentTransformer {
     
     console.log(`Created class map with ${classMap.size} entries`);
     
-    // Результаты трансформации
     const result: TransformationResult = {
       componentsTransformed: 0,
       classesReplaced: 0,
@@ -84,25 +91,20 @@ export class ComponentTransformer {
       console.log(`Processing component: ${component.name}`);
       
       try {
-        // Читаем содержимое компонента
         const content = fs.readFileSync(component.path, 'utf-8');
         
-        // Создаем версии с семантическими и кварк классами
         let semanticContent = content;
         let quarkContent = content;
         
-        // Находим все классы с помощью регулярного выражения
         const classRegex = /className=["']([^"']+)["']/g;
         let match;
         
-        // Массив для хранения всех найденных классов
         const foundClasses: Array<{
           fullMatch: string;
           classValue: string;
           index: number;
         }> = [];
         
-        // Находим все вхождения className
         while ((match = classRegex.exec(content)) !== null) {
           foundClasses.push({
             fullMatch: match[0],
@@ -113,15 +115,12 @@ export class ComponentTransformer {
         
         console.log(`Found ${foundClasses.length} className declarations in ${component.name}`);
         
-        // Обрабатываем найденные классы в обратном порядке (чтобы индексы не сбивались)
         for (let i = foundClasses.length - 1; i >= 0; i--) {
           const { fullMatch, classValue, index } = foundClasses[i];
           
-          // Проверяем прямое совпадение
           if (classMap.has(classValue)) {
             const replacement = classMap.get(classValue)!;
             
-            // Заменяем в семантической версии
             if (transformationType === 'semantic' || transformationType === 'both') {
               semanticContent = 
                 semanticContent.substring(0, index) + 
@@ -129,7 +128,6 @@ export class ComponentTransformer {
                 semanticContent.substring(index + fullMatch.length);
             }
             
-            // Заменяем в кварк версии
             if (transformationType === 'quark' || transformationType === 'both') {
               quarkContent = 
                 quarkContent.substring(0, index) + 
@@ -142,12 +140,10 @@ export class ComponentTransformer {
             continue;
           }
           
-          // Проверяем нормализованную версию
           const normalizedClassValue = this.normalizeClassString(classValue);
           if (classMap.has(normalizedClassValue)) {
             const replacement = classMap.get(normalizedClassValue)!;
             
-            // Заменяем в семантической версии
             if (transformationType === 'semantic' || transformationType === 'both') {
               semanticContent = 
                 semanticContent.substring(0, index) + 
@@ -155,7 +151,6 @@ export class ComponentTransformer {
                 semanticContent.substring(index + fullMatch.length);
             }
             
-            // Заменяем в кварк версии
             if (transformationType === 'quark' || transformationType === 'both') {
               quarkContent = 
                 quarkContent.substring(0, index) + 
@@ -171,7 +166,6 @@ export class ComponentTransformer {
           console.log(`No replacement found for "${classValue}"`);
         }
         
-        // Создаем выходные директории
         const outputPath = path.join(targetOutputDir, component.relativePath);
         const outputDir = path.dirname(outputPath);
         
@@ -179,11 +173,9 @@ export class ComponentTransformer {
           fs.mkdirSync(outputDir, { recursive: true });
         }
         
-        // Получаем базовое имя файла и расширение
         const baseName = path.basename(outputPath, path.extname(outputPath));
         const extension = path.extname(outputPath);
         
-        // Сохраняем трансформированные компоненты
         if (transformationType === 'semantic' || transformationType === 'both') {
           const semanticOutputPath = path.join(outputDir, `${baseName}.semantic${extension}`);
           fs.writeFileSync(semanticOutputPath, semanticContent);
@@ -209,14 +201,13 @@ export class ComponentTransformer {
   }
   
   /**
-   * Нормализует строку классов
+   * Normalizes class string
    */
   private normalizeClassString(classString: string): string {
     return classString.split(' ').sort().join(' ');
   }
 }
 
-// Экспортируем экземпляр для удобного использования
 export const componentTransformer = ComponentTransformer.getInstance();
 
 export default componentTransformer; 

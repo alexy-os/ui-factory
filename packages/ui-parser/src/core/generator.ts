@@ -4,7 +4,7 @@ import { CONFIG } from '../config';
 import { EnhancedClassEntry, CSSGenerationResult, GenerationOptions } from './types';
 
 /**
- * Класс для генерации CSS
+ * Class for generating CSS
  */
 export class CSSGenerator {
   private static instance: CSSGenerator;
@@ -12,7 +12,7 @@ export class CSSGenerator {
   private constructor() {}
   
   /**
-   * Получение экземпляра CSSGenerator (Singleton)
+   * Get CSSGenerator instance (Singleton)
    */
   public static getInstance(): CSSGenerator {
     if (!CSSGenerator.instance) {
@@ -22,7 +22,7 @@ export class CSSGenerator {
   }
   
   /**
-   * Загружает результаты анализа
+   * Loads analysis results
    */
   private loadAnalysisResults(): EnhancedClassEntry[] {
     try {
@@ -38,7 +38,7 @@ export class CSSGenerator {
   }
   
   /**
-   * Генерирует CSS с семантическими и кварк классами
+   * Generates CSS with semantic and quark classes
    */
   private generateCSS(entries: EnhancedClassEntry[]): CSSGenerationResult {
     let quarkCSS = '';
@@ -53,7 +53,7 @@ export class CSSGenerator {
   }
   
   /**
-   * Сохраняет сгенерированный CSS
+   * Saves the generated CSS
    */
   private saveCSS(css: CSSGenerationResult, outputDir: string): void {
         fs.mkdirSync(outputDir, { recursive: true });
@@ -72,7 +72,7 @@ export class CSSGenerator {
   }
   
   /**
-   * Генерирует CSS и сохраняет файлы
+   * Generates CSS and saves files
    */
   public generate(options: GenerationOptions = {}): CSSGenerationResult {
     const outputDir = options.outputPath || CONFIG.paths.componentOutput;

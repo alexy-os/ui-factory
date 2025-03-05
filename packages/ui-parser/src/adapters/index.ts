@@ -1,22 +1,22 @@
-import { ClassExtractorAdapter } from './base-adapter';
-import { DOMExtractorAdapter } from './dom-adapter';
+import { ClassExtractorAdapter } from './experiment/base-adapter';
+//import { DOMExtractorAdapter } from './experiment/dom-adapter';
 import { RegexExtractorAdapter } from './regex';
 import { configManager } from '../config';
 
 /**
- * Фабрика адаптеров для извлечения классов
+ * Adapter factory for class extraction
  */
 export class AdapterFactory {
   private static instance: AdapterFactory;
   private adapters: Map<string, ClassExtractorAdapter> = new Map();
   
   private constructor() {
-        this.registerAdapter('dom', new DOMExtractorAdapter());
+    //this.registerAdapter('dom', new DOMExtractorAdapter());
     this.registerAdapter('regex', new RegexExtractorAdapter());
   }
   
   /**
-   * Получение экземпляра AdapterFactory (Singleton)
+   * Get AdapterFactory instance (Singleton)
    */
   public static getInstance(): AdapterFactory {
     if (!AdapterFactory.instance) {
@@ -26,21 +26,21 @@ export class AdapterFactory {
   }
   
   /**
-   * Регистрирует новый адаптер
+   * Registers a new adapter
    */
   public registerAdapter(type: string, adapter: ClassExtractorAdapter): void {
     this.adapters.set(type, adapter);
   }
   
   /**
-   * Получает все зарегистрированные адаптеры
+   * Gets all registered adapters
    */
   public getAdapters(): ClassExtractorAdapter[] {
     return Array.from(this.adapters.values());
   }
   
   /**
-   * Находит подходящий адаптер для компонента
+  * Finds an appropriate adapter for the component
    */
   public findAdapter(componentPath: string): ClassExtractorAdapter | null {
         const preferredType = configManager.getExtractor();
@@ -62,6 +62,6 @@ export class AdapterFactory {
 
 export const adapterFactory = AdapterFactory.getInstance();
 
-export type { ClassExtractorAdapter } from './base-adapter';
-export { DOMExtractorAdapter } from './dom-adapter';
+//export type { ClassExtractorAdapter } from './experiment/base-adapter';
+//export { DOMExtractorAdapter } from './experiment/dom-adapter';
 export { RegexExtractorAdapter } from './regex'; 

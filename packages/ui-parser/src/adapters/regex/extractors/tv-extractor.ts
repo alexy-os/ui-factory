@@ -14,7 +14,7 @@ export class TailwindVariantsExtractor {
     if (!tvMatches) return classEntries;
 
     for (const tvMatch of tvMatches) {
-      // Extract base classes
+      
       const baseMatch = tvMatch.match(/base:\s*["']([^"']+)["']/);
       if (baseMatch) {
         const baseClasses = baseMatch[1];
@@ -30,7 +30,7 @@ export class TailwindVariantsExtractor {
         );
       }
 
-      // Extract variants
+      
       const variantsMatch = tvMatch.match(/variants:\s*({[\s\S]*?}(?=\s*[,}]\s*\}))/);
       if (variantsMatch) {
         const variantsStr = variantsMatch[1];

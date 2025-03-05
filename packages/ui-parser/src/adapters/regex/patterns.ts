@@ -1,6 +1,6 @@
 import { ExtractorPatterns } from './types';
 
-// Patterns for finding classes in different contexts
+
 export const CLASS_PATTERNS: ExtractorPatterns = {
   jsxClassName: {
     pattern: /className=["']([^"']+)["']/g,

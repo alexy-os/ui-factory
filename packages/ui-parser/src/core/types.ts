@@ -1,16 +1,16 @@
 /**
- * Расширенная запись о классе с дополнительной информацией
+ * Enhanced class entry with additional information
  */
 export interface EnhancedClassEntry {
   quark: string;
   semantic: string;
   classes: string;
-  componentName: string;     // Название компонента
-  elementType: string;       // HTML тег
-  variants: {                // Варианты компонента (если есть)
+  componentName: string;     
+  elementType: string;       
+  variants: {                
     [key: string]: string | undefined;
   };
-  isPublic: boolean;         // Видимый элемент или вспомогательный
+  isPublic: boolean;         
   components: Record<string, {
     path: string;
     name: string;
@@ -18,7 +18,7 @@ export interface EnhancedClassEntry {
 }
 
 /**
- * Информация о компоненте
+ * Component information
  */
 export interface ComponentInfo {
   path: string;
@@ -27,7 +27,7 @@ export interface ComponentInfo {
 }
 
 /**
- * Результат анализа компонента
+ * Component analysis result
  */
 export interface AnalysisResult {
   entries: EnhancedClassEntry[];
@@ -37,7 +37,7 @@ export interface AnalysisResult {
 }
 
 /**
- * Результат генерации CSS
+ * CSS generation result
  */
 export interface CSSGenerationResult {
   quarkCSS: string;
@@ -45,7 +45,7 @@ export interface CSSGenerationResult {
 }
 
 /**
- * Результат трансформации компонентов
+ * Transformation result
  */
 export interface TransformationResult {
   componentsTransformed: number;
@@ -57,7 +57,7 @@ export interface TransformationResult {
 }
 
 /**
- * Опции для анализа компонентов
+ * Analysis options
  */
 export interface AnalysisOptions {
   sourceDir?: string;
@@ -66,7 +66,7 @@ export interface AnalysisOptions {
 }
 
 /**
- * Опции для генерации CSS
+ * Generation options
  */
 export interface GenerationOptions {
   outputPath?: string;
@@ -75,10 +75,18 @@ export interface GenerationOptions {
 }
 
 /**
- * Опции для трансформации компонентов
+ * Transformation options
  */
 export interface TransformationOptions {
-  sourceDir?: string;
-  targetOutputDir?: string;
-  transformationType?: 'semantic' | 'quark' | 'both';
+  sourceFile: string;           
+  quarkOutput: string;           
+  semanticOutput: string;        
+  classEntries?: EnhancedClassEntry[];  
+  transformationType?: 'semantic' | 'quark' | 'both';  
+}
+
+/**
+ * Direct Replacer options
+ */
+export interface DirectReplacerOptions extends TransformationOptions {
 } 

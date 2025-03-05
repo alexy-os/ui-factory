@@ -1,12 +1,12 @@
 import path from 'path';
 
 /**
- * Тип экстрактора
+ * Extractor type
  */
 export type ExtractorType = 'dom' | 'regex';
 
 /**
- * Конфигурация UI Parser
+ * UI Parser configuration
  */
 export interface UIParserConfig {
   paths: {
@@ -22,7 +22,7 @@ export interface UIParserConfig {
 }
 
 /**
- * Класс для управления конфигурацией
+ * Class for configuration management
  */
 export class ConfigManager {
   private static instance: ConfigManager;
@@ -43,7 +43,7 @@ export class ConfigManager {
   }
 
   /**
-   * Получение экземпляра ConfigManager (Singleton)
+   * Get ConfigManager instance (Singleton)
    */
   public static getInstance(): ConfigManager {
     if (!ConfigManager.instance) {
@@ -53,14 +53,14 @@ export class ConfigManager {
   }
 
   /**
-   * Получение текущей конфигурации
+   * Get current configuration
    */
   public getConfig(): UIParserConfig {
     return this.config;
   }
 
   /**
-   * Обновление конфигурации
+   * Update configuration
    */
   public updateConfig(newConfig: Partial<UIParserConfig>): void {
     this.config = {
@@ -78,7 +78,7 @@ export class ConfigManager {
   }
 
   /**
-   * Обновление путей в конфигурации
+   * Update paths in configuration
    */
   public updatePaths(paths: Partial<UIParserConfig['paths']>): void {
     this.config.paths = {
@@ -88,7 +88,7 @@ export class ConfigManager {
   }
 
   /**
-   * Обновление настроек имен классов
+   * Update class name settings
    */
   public updateClassNames(classNames: Partial<UIParserConfig['classNames']>): void {
     this.config.classNames = {

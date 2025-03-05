@@ -10,7 +10,7 @@ export class RegexExtractorAdapter {
   private config: RegexExtractorConfig;
   
   constructor(config?: Partial<RegexExtractorConfig>) {
-    // Default values
+    
     this.config = {
       classNames: {
         quarkPrefix: 'q-',
