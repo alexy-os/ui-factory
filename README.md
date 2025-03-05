@@ -1,108 +1,203 @@
 # UI Factory
 
-A modern approach to building static websites using React components and CSS-only interactions.
-
-## Core Concept
-
-UI Factory combines the power of React components for building UI with pure CSS interactions, generating static HTML files without JavaScript dependencies. This approach provides better performance and accessibility while maintaining modern development practices.
+A modern approach to React component development with support for multiple styling systems and automatic CSS generation.
 
 ## Key Features
 
-- **Static Site Generation**: Convert React components into pure HTML
-- **CSS-only Interactions**: Modern CSS3 features for interactive elements
-- **Component Library**: Built with shadcn/ui components
-- **Zero JavaScript**: No runtime JavaScript required
-- **Dark Mode Support**: CSS variables based theming
-- **Modern Styling**: Powered by Tailwind CSS
-- **Type Safety**: Full TypeScript support
+- **Multiple Styling Systems**: Support for Quark (atomic) and Semantic class naming
+- **Automatic Parsing**: Extract classes from components using RegEx
+- **CSS Generation**: Automatic creation of optimized stylesheets
+- **Headless Components**: Base components without styles
+- **TypeScript**: Full type support
 
-## Architecture
+## Project Structure
 
-### Component Building
-- React components are used as templates
-- shadcn/ui provides base UI components
-- Custom sections and layouts are composed from base components
-- All interactive elements use CSS-only solutions
+```bash
+packages/
+  ├── ui-parser/        # CLI utility for analysis and transformation
+  ├── ui-headless/      # Base unstyled components
+  └── app/              # Demo application
+```
 
-### Style System
-- CSS modules for component-specific styles
-- Tailwind CSS for utility classes
-- CSS variables for theming
-- Pure CSS interactions (off-canvas, dropdowns, etc.)
-
-### Build Process
-1. Components are rendered to static HTML
-2. Styles are processed and optimized
-3. Final assets are generated without JavaScript
-
-## Getting Started
+## UI Parser
 
 ### Installation
+
 ```bash
 bun install
 ```
 
-### Development
+### CLI Commands
+
 ```bash
-bun run dev
+# Analyze components and extract classes
+bun ui-parser:analyze -s ./src/source -o ./src/components
+
+# Generate CSS files
+bun ui-parser:generate -s ./src/source -o ./src/styles
+
+# Transform components to Quark/Semantic versions
+bun ui-parser:transform -s ./src/source -o ./src/components
+
+# Run all steps in sequence
+bun ui-parser:all -s ./src/source -o ./src/components
 ```
 
-### Build
-```bash
-bun run generate
-```
-This command:
-1. Generates optimized CSS (`generate:styles`)
-2. Converts components to static HTML (`generate:html`)
+### RegEx Adapter
 
-## Usage Example
+The RegEx adapter automatically extracts classes from your components by analyzing:
 
-```typescript
-// Define a page template
-const templates = [
-  {
-    path: 'index.html',
-    component: NavbarMegaMenu
+- JSX className attributes
+- Tailwind class constants
+- tailwind-variants configurations
+- Dynamic class expressions
+- Template literals
+
+Example component:
+
+```tsx
+const buttonVariants = tv({
+  base: "rounded-md px-4 py-2",
+  variants: {
+    size: {
+      sm: "text-sm",
+      lg: "text-lg"
+    }
   }
-];
+});
 
-// Generate static files
-const builder = new StaticBuilder({ templates });
-await builder.build();
+export function Button({ size }) {
+  return (
+    <button className={buttonVariants({ size })}>
+      Click me
+    </button>
+  );
+}
 ```
 
-## CSS-only Interactions
+The adapter will extract all classes and generate both Quark and Semantic versions.
 
-Example of off-canvas menu implementation:
+### Generated Output
+
+For each component, UI Parser generates:
+
+1. **Quark Version** (`ComponentName.quark.tsx`)
+   - Uses atomic class names
+   - Optimized for reusability
+   - Example: `flex items-center justify-between`
+
+2. **Semantic Version** (`ComponentName.semantic.tsx`)
+   - Uses semantic class names
+   - Better readability
+   - Example: `header-container`
+
+3. **CSS Files**
+   - `quark.css`: Atomic styles
+   - `semantic.css`: Semantic styles
+
+### Using Generated Components
+
+Import styles in your main CSS file:
+
 ```css
-.off-canvas {
-  @apply fixed inset-y-0 right-0 transform translate-x-full transition-transform;
+/* Base styles */
+@import "./styles/base.css";
+
+/* Components */
+@import "./styles/components/navigation.css";
+
+/* Semantic */
+@import "./components/semantic.css";
+
+/* Quark */
+@import "./components/quark.css";
+```
+
+Use components in your application:
+
+```tsx
+import { HeroSplitQuark } from "@/components/HeroSplit.quark";
+import { HeroSplitSemantic } from "@/components/HeroSplit.semantic";
+import { HeroSplit } from "@/source/HeroSplit";
+
+export default function App() {
+  return (
+    <div className="font-sans bg-background text-foreground antialiased">
+      <div className="container mx-auto px-4">
+        {/* Original component */}
+        <HeroSplit />
+        
+        {/* Quark version */}
+        <HeroSplitQuark />
+        
+        {/* Semantic version */}
+        <HeroSplitSemantic />
+      </div>
+    </div>
+  );
+}
+```
+
+## Headless UI (@ui-headless)
+
+The `@ui-headless` package provides unstyled base components that can be used as a foundation for your styled components.
+
+### Features
+
+- Zero default styles
+- Full accessibility support
+- Flexible composition with Slot pattern
+- Complete TypeScript types
+
+### Available Components
+
+- `Button`: Base button component with ref forwarding
+- `Slot`: Component composition utility
+- More components coming soon...
+
+### Usage Example
+
+```tsx
+import { Button } from "@ui-factory/ui-headless";
+
+// Use with Quark classes
+export function PrimaryButton({ children }) {
+  return (
+    <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      {children}
+    </Button>
+  );
 }
 
-#mobile-menu-toggle:checked ~ .off-canvas {
-  transform: translateX(0);
+// Use with Semantic classes
+export function SecondaryButton({ children }) {
+  return (
+    <Button className="button-secondary">
+      {children}
+    </Button>
+  );
 }
 ```
 
-## Project Structure
-```
-src/
-  ├── components/     # Base UI components
-  ├── examples/       # Page templates
-  ├── generators/     # Static site generator
-  └── styles/        # CSS modules and utilities
-      ├── base.css   # Core styles
-      ├── components/# Component styles
-      └── shadcn/    # shadcn/ui styles
+### Slot Pattern
+
+The Slot component allows you to compose components while maintaining proper prop and ref forwarding:
+
+```tsx
+import { Slot } from "@ui-factory/ui-headless";
+
+export function Container({ asChild, children, ...props }) {
+  return (
+    <Slot asChild={asChild} {...props}>
+      {children}
+    </Slot>
+  );
+}
 ```
 
-## Benefits
+## Contributing
 
-- **Performance**: No JavaScript overhead
-- **Accessibility**: Native HTML elements
-- **SEO-friendly**: Clean, semantic HTML
-- **Maintainable**: Modular component structure
-- **Developer Experience**: Modern tools and TypeScript
+Contributions are welcome! Please read our contributing guidelines for details.
 
 ## License
 

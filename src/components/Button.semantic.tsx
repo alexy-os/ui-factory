@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
 // Define button variants using tailwind-variants
-export const buttonStyles = tv({
+const buttonStyles = tv({
   base: "s-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
   variants: {
     variant: {
@@ -67,3 +67,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button"; 
+
+// Export with variant name
+export { Button as ButtonSemantic };
+export default Button;

@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../types';
+import { EnhancedClassEntry, ClassNameConfig } from '../types';
 
 // Configuration for class name generation
 const CONFIG = {
@@ -16,11 +16,12 @@ export function createClassEntry(
   componentName: string,
   componentDir: string,
   elementType: string,
-  variants: Record<string, string> = {}
+  variants: Record<string, string> = {},
+  config: ClassNameConfig
 ): EnhancedClassEntry {
   return {
-    quark: generateQuarkName(classes),
-    semantic: generateSemanticName(componentName, elementType, classes),
+    quark: generateQuarkName(classes, config.quarkPrefix),
+    semantic: generateSemanticName(componentName, elementType, classes, config.semanticPrefix),
     classes: classes.trim(),
     componentName,
     elementType,
@@ -38,7 +39,7 @@ export function createClassEntry(
 /**
  * Generates a unique quark name from class string
  */
-function generateQuarkName(classes: string): string {
+function generateQuarkName(classes: string, quarkPrefix: string): string {
   const normalizedClasses = normalizeClassString(classes);
   
   const quarkId = normalizedClasses
@@ -64,13 +65,13 @@ function generateQuarkName(classes: string): string {
     })
     .join('');
 
-  return `${CONFIG.classNames.quarkPrefix}${quarkId}`;
+  return `${quarkPrefix}${quarkId}`;
 }
 
 /**
  * Generates a semantic name based on component and class information
  */
-function generateSemanticName(componentName: string, elementType: string, classes: string): string {
+function generateSemanticName(componentName: string, elementType: string, classes: string, semanticPrefix: string): string {
   const normalizedClasses = normalizeClassString(classes);
   const classIdentifier = normalizedClasses
     .split(' ')
@@ -87,7 +88,7 @@ function generateSemanticName(componentName: string, elementType: string, classe
     .filter(Boolean)
     .join('-');
 
-  return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
+  return `${semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
 }
 
 /**

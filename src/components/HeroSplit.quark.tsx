@@ -37,7 +37,7 @@ const content: Content = {
     variant: "outline",
     className: "q-fmts"
   },
-  title: "Build with shadcn ui components",
+  title: "Quark UI with shadcn ui components",
   description: "Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your applications.",
   buttons: [
     {
@@ -83,7 +83,7 @@ const content: Content = {
 
 type HeroSplitWithGalleryProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>;
 
-export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
+const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   const { button, title, description, buttons, images, className, ...rest } = {
     ...content,
     ...props,
@@ -132,3 +132,7 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
     </section>
   );
 };
+
+// Export with variant name
+export { HeroSplit as HeroSplitQuark };
+export default HeroSplit;

@@ -1,11 +1,12 @@
-import { EnhancedClassEntry } from '../types';
+import { EnhancedClassEntry, ClassNameConfig } from '../types';
 import { createClassEntry } from '../utils/class-entry';
 
 export class TailwindVariantsExtractor {
   static extract(
     content: string,
     componentName: string,
-    componentDir: string
+    componentDir: string,
+    config: ClassNameConfig
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
     const tvMatches = content.match(/tv\(\s*\{([\s\S]*?)\}\s*\)/g);
@@ -17,7 +18,16 @@ export class TailwindVariantsExtractor {
       const baseMatch = tvMatch.match(/base:\s*["']([^"']+)["']/);
       if (baseMatch) {
         const baseClasses = baseMatch[1];
-        classEntries.push(createClassEntry(baseClasses, componentName, componentDir, 'div'));
+        classEntries.push(
+          createClassEntry(
+            baseClasses, 
+            componentName, 
+            componentDir, 
+            'div',
+            {},
+            config
+          )
+        );
       }
 
       // Extract variants
@@ -36,7 +46,8 @@ export class TailwindVariantsExtractor {
                 componentName,
                 componentDir,
                 'div',
-                { [groupName]: valueName }
+                { [groupName]: valueName },
+                config
               )
             );
           }
