@@ -5,15 +5,15 @@ import { tv } from "tailwind-variants";
 
 // Define button variants using tailwind-variants
 const buttonStyles = tv({
-  base: "button",
+  base: "s-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
   variants: {
     variant: {
-      primary: "s-button-div-bg-primary-bg-primary-80-text-white",
-      secondary: "button-secondary",
-      outline: "button-hover",
-      ghost: "s-button-div-bg-accent-text-accent-foreground",
-      link: "s-button-div-underline-text-primary-underline-offset-4",
-      default: "s-button-div-bg-primary-bg-primary-80-text-white",
+      primary: "s-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground",
+      secondary: "s-button-div-bg-secondary-bg-secondary-bg-secondary-80-text-secondary-foreground-bg-secondary-80-text-secondary-foreground",
+      outline: "s-button-div-bg-background-border-border-input-bg-background-border-input-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground",
+      ghost: "s-button-div-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground",
+      link: "s-button-div-text-primary-underline-text-primary-underline-offset-4",
+      default: "s-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground",
     },
     size: {
       sm: "s-button-div-h-8-px-3-text-xs",

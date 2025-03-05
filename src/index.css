@@ -6,3 +6,88 @@
 
 /* Quark */
 @import "./components/quark.css";
+
+/* Code highlighting styles */
+.hljs-light {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.hljs-dark {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+/* Dark theme syntax highlighting */
+.dark .hljs {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.dark .hljs-keyword,
+.dark .hljs-built_in {
+  color: #c678dd;
+}
+
+.dark .hljs-string {
+  color: #98c379;
+}
+
+.dark .hljs-comment {
+  color: #5c6370;
+}
+
+.dark .hljs-function,
+.dark .hljs-title {
+  color: #61afef;
+}
+
+.dark .hljs-number,
+.dark .hljs-literal {
+  color: #d19a66;
+}
+
+.dark .hljs-tag {
+  color: #e06c75;
+}
+
+.dark .hljs-attr {
+  color: #d19a66;
+}
+
+/* Light theme syntax highlighting */
+.light .hljs {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.light .hljs-keyword,
+.light .hljs-built_in {
+  color: #a626a4;
+}
+
+.light .hljs-string {
+  color: #50a14f;
+}
+
+.light .hljs-comment {
+  color: #a0a1a7;
+}
+
+.light .hljs-function,
+.light .hljs-title {
+  color: #4078f2;
+}
+
+.light .hljs-number,
+.light .hljs-literal {
+  color: #986801;
+}
+
+.light .hljs-tag {
+  color: #e45649;
+}
+
+.light .hljs-attr {
+  color: #986801;
+}

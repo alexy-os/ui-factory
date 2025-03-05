@@ -8,12 +8,12 @@ const buttonStyles = tv({
   base: "q-o5penonr1rrfmg2ificjcrmtstc",
   variants: {
     variant: {
-      primary: "q-bpbptw",
-      secondary: "q-bsbstsf",
-      outline: "q-bbbbibataf",
-      ghost: "q-bataf",
-      link: "q-utpuo4",
-      default: "q-bpbptw",
+      primary: "q-bpbpbptpfbptpf",
+      secondary: "q-bsbsbstsfbstsf",
+      outline: "q-bbbbibbbibatafbataf",
+      ghost: "q-batafbataf",
+      link: "q-tputpuo4",
+      default: "q-bpbpbptpfbptpf",
     },
     size: {
       sm: "q-h8p3tx",

@@ -15,7 +15,9 @@ import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import jsx from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/github-dark.css';
+import 'highlight.js/styles/github.css';
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('xml', xml);
@@ -28,6 +30,7 @@ interface CodePreviewProps {
 
 export function CodePreview({ code, title }: CodePreviewProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { theme } = useTheme();
 
   const highlightedCode = hljs.highlight(code, {
     language: 'jsx',
@@ -47,7 +50,7 @@ export function CodePreview({ code, title }: CodePreviewProps) {
         </Button>
       </DialogTrigger>
       <DialogPortal>
-        <DialogOverlay className="bg-black/80 fixed inset-0" />
+        <DialogOverlay className="bg-background/80 backdrop-blur-sm fixed inset-0" />
         <DialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-background border rounded-lg shadow-lg w-full max-w-3xl max-h-[80vh] overflow-y-auto p-4 [&>button]:hidden [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30">
           <DialogHeader className="mb-2">
             <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
@@ -56,7 +59,7 @@ export function CodePreview({ code, title }: CodePreviewProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="relative">
-            <pre className="p-3 bg-muted rounded-lg overflow-x-auto relative [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30">
+            <pre className={`p-3 bg-muted rounded-lg overflow-x-auto relative [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30 ${theme === 'dark' ? 'hljs-dark' : 'hljs-light'}`}>
               <code 
                 className="hljs language-jsx text-xs leading-5 block"
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
