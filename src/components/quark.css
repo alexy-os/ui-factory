@@ -4,6 +4,7 @@
 .q-bbbbibataf { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
 .q-bataf { @apply hover:bg-accent hover:text-accent-foreground; }
 .q-utpuo4 { @apply text-primary underline-offset-4 hover:underline; }
+.q-bpbptw { @apply bg-primary text-white hover:bg-primary/80; }
 .q-h8p3tx { @apply h-8 px-3 text-xs; }
 .q-h1p4 { @apply h-10 px-4; }
 .q-h1p6tb { @apply h-12 px-6 text-base; }

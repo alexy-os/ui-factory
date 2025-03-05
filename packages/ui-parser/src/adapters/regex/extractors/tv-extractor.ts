@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../../../core/types';
+import { EnhancedClassEntry } from '../types/index';
 import { createClassEntry } from '../utils/class-entry';
 
 export class TailwindVariantsExtractor {

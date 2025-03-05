@@ -1,6 +1,16 @@
-import { EnhancedClassEntry } from '../../../core/types';
-import { CONFIG } from '../../../config';
+import { EnhancedClassEntry } from '../types/index';
 
+// Configuration for class name generation
+const CONFIG = {
+  classNames: {
+    quarkPrefix: 'q-',
+    semanticPrefix: 's-'
+  }
+};
+
+/**
+ * Creates an enhanced class entry from extracted class information
+ */
 export function createClassEntry(
   classes: string,
   componentName: string,
@@ -25,6 +35,9 @@ export function createClassEntry(
   };
 }
 
+/**
+ * Generates a unique quark name from class string
+ */
 function generateQuarkName(classes: string): string {
   const normalizedClasses = normalizeClassString(classes);
   
@@ -54,6 +67,9 @@ function generateQuarkName(classes: string): string {
   return `${CONFIG.classNames.quarkPrefix}${quarkId}`;
 }
 
+/**
+ * Generates a semantic name based on component and class information
+ */
 function generateSemanticName(componentName: string, elementType: string, classes: string): string {
   const normalizedClasses = normalizeClassString(classes);
   const classIdentifier = normalizedClasses
@@ -74,6 +90,9 @@ function generateSemanticName(componentName: string, elementType: string, classe
   return `${CONFIG.classNames.semanticPrefix}${componentName.toLowerCase()}-${elementType}${classIdentifier ? `-${classIdentifier}` : ''}`;
 }
 
+/**
+ * Normalizes class string by sorting and deduplicating classes
+ */
 function normalizeClassString(classString: string): string {
   return classString.split(' ').sort().join(' ');
 } 

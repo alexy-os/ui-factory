@@ -1,7 +1,7 @@
 [
   {
     "quark": "q-o5penonr1rrfmg2ificjcrmtstc",
-    "semantic": "sc-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
+    "semantic": "s-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
     "classes": "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
     "componentName": "Button",
     "elementType": "div",
@@ -16,7 +16,7 @@
   },
   {
     "quark": "q-bpbptw",
-    "semantic": "sc-button-div-bg-primary-bg-primary-80-text-white",
+    "semantic": "s-button-div-bg-primary-bg-primary-80-text-white",
     "classes": "bg-primary text-white hover:bg-primary/80",
     "componentName": "Button",
     "elementType": "div",
@@ -33,7 +33,7 @@
   },
   {
     "quark": "q-bsbstsf",
-    "semantic": "sc-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground",
+    "semantic": "s-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground",
     "classes": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
     "componentName": "Button",
     "elementType": "div",
@@ -50,7 +50,7 @@
   },
   {
     "quark": "q-bbbbibataf",
-    "semantic": "sc-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground",
+    "semantic": "s-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground",
     "classes": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
     "componentName": "Button",
     "elementType": "div",
@@ -67,7 +67,7 @@
   },
   {
     "quark": "q-bataf",
-    "semantic": "sc-button-div-bg-accent-text-accent-foreground",
+    "semantic": "s-button-div-bg-accent-text-accent-foreground",
     "classes": "hover:bg-accent hover:text-accent-foreground",
     "componentName": "Button",
     "elementType": "div",
@@ -84,7 +84,7 @@
   },
   {
     "quark": "q-utpuo4",
-    "semantic": "sc-button-div-underline-text-primary-underline-offset-4",
+    "semantic": "s-button-div-underline-text-primary-underline-offset-4",
     "classes": "text-primary underline-offset-4 hover:underline",
     "componentName": "Button",
     "elementType": "div",
@@ -100,8 +100,25 @@
     }
   },
   {
+    "quark": "q-bpbptw",
+    "semantic": "s-button-div-bg-primary-bg-primary-80-text-white",
+    "classes": "bg-primary text-white hover:bg-primary/80",
+    "componentName": "Button",
+    "elementType": "div",
+    "variants": {
+      "variant": "default"
+    },
+    "isPublic": true,
+    "components": {
+      "Button": {
+        "path": "E:\\_@Bun\\@UIFactory\\src\\source",
+        "name": "Button"
+      }
+    }
+  },
+  {
     "quark": "q-h8p3tx",
-    "semantic": "sc-button-div-h-8-px-3-text-xs",
+    "semantic": "s-button-div-h-8-px-3-text-xs",
     "classes": "h-8 px-3 text-xs",
     "componentName": "Button",
     "elementType": "div",
@@ -118,7 +135,7 @@
   },
   {
     "quark": "q-h1p4",
-    "semantic": "sc-button-div-h-10-px-4",
+    "semantic": "s-button-div-h-10-px-4",
     "classes": "h-10 px-4",
     "componentName": "Button",
     "elementType": "div",
@@ -135,7 +152,7 @@
   },
   {
     "quark": "q-h1p6tb",
-    "semantic": "sc-button-div-h-12-px-6-text-base",
+    "semantic": "s-button-div-h-12-px-6-text-base",
     "classes": "h-12 px-6 text-base",
     "componentName": "Button",
     "elementType": "div",
@@ -152,7 +169,7 @@
   },
   {
     "quark": "q-p3p1wf",
-    "semantic": "sc-herosplit-section-py-32-py-16-w-full",
+    "semantic": "s-herosplit-section-py-32-py-16-w-full",
     "classes": "w-full py-16 lg:py-32",
     "componentName": "HeroSplit",
     "elementType": "section",
@@ -167,7 +184,7 @@
   },
   {
     "quark": "q-cp8p6map4",
-    "semantic": "sc-herosplit-div-container-px-8-px-6-mx-auto-px-4",
+    "semantic": "s-herosplit-div-container-px-8-px-6-mx-auto-px-4",
     "classes": "container mx-auto px-4 md:px-6 lg:px-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -182,7 +199,7 @@
   },
   {
     "quark": "q-g8ggc1icgc2",
-    "semantic": "sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2",
+    "semantic": "s-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2",
     "classes": "grid grid-cols-1 md:grid-cols-2 items-center gap-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -197,7 +214,7 @@
   },
   {
     "quark": "q-ffcg4",
-    "semantic": "sc-herosplit-div-flex-flex-col-gap-4",
+    "semantic": "s-herosplit-div-flex-flex-col-gap-4",
     "classes": "flex gap-4 flex-col",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -212,7 +229,7 @@
   },
   {
     "quark": "q-fjc",
-    "semantic": "sc-herosplit-div-flex-justify-center",
+    "semantic": "s-herosplit-div-flex-justify-center",
     "classes": "flex justify-center",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -227,7 +244,7 @@
   },
   {
     "quark": "q-fbt5mw2t4t3",
-    "semantic": "sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl",
+    "semantic": "s-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl",
     "classes": "max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold",
     "componentName": "HeroSplit",
     "elementType": "h2",
@@ -242,7 +259,7 @@
   },
   {
     "quark": "q-mw2tbtmf",
-    "semantic": "sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground",
+    "semantic": "s-herosplit-p-max-w-2xl-text-base-text-muted-foreground",
     "classes": "text-base text-muted-foreground max-w-2xl",
     "componentName": "HeroSplit",
     "elementType": "p",
@@ -257,7 +274,7 @@
   },
   {
     "quark": "q-ffcg4g8frg6",
-    "semantic": "sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6",
+    "semantic": "s-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6",
     "classes": "flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8",
     "componentName": "HeroSplit",
     "elementType": "div",
@@ -272,7 +289,7 @@
   },
   {
     "quark": "q-fmts",
-    "semantic": "sc-herosplit-button-font-medium-text-sm",
+    "semantic": "s-herosplit-button-font-medium-text-sm",
     "classes": "text-sm font-medium",
     "componentName": "HeroSplit",
     "elementType": "button",
@@ -287,7 +304,7 @@
   },
   {
     "quark": "q-g2ic",
-    "semantic": "sc-herosplit-button-gap-2-items-center",
+    "semantic": "s-herosplit-button-gap-2-items-center",
     "classes": "items-center gap-2",
     "componentName": "HeroSplit",
     "elementType": "button",
@@ -302,7 +319,7 @@
   },
   {
     "quark": "q-g8ggc2",
-    "semantic": "sc-herosplit-button-gap-8-grid-grid-cols-2",
+    "semantic": "s-herosplit-button-gap-8-grid-grid-cols-2",
     "classes": "grid grid-cols-2 gap-8",
     "componentName": "HeroSplit",
     "elementType": "button",
@@ -317,7 +334,7 @@
   },
   {
     "quark": "q-asbmrm",
-    "semantic": "sc-herosplit-img-aspect-square-bg-muted-rounded-md",
+    "semantic": "s-herosplit-img-aspect-square-bg-muted-rounded-md",
     "classes": "bg-muted rounded-md aspect-square",
     "componentName": "HeroSplit",
     "elementType": "img",
@@ -332,7 +349,7 @@
   },
   {
     "quark": "q-bmrmrs2",
-    "semantic": "sc-herosplit-img-bg-muted-rounded-md-row-span-2",
+    "semantic": "s-herosplit-img-bg-muted-rounded-md-row-span-2",
     "classes": "bg-muted rounded-md row-span-2",
     "componentName": "HeroSplit",
     "elementType": "img",

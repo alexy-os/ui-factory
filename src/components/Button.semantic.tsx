@@ -5,20 +5,20 @@ import { tv } from "tailwind-variants";
 
 // Define button variants using tailwind-variants
 export const buttonStyles = tv({
-  base: "sc-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
+  base: "s-button-div-opacity-50-pointer-events-none-outline-none-ring-1-ring-ring-font-medium-gap-2-inline-flex-items-center-justify-center-rounded-md-text-sm-transition-colors",
   variants: {
     variant: {
-      primary: "sc-button-div-bg-primary-bg-primary-80-text-white",
-      secondary: "sc-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground",
-      outline: "sc-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground",
-      ghost: "sc-button-div-bg-accent-text-accent-foreground",
-      link: "sc-button-div-underline-text-primary-underline-offset-4",
-      default: "sc-button-div-bg-primary-bg-primary-80-text-white",
+      primary: "s-button-div-bg-primary-bg-primary-80-text-white",
+      secondary: "s-button-div-bg-secondary-bg-secondary-80-text-secondary-foreground",
+      outline: "s-button-div-bg-background-border-border-input-bg-accent-text-accent-foreground",
+      ghost: "s-button-div-bg-accent-text-accent-foreground",
+      link: "s-button-div-underline-text-primary-underline-offset-4",
+      default: "s-button-div-bg-primary-bg-primary-80-text-white",
     },
     size: {
-      sm: "sc-button-div-h-8-px-3-text-xs",
-      md: "sc-button-div-h-10-px-4",
-      lg: "sc-button-div-h-12-px-6-text-base",
+      sm: "s-button-div-h-8-px-3-text-xs",
+      md: "s-button-div-h-10-px-4",
+      lg: "s-button-div-h-12-px-6-text-base",
     },
   },
   defaultVariants: {

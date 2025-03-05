@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../../../core/types';
+import { EnhancedClassEntry } from '../types/index';
 import { CLASS_PATTERNS } from '../patterns';
 import { createClassEntry } from '../utils/class-entry';
 import { determineElementType } from '../utils/element-type';
