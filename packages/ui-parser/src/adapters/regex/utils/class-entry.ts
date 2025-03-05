@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../types/index';
+import { EnhancedClassEntry } from '../types';
 
 // Configuration for class name generation
 const CONFIG = {
