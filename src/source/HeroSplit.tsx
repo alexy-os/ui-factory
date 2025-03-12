@@ -33,7 +33,7 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "Styling Approach",
+    text: "Tailwind UI",
     variant: "outline",
     className: "text-sm font-medium"
   },

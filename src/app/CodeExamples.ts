@@ -95,42 +95,36 @@ import { BookOpen, Github } from "lucide-react";
 
 export const HeroSplit = () => {
   return (
-    <section className="q-p3p1wf">
-      <div className="q-cp8p6map4">
-        <div className="q-g8ggc1icgc2">
-          <div className="q-ffcg4">
-            <div className="q-fjc">
-              <Button variant="outline" className="q-fmts">
-                Styling Approach
-              </Button>
-            </div>
-            <div className="q-ffcg4">
-              <h2 className="q-fbt5mw2t4t3">
-                Three Ways to Style Components
-              </h2>
-              <p className="q-mw2tbtmf">
-                Explore different styling approaches: from utility-first classes for maximum flexibility, 
-                semantic class names for better readability, to optimized quark classes for production. 
-                Choose what works best for your project.
-              </p>
-            </div>
-            <div className="q-ffcg4g8frg6">
-              <Button variant="default" size="lg" className="q-g2ic">
-                Documentation <BookOpen />
-              </Button>
-              <Button variant="outline" size="lg" className="q-g2ic">
-                GitHub <Github />
-              </Button>
-            </div>
+  <section className="n1w33">
+    <div className="jsre0">
+      <div className="dtc0c">
+        <div className="q2o02">
+          <div className="5adda"><Button
+              className="sdf5g">Styling
+              Approach</Button></div>
+          <div className="q2o02">
+            <h2 className="wsujb">Three Ways to Style Components</h2>
+            <p className="xi0r2">Explore different styling approaches: from utility-first class for maximum flexibility,
+              semantic className names for better readability, to optimized quark class for production. Choose what works
+              best for your project.</p>
           </div>
-          <div className="q-g8ggc2">
-            <div className="q-asbmrm" />
-            <div className="q-bmrmrs2" />
-            <div className="q-asbmrm" />
+          <div className="2rm3d">
+            <Button className="i3hv4">
+              Documentation <BookOpen />
+            </Button>
+            <Button className="jh43b">
+              GitHub <Github />
+            </Button>
           </div>
         </div>
+        <div className="hg3vj">
+          <div className="ssfv4"></div>
+          <div className="7hd8j"></div>
+          <div className="h7gh4"></div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 };`
 }; 
