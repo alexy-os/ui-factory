@@ -4,6 +4,7 @@ import { EnhancedClassEntry, RegexExtractorConfig } from './types';
 import { deduplicateEntries } from './utils/deduplication';
 import { TailwindVariantsExtractor } from './extractors/tv-extractor';
 import { ClassNameExtractor } from './extractors/className-extractor';
+import { configManager } from '../../config';
 
 export class RegexExtractorAdapter {
   readonly name = 'Regex Extractor';
@@ -44,8 +45,7 @@ export class RegexExtractorAdapter {
    * Checks if the adapter can process the given component file
    */
   supportsComponent(componentPath: string): boolean {
-    const ext = path.extname(componentPath).toLowerCase();
-    return ['.tsx', '.jsx', '.js', '.ts'].includes(ext);
+    return configManager.isFileSupported(componentPath);
   }
   
   /**

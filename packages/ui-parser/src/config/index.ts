@@ -6,6 +6,17 @@ import path from 'path';
 export type ExtractorType = 'dom' | 'regex';
 
 /**
+ * Supported file formats configuration
+ */
+export interface FileFormatConfig {
+  extensions: string[];
+  patterns: {
+    className: RegExp[];
+    contextType: string;
+  };
+}
+
+/**
  * UI Parser configuration
  */
 export interface UIParserConfig {
@@ -19,6 +30,9 @@ export interface UIParserConfig {
     quarkPrefix: string;
   };
   extractor: ExtractorType;
+  formats: {
+    [key: string]: FileFormatConfig;
+  };
 }
 
 /**
@@ -29,7 +43,7 @@ export class ConfigManager {
   private config: UIParserConfig;
 
   private constructor() {
-        this.config = {
+    this.config = {
       paths: {
         sourceDir: path.resolve(process.cwd(), './src/source'),
         componentOutput: path.resolve(process.cwd(), './src/components'),
@@ -39,7 +53,64 @@ export class ConfigManager {
         semanticPrefix: 'sc-',
         quarkPrefix: 'q-',
       },
-      extractor: 'regex'     };
+      extractor: 'regex',
+      formats: {
+        react: {
+          extensions: ['.tsx', '.jsx'],
+          patterns: {
+            className: [/className=["']([^"']+)["']/g],
+            contextType: 'jsx'
+          }
+        },
+        javascript: {
+          extensions: ['.js', '.ts'],
+          patterns: {
+            className: [
+              /className:\s*["']([^"']+)["']/g,
+              /\bclassName:\s*["']([^"']+)["']/g
+            ],
+            contextType: 'const'
+          }
+        },
+        php: {
+          extensions: ['.php'],
+          patterns: {
+            className: [
+              /className=["']([^"']+)["']/g,
+              /class=["']([^"']+)["']/g
+            ],
+            contextType: 'php'
+          }
+        },
+        html: {
+          extensions: ['.html', '.hbs', '.handlebars'],
+          patterns: {
+            className: [/class=["']([^"']+)["']/g],
+            contextType: 'html'
+          }
+        },
+        vue: {
+          extensions: ['.vue'],
+          patterns: {
+            className: [
+              /class=["']([^"']+)["']/g,
+              /:class=["']\{([^}]+)\}["']/g
+            ],
+            contextType: 'vue'
+          }
+        },
+        svelte: {
+          extensions: ['.svelte'],
+          patterns: {
+            className: [
+              /class=["']([^"']+)["']/g,
+              /class:([^=]+)=["']([^"']+)["']/g
+            ],
+            contextType: 'svelte'
+          }
+        }
+      }
+    };
   }
 
   /**
@@ -73,6 +144,10 @@ export class ConfigManager {
       classNames: {
         ...this.config.classNames,
         ...(newConfig.classNames || {}),
+      },
+      formats: {
+        ...this.config.formats,
+        ...(newConfig.formats || {}),
       }
     };
   }
@@ -103,6 +178,38 @@ export class ConfigManager {
 
   public getExtractor(): ExtractorType {
     return this.config.extractor;
+  }
+
+  /**
+   * Get supported file extensions
+   */
+  public getSupportedExtensions(): string[] {
+    return Object.values(this.config.formats)
+      .flatMap(format => format.extensions);
+  }
+
+  /**
+   * Get patterns for file type
+   */
+  public getPatternsForFile(filePath: string): { patterns: RegExp[], contextType: string } | null {
+    const ext = path.extname(filePath).toLowerCase();
+    const format = Object.values(this.config.formats)
+      .find(f => f.extensions.includes(ext));
+
+    if (!format) return null;
+
+    return {
+      patterns: format.patterns.className,
+      contextType: format.patterns.contextType
+    };
+  }
+
+  /**
+   * Check if file type is supported
+   */
+  public isFileSupported(filePath: string): boolean {
+    const ext = path.extname(filePath).toLowerCase();
+    return this.getSupportedExtensions().includes(ext);
   }
 }
 

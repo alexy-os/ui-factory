@@ -1,4 +1,4 @@
-export type PatternContextType = 'jsx' | 'const' | 'config' | 'dynamic' | 'template';
+export type PatternContextType = 'jsx' | 'const' | 'config' | 'dynamic' | 'template' | 'php';
 
 export interface PatternConfig {
   pattern: RegExp;

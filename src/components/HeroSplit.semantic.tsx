@@ -33,19 +33,19 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "Semantic Classes",
+    text: "Styling Approach",
     variant: "outline",
-    className: "s-herosplit-button-font-medium-text-sm"
+    className: "text-sm font-medium"
   },
-  title: "Semantic-First Component Styling",
-  description: "Using semantic class names improves code readability and maintainability. Each class describes its purpose, making it easier for teams to understand and modify styles. Perfect for large-scale applications and design systems.",
+  title: "Three Ways to Style Components",
+  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
   buttons: [
     {
       id: "button1",
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "s-herosplit-button-gap-2-items-center",
+      className: "items-center gap-2",
       icon: <BookOpen />
     },
     {
@@ -53,28 +53,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "s-herosplit-button-gap-2-items-center",
+      className: "items-center gap-2",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "s-herosplit-button-gap-8-grid-grid-cols-2",
+      className: "grid grid-cols-2 gap-8",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "bg-muted rounded-md aspect-square"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-bg-muted-rounded-md-row-span-2"
+          className: "bg-muted rounded-md row-span-2"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "s-herosplit-img-aspect-square-bg-muted-rounded-md"
+          className: "bg-muted rounded-md aspect-square"
         }
       ]
     }
@@ -83,7 +83,7 @@ const content: Content = {
 
 type HeroSplitWithGalleryProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>;
 
-const HeroSplit = (props: HeroSplitWithGalleryProps) => {
+export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   const { button, title, description, buttons, images, className, ...rest } = {
     ...content,
     ...props,
@@ -133,6 +133,4 @@ const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   );
 };
 
-// Export with variant name
-export { HeroSplit as HeroSplitSemantic };
-export default HeroSplit;
+export const HeroSplitSemantic = HeroSplit;

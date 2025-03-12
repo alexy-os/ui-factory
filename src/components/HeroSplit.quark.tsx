@@ -33,19 +33,19 @@ type Content = {
 
 const content: Content = {
   button: {
-    text: "Quark Classes",
+    text: "Styling Approach",
     variant: "outline",
-    className: "q-fmts"
+    className: "text-sm font-medium"
   },
-  title: "Optimized Atomic CSS Classes",
-  description: "Quark classes represent the perfect balance between utility-first and semantic approaches. They maintain atomic nature for flexibility while optimizing class names for production, reducing bundle size and improving performance.",
+  title: "Three Ways to Style Components",
+  description: "Explore different styling approaches: from utility-first classes for maximum flexibility, semantic class names for better readability, to optimized quark classes for production. Choose what works best for your project.",
   buttons: [
     {
       id: "button1",
       text: "Documentation",
       variant: "default",
       size: "lg",
-      className: "q-g2ic",
+      className: "items-center gap-2",
       icon: <BookOpen />
     },
     {
@@ -53,28 +53,28 @@ const content: Content = {
       text: "GitHub",
       variant: "outline",
       size: "lg",
-      className: "q-g2ic",
+      className: "items-center gap-2",
       icon: <Github />
     }
   ],
   images: {
     grid: {
-      className: "q-g8ggc2",
+      className: "grid grid-cols-2 gap-8",
       items: [
         {
           id: "image1",
           src: "https://placehold.co/600x400",
-          className: "q-asbmrm"
+          className: "bg-muted rounded-md aspect-square"
         },
         {
           id: "image2",
           src: "https://placehold.co/600x400",
-          className: "q-bmrmrs2"
+          className: "bg-muted rounded-md row-span-2"
         },
         {
           id: "image3",
           src: "https://placehold.co/600x400",
-          className: "q-asbmrm"
+          className: "bg-muted rounded-md aspect-square"
         }
       ]
     }
@@ -83,33 +83,33 @@ const content: Content = {
 
 type HeroSplitWithGalleryProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>;
 
-const HeroSplit = (props: HeroSplitWithGalleryProps) => {
+export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   const { button, title, description, buttons, images, className, ...rest } = {
     ...content,
     ...props,
   };
 
   return ( 
-    <section className="q-p3p1wf" {...rest}>
-      <div className="q-cp8p6map4">
-        <div className="q-g8ggc1icgc2">
-          <div className="q-ffcg4">
+    <section className="n1w33" {...rest}>
+      <div className="jsre0">
+        <div className="dtc0c">
+          <div className="q2o02">
             {button && (
-              <div className="q-fjc">
+              <div className="5adda">
                 <Button variant={button.variant} className={button.className}>
                   {button.text}
                 </Button>
               </div>
             )}
-            <div className="q-ffcg4">
-              <h2 className="q-fbt5mw2t4t3">
+            <div className="q2o02">
+              <h2 className="wsujb">
                 {title}
               </h2>
-              <p className="q-mw2tbtmf">
+              <p className="xi0r2">
                 {description}
               </p>
             </div>
-            <div className="q-ffcg4g8frg6">
+            <div className="2rm3d">
               {buttons?.map((button) => (
                 <Button 
                   key={button.id}
@@ -133,6 +133,4 @@ const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   );
 };
 
-// Export with variant name
-export { HeroSplit as HeroSplitQuark };
-export default HeroSplit;
+export const HeroSplitQuark = HeroSplit;

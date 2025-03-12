@@ -8,6 +8,7 @@ import {
   AnalysisResult, 
   AnalysisOptions 
 } from './types';
+import { configManager } from '../config/index';
 
 /**
  * Class for component analysis
@@ -81,7 +82,7 @@ export class ComponentAnalyzer {
         
         if (file.isDirectory()) {
           scan(filePath, relativeFilePath);
-        } else if (file.isFile() && /\.(tsx|jsx|vue|svelte|html|hbs|handlebars)$/.test(file.name)) {
+        } else if (file.isFile() && configManager.isFileSupported(file.name)) {
           const componentName = path.basename(file.name, path.extname(file.name));
           components.push({
             path: filePath,

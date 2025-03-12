@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { uiParser } from '../core/index.js';
-import { configManager, ExtractorType } from '../config/index.js';
+import { configManager } from '../config/index.js';
 import { DirectReplacer } from '../transformers/direct-replacer';
 import fs from 'fs';
 import path from 'path';
@@ -32,10 +32,9 @@ export class CLI {
       .description('UI Parser CLI for analyzing and transforming UI components')
       .version('0.0.1');
     
-        this.program
-      .command('set-extractor')
+    /*const setExtractor = this.program
+      .command('set-extractor <type>')
       .description('Set the class extractor type (dom|regex)')
-      .argument('<type>', 'Extractor type: dom or regex')
       .action((type: string) => {
         if (type === 'dom' || type === 'regex') {
           configManager.setExtractor(type as ExtractorType);
@@ -43,9 +42,9 @@ export class CLI {
         } else {
           console.error('Invalid extractor type. Use "dom" or "regex"');
         }
-      });
+      });*/
     
-        this.program
+    /*const analyze = this.program
       .command('analyze')
       .description('Analyze components and extract classes')
       .option('-s, --source <path>', 'Source directory with components')
@@ -68,9 +67,9 @@ export class CLI {
           outputPath: options.output,
           verbose: options.verbose
         });
-      });
+      });*/
     
-        this.program
+    this.program
       .command('generate')
       .description('Generate CSS from analysis results')
       .option('-o, --output <path>', 'Output directory for CSS files')
@@ -87,8 +86,8 @@ export class CLI {
           minify: options.minify
         });
       });
-    
-        this.program
+      
+    this.program
       .command('transform')
       .description('Transform components by replacing classes')
       .option('-s, --source <path>', 'Source directory with components')
@@ -106,7 +105,7 @@ export class CLI {
         
         try {
                     const files = fs.readdirSync(sourceDir)
-            .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
+            .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
           
           console.log(`Found ${files.length} components to transform`);
           
@@ -121,7 +120,7 @@ export class CLI {
         }
       });
     
-        this.program
+    this.program
       .command('all')
       .description('Run all operations: analyze, generate, transform')
       .option('-s, --source <path>', 'Source directory with components')
@@ -152,7 +151,7 @@ export class CLI {
 
                     console.log('\nStep 3: Transforming components...');
           const files = fs.readdirSync(sourceDir)
-            .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
+            .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
 
           for (const file of files) {
             const componentPath = path.join(sourceDir, file);
@@ -176,6 +175,7 @@ export class CLI {
 
   private async transformComponent(componentPath: string): Promise<void> {
     const componentName = path.basename(componentPath, path.extname(componentPath));
+    const extension = path.extname(componentPath);
     
     try {
       const analysisPath = configManager.getConfig().paths.domAnalysisResults;
@@ -189,8 +189,8 @@ export class CLI {
       );
 
       const outputDir = configManager.getConfig().paths.componentOutput;
-      const quarkOutput = path.join(outputDir, `${componentName}.quark.tsx`);
-      const semanticOutput = path.join(outputDir, `${componentName}.semantic.tsx`);
+      const quarkOutput = path.join(outputDir, `${componentName}.quark${extension}`);
+      const semanticOutput = path.join(outputDir, `${componentName}.semantic${extension}`);
 
       const directReplacer = new DirectReplacer(classEntries);
       await directReplacer.transform({
@@ -219,7 +219,7 @@ export class CLI {
 
             console.log('\n🔄 Transforming components...');
       const files = fs.readdirSync(options.sourceDir || configManager.getConfig().paths.sourceDir)
-        .filter(file => file.endsWith('.tsx') || file.endsWith('.jsx'));
+        .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
 
       for (const file of files) {
         await this.transformComponent(path.join(options.sourceDir || configManager.getConfig().paths.sourceDir, file));
