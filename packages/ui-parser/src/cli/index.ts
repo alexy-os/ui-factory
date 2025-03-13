@@ -42,9 +42,9 @@ export class CLI {
         } else {
           console.error('Invalid extractor type. Use "dom" or "regex"');
         }
-      });*/
+      });
     
-    /*const analyze = this.program
+    const analyze = this.program
       .command('analyze')
       .description('Analyze components and extract classes')
       .option('-s, --source <path>', 'Source directory with components')

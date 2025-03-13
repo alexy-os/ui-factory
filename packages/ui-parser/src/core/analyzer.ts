@@ -1,20 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 import { adapterFactory } from '../adapters';
-import { CONFIG } from '../config';
+import { configManager } from '../config';
 import { 
   EnhancedClassEntry, 
   ComponentInfo, 
   AnalysisResult, 
   AnalysisOptions 
 } from './types';
-import { configManager } from '../config/index';
 
 /**
  * Class for component analysis
  */
 export class ComponentAnalyzer {
   private static instance: ComponentAnalyzer;
+  private cachedAnalysisResults: Map<string, EnhancedClassEntry[]> = new Map();
+  private cachedComponents: Map<string, ComponentInfo[]> = new Map();
   
   private constructor() {}
   
@@ -71,6 +72,12 @@ export class ComponentAnalyzer {
    * Scans directory and finds components
    */
   public scanDirectory(dir: string): ComponentInfo[] {
+    // Check if we already have cached results for this directory
+    if (this.cachedComponents.has(dir)) {
+      console.log(`Using cached component scan results for: ${dir}`);
+      return this.cachedComponents.get(dir) || [];
+    }
+    
     const components: ComponentInfo[] = [];
     
     const scan = (currentDir: string, relativeDirPath: string = '') => {
@@ -94,24 +101,42 @@ export class ComponentAnalyzer {
     };
     
     scan(dir);
+    
+    // Cache the results
+    this.cachedComponents.set(dir, components);
+    
     return components;
+  }
+  
+  /**
+   * Clear component scan cache for a specific directory or all directories
+   */
+  public clearComponentCache(dir?: string): void {
+    if (dir) {
+      this.cachedComponents.delete(dir);
+    } else {
+      this.cachedComponents.clear();
+    }
   }
   
   /**
    * Analyzes all components in the directory
    */
   public async analyzeAllComponents(options: AnalysisOptions = {}): Promise<EnhancedClassEntry[]> {
-    const sourceDir = options.sourceDir || CONFIG.paths.sourceDir;
-    const outputPath = options.outputPath || CONFIG.paths.domAnalysisResults;
+    const sourceDir = options.sourceDir || configManager.getPath('sourceDir');
+    const outputPath = options.outputPath || configManager.getPath('domAnalysisResults');
     
-        const components = this.scanDirectory(sourceDir);
+    // Clear cached results if force option is set
+    if (options.verbose) {
+      this.clearComponentCache(sourceDir);
+    }
+    
+    const components = this.scanDirectory(sourceDir);
     const results: EnhancedClassEntry[] = [];
     
     console.log(`Found ${components.length} components to analyze`);
     
     for (const component of components) {
-      
-      
       try {
         const analysisResult = await this.analyzeComponent(component.path);
         
@@ -143,7 +168,11 @@ export class ComponentAnalyzer {
       
       console.log(`Results saved to: ${outputFilePath}`);
 
-            CONFIG.paths.domAnalysisResults = outputFilePath;
+            configManager.setPath('domAnalysisResults', outputFilePath);
+      
+      // Cache the analysis results
+      this.cachedAnalysisResults.set(outputFilePath, results);
+      
     } catch (error) {
       console.error('Error saving analysis results:', error);
       throw error;
@@ -155,16 +184,38 @@ export class ComponentAnalyzer {
   /**
    * Loads analysis results from file
    */
-  public loadAnalysisResults(filePath: string = CONFIG.paths.domAnalysisResults): EnhancedClassEntry[] {
+  public loadAnalysisResults(filePath: string = configManager.getPath('domAnalysisResults')): EnhancedClassEntry[] {
+    // Check if we already have cached results for this file
+    if (this.cachedAnalysisResults.has(filePath)) {
+      console.log(`Using cached analysis results for: ${filePath}`);
+      return this.cachedAnalysisResults.get(filePath) || [];
+    }
+    
     try {
       if (fs.existsSync(filePath)) {
         const jsonContent = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(jsonContent) as EnhancedClassEntry[];
+        const results = JSON.parse(jsonContent) as EnhancedClassEntry[];
+        
+        // Cache the results
+        this.cachedAnalysisResults.set(filePath, results);
+        
+        return results;
       }
       return [];
     } catch (error) {
       console.error('Error loading analysis results:', error);
       return [];
+    }
+  }
+  
+  /**
+   * Clear analysis results cache for a specific file or all files
+   */
+  public clearAnalysisCache(filePath?: string): void {
+    if (filePath) {
+      this.cachedAnalysisResults.delete(filePath);
+    } else {
+      this.cachedAnalysisResults.clear();
     }
   }
 }
