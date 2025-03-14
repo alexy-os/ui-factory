@@ -90,26 +90,26 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-    <section className="s-herosplit-section-py-32-py-16-w-full" {...rest}>
-      <div className="s-herosplit-div-container-px-8-px-6-mx-auto-px-4">
-        <div className="s-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
-          <div className="s-herosplit-div-flex-flex-col-gap-4">
+    <section className="sc-herosplit-section-py-32-py-16-w-full" {...rest}>
+      <div className="sc-herosplit-div-container-px-8-px-6-mx-auto-px-4">
+        <div className="sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2">
+          <div className="sc-herosplit-div-flex-flex-col-gap-4">
             {button && (
-              <div className="s-herosplit-div-flex-justify-center">
+              <div className="sc-herosplit-div-flex-justify-center">
                 <Button variant={button.variant} className={button.className}>
                   {button.text}
                 </Button>
               </div>
             )}
-            <div className="s-herosplit-div-flex-flex-col-gap-4">
-              <h2 className="s-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
+            <div className="sc-herosplit-div-flex-flex-col-gap-4">
+              <h2 className="sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl">
                 {title}
               </h2>
-              <p className="s-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
+              <p className="sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground">
                 {description}
               </p>
             </div>
-            <div className="s-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
+            <div className="sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6">
               {buttons?.map((button) => (
                 <Button 
                   key={button.id}

@@ -1,25 +1,35 @@
 .sc-layout-center { @apply inline-flex items-center justify-center; }
 .sc-text-normal { @apply font-medium text-sm; }
 .sc-Button-div-base { @apply gap-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50; }
-.s-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
-.s-button-div-bg-secondary-bg-secondary-bg-secondary-80-text-secondary-foreground-bg-secondary-80-text-secondary-foreground { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80; }
-.s-button-div-bg-background-border-border-input-bg-background-border-input-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground; }
-.s-button-div-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground { @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground; }
-.s-button-div-text-primary-underline-text-primary-underline-offset-4 { @apply text-primary underline-offset-4 hover:underline dark:text-primary; }
-.s-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
-.s-button-div-h-8-px-3-text-xs { @apply h-8 px-3 text-xs; }
-.s-button-div-h-10-px-4 { @apply h-10 px-4; }
+.sc-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
+.sc-button-div-bg-secondary-bg-secondary-bg-secondary-80-text-secondary-foreground-bg-secondary-80-text-secondary-foreground { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80; }
+.sc-button-div-bg-background-border-border-input-bg-background-border-input-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.sc-button-div-bg-accent-text-accent-foreground-bg-accent-text-accent-foreground { @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.sc-button-div-text-primary-underline-text-primary-underline-offset-4 { @apply text-primary underline-offset-4 hover:underline dark:text-primary; }
+.sc-button-div-bg-primary-bg-primary-bg-primary-90-text-primary-foreground-bg-primary-90-text-primary-foreground { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
+.sc-button-div-h-8-px-3-text-xs { @apply h-8 px-3 text-xs; }
+.sc-button-div-h-10-px-4 { @apply h-10 px-4; }
 .sc-size-md { @apply px-6 h-12 text-base; }
-.s-herosplit-section-py-32-py-16-w-full { @apply w-full py-16 lg:py-32; }
-.s-herosplit-div-container-px-8-px-6-mx-auto-px-4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
-.s-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
-.s-herosplit-div-flex-flex-col-gap-4 { @apply flex gap-4 flex-col; }
-.s-herosplit-div-flex-justify-center { @apply flex justify-center; }
-.s-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
-.s-herosplit-p-max-w-2xl-text-base-text-muted-foreground { @apply text-base text-muted-foreground max-w-2xl; }
-.s-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
 .sc-text-normal { @apply font-medium text-sm; }
-.s-herosplit-button-gap-2-items-center { @apply items-center gap-2; }
-.s-herosplit-button-gap-8-grid-grid-cols-2 { @apply grid grid-cols-2 gap-8; }
-.s-herosplit-img-aspect-square-bg-muted-rounded-md { @apply bg-muted rounded-md aspect-square; }
-.s-herosplit-img-bg-muted-rounded-md-row-span-2 { @apply bg-muted rounded-md row-span-2; }
+.sc-interactive { @apply transition-colors hover:bg-accent hover:text-accent-foreground; }
+.sc-Button-div-base { @apply base: "inline-flex items-center justify-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+ variants: {
+ variant: primary: "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90",
+ secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80",
+ outline: "border border-input bg-background dark:border-input dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground",
+ ghost: "hover:bg-accent link: "text-primary underline-offset-4 hover:underline dark:text-primary",
+ default: },
+ size: sm: "h-8 px-3 text-xs",
+ md: "h-10 px-4",
+ lg: "h-12 px-6 text-base",
+ defaultVariants: "primary",
+ "md",
+; }
+.sc-herosplit-section-py-32-py-16-w-full { @apply w-full py-16 lg:py-32; }
+.sc-herosplit-div-container-px-8-px-6-mx-auto-px-4 { @apply container mx-auto px-4 md:px-6 lg:px-8; }
+.sc-herosplit-div-gap-8-grid-grid-cols-1-items-center-grid-cols-2 { @apply grid grid-cols-1 md:grid-cols-2 items-center gap-8; }
+.sc-herosplit-div-flex-flex-col-gap-4 { @apply flex gap-4 flex-col; }
+.sc-herosplit-div-flex-justify-center { @apply flex justify-center; }
+.sc-herosplit-h2-font-bold-text-5xl-max-w-2xl-text-4xl-text-3xl { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
+.sc-herosplit-p-max-w-2xl-text-base-text-muted-foreground { @apply text-base text-muted-foreground max-w-2xl; }
+.sc-herosplit-div-flex-flex-col-gap-4-gap-8-flex-row-gap-6 { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }

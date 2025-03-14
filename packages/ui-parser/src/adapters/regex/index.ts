@@ -11,11 +11,10 @@ export class RegexExtractorAdapter {
   private config: RegexExtractorConfig;
   
   constructor(config?: Partial<RegexExtractorConfig>) {
-    
     this.config = {
       classNames: {
-        quarkPrefix: 'q-',
-        semanticPrefix: 's-',
+        quarkPrefix: configManager.getClassNamePrefix('quark'),
+        semanticPrefix: configManager.getClassNamePrefix('semantic'),
         ...(config?.classNames || {})
       }
     };
@@ -57,6 +56,13 @@ export class RegexExtractorAdapter {
       const componentName = path.basename(componentPath, path.extname(componentPath));
       const componentDir = path.dirname(componentPath);
       
+      // Получаем паттерны для конкретного файла из конфигуратора
+      const filePatterns = configManager.getPatternsForFile(componentPath);
+      if (!filePatterns) {
+        console.warn(`No patterns found for file: ${componentPath}`);
+        return [];
+      }
+
       const classEntries: EnhancedClassEntry[] = [
         ...TailwindVariantsExtractor.extract(
           content, 
@@ -68,7 +74,8 @@ export class RegexExtractorAdapter {
           content, 
           componentName, 
           componentDir,
-          this.config.classNames
+          this.config.classNames,
+          filePatterns
         )
       ];
 

@@ -1,6 +1,5 @@
 import { ExtractorPatterns } from './types/pattern-types';
-import { configManager } from '../../config';
-import { FileFormatConfig } from '../../config';
+import { configManager, FileFormatConfig } from '../../config';
 
 // Dynamically create CLASS_PATTERNS from the configuration
 export const CLASS_PATTERNS: ExtractorPatterns = {};

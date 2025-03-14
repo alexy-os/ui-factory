@@ -123,63 +123,6 @@ export class DirectReplacer {
   }
 
   /**
-   * Updates import statements in the content
-   */
-  /*private updateImports(content: string, variant: 'quark' | 'semantic'): string {
-    let result = content;
-
-    
-    const importRegex = /import\s+{([^}]+)}\s+from\s+['"]([^'"]+)['"]/g;
-    result = result.replace(importRegex, (match, imports, importPath) => {
-      
-      if (importPath.startsWith('@') || !importPath.startsWith('.')) {
-        return match;
-      }
-
-      
-      const updatedPath = importPath.endsWith(`.${variant}`)
-        ? importPath
-        : `${importPath}.${variant}`;
-
-      return `import {${imports}} from "${updatedPath}"`;
-    });
-
-    
-    const typeImportRegex = /import\s+type\s+{([^}]+)}\s+from\s+['"]([^'"]+)['"]/g;
-    result = result.replace(typeImportRegex, (match, imports, importPath) => {
-      if (importPath.startsWith('@') || !importPath.startsWith('.')) {
-        return match;
-      }
-
-      const updatedPath = importPath.endsWith(`.${variant}`)
-        ? importPath
-        : `${importPath}.${variant}`;
-
-      return `import type {${imports}} from "${updatedPath}"`;
-    });
-
-    return result;
-  }*/
-
-  /*private replaceClassesInContent(content: string, useQuark: boolean): ReplacementResult {
-    let result = content;
-    let replacementCount = 0;
-
-    for (const [originalClasses, { quark, semantic }] of this.classMap) {
-      const replacement = useQuark ? quark : semantic;
-      const escapedClasses = originalClasses.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const searchRegex = new RegExp(`(['"\`])${escapedClasses}\\1`, 'g');
-      
-      result = result.replace(searchRegex, (_, quote) => {
-        replacementCount++;
-        return `${quote}${replacement}${quote}`;
-      });
-    }
-
-    return { result, replacementCount };
-  }*/
-
-  /**
    * Transform a component file
    * @param {DirectReplacerOptions} options - Configuration options for the transformation
    * @returns {Promise<void>} Promise that resolves when transformation is complete

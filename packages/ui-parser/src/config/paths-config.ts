@@ -14,6 +14,6 @@ export interface PathsConfig {
  */
 export const defaultPaths: PathsConfig = {
   sourceDir: path.resolve(process.cwd(), './src/source'),
-  componentOutput: path.resolve(process.cwd(), './src/components'),
-  domAnalysisResults: path.resolve(process.cwd(), './src/components/domAnalysis.json'),
+  componentOutput: path.resolve(process.cwd(), './src/output'),
+  domAnalysisResults: path.resolve(process.cwd(), './src/output/dataClasses.json'),
 }; 

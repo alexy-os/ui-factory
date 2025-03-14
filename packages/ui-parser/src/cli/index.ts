@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { uiParser } from '../core/index.js';
 import { configManager } from '../config/index.js';
-import { DirectReplacer } from '../transformers/direct-replacer';
+import { DirectReplacer } from '../utils/direct-replacer.js';
 import fs from 'fs';
 import path from 'path';
 import { EnhancedClassEntry } from '../core/types';
