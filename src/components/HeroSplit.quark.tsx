@@ -90,26 +90,26 @@ export const HeroSplit = (props: HeroSplitWithGalleryProps) => {
   };
 
   return ( 
-    <section className="n1w33" {...rest}>
+    <section className="z1w33" {...rest}>
       <div className="jsre0">
-        <div className="dtc0c">
-          <div className="q2o02">
+        <div className="xtc0c">
+          <div className="i2o02">
             {button && (
-              <div className="5adda">
+              <div className="hadda">
                 <Button variant={button.variant} className={button.className}>
                   {button.text}
                 </Button>
               </div>
             )}
-            <div className="q2o02">
-              <h2 className="wsujb">
+            <div className="i2o02">
+              <h2 className="ssujb">
                 {title}
               </h2>
-              <p className="xi0r2">
+              <p className="ji0r2">
                 {description}
               </p>
             </div>
-            <div className="2rm3d">
+            <div className="krm3d">
               {buttons?.map((button) => (
                 <Button 
                   key={button.id}

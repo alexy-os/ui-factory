@@ -32,19 +32,19 @@ export class CLI {
       .description('UI Parser CLI for analyzing and transforming UI components')
       .version('0.0.1');
     
-    /*const setExtractor = this.program
+    this.program
       .command('set-extractor <type>')
       .description('Set the class extractor type (dom|regex)')
       .action((type: string) => {
         if (type === 'dom' || type === 'regex') {
-          configManager.setExtractor(type as ExtractorType);
+          configManager.setExtractor(type);
           console.log(`Extractor set to: ${type}`);
         } else {
           console.error('Invalid extractor type. Use "dom" or "regex"');
         }
       });
     
-    const analyze = this.program
+    this.program
       .command('analyze')
       .description('Analyze components and extract classes')
       .option('-s, --source <path>', 'Source directory with components')
@@ -53,7 +53,7 @@ export class CLI {
       .option('-v, --verbose', 'Verbose output')
       .action(async (options) => {
         if (options.extractor) {
-          configManager.setExtractor(options.extractor as ExtractorType);
+          configManager.setExtractor(options.extractor);
         }
         if (options.source) {
           configManager.updatePaths({ sourceDir: options.source });
@@ -67,7 +67,7 @@ export class CLI {
           outputPath: options.output,
           verbose: options.verbose
         });
-      });*/
+      });
     
     this.program
       .command('generate')
