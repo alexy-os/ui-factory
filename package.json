@@ -21,7 +21,7 @@
     "ui-parser:analyze": "bun ./packages/ui-parser/src/cli/bin.ts analyze",
     "ui-parser:generate": "bun ./packages/ui-parser/src/cli/bin.ts generate",
     "ui-parser:transform": "bun ./packages/ui-parser/src/cli/bin.ts transform",
-    "ui-parser:all": "bun ./packages/ui-parser/src/cli/bin.ts all",
+    "ui:all": "bun ./packages/ui-parser/src/cli/bin.ts all",
     "ui-parser:build": "cd packages/ui-parser && tsc && vite build",
     "rm": "rm -rf src/output/*"
   },

@@ -37,6 +37,10 @@ export const defaultFormats: Record<string, FileFormatConfig> = {
         {
           name: 'tvVariants',
           pattern: /tv\(\s*\{([\s\S]*?)\}\s*\)/gs
+        },
+        {
+          name: 'tvPattern',
+          pattern: /(?:tv|cva)\(\s*\{([^}]+)\}\s*\)/g
         }
       ],
       contextType: 'jsx' as PatternContextType

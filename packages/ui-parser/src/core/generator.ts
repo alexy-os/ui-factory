@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { configManager } from '../config';
 import { EnhancedClassEntry, CSSGenerationResult, GenerationOptions } from './types';
+import { isValidTailwindClass } from '../utils/class-validator';
 
 /**
  * Class for generating CSS
@@ -56,45 +57,56 @@ export class CSSGenerator {
    * Generates CSS with semantic and quark classes
    */
   private generateCSS(entries: EnhancedClassEntry[]): CSSGenerationResult {
-    // Create a cache key based on entries
     const cacheKey = JSON.stringify(entries.map(e => e.classes).sort());
     
-    // Check if we have this CSS already generated
     if (this.cachedCSS.has(cacheKey)) {
-      console.log('Using cached CSS generation result');
-      return this.cachedCSS.get(cacheKey) || { quarkCSS: '', semanticCSS: '' };
+      return this.cachedCSS.get(cacheKey)!;
     }
     
     let quarkCSS = '';
     let semanticCSS = '';
     
     entries.forEach(entry => {
-      if (entry.modifiers.length > 0) {
-        // We have modifiers, generate CSS for each of them
-        entry.modifiers.forEach(mod => {
-          // For crypto file
-          quarkCSS += `.${mod.crypto} { @apply ${mod.classes}; }\n`;
-          
-          // For semantic file
-          semanticCSS += `.${mod.semantic} { @apply ${mod.classes}; }\n`;
-        });
-      } else {
-        // No modifiers, using the original class
-        quarkCSS += `.${entry.crypto} { @apply ${entry.classes}; }\n`;
-        semanticCSS += `.${entry.semantic} { @apply ${entry.classes}; }\n`;
+      // Валидируем классы перед генерацией
+      const classes = entry.classes.trim();
+      if (!this.validateClassEntry(entry)) {
+        console.warn(`Skipping invalid class entry: ${classes}`);
+        return;
       }
-      
-      // Add comment with full set of classes for debugging
-      // quarkCSS += `/* Original classes: ${entry.classes} */\n\n`;
-      // semanticCSS += `/* Original classes: ${entry.classes} */\n\n`;
+
+      if (entry.modifiers.length > 0) {
+        entry.modifiers.forEach(mod => {
+          if (this.validateClasses(mod.classes)) {
+            quarkCSS += `.${mod.crypto} { @apply ${mod.classes}; }\n`;
+            semanticCSS += `.${mod.semantic} { @apply ${mod.classes}; }\n`;
+          }
+        });
+      } else if (this.validateClasses(classes)) {
+        quarkCSS += `.${entry.crypto} { @apply ${classes}; }\n`;
+        semanticCSS += `.${entry.semantic} { @apply ${classes}; }\n`;
+      }
     });
-    
+
     const result = { quarkCSS, semanticCSS };
-    
-    // Cache the generated CSS
     this.cachedCSS.set(cacheKey, result);
-    
     return result;
+  }
+  
+  private validateClassEntry(entry: EnhancedClassEntry): boolean {
+    return (
+      entry &&
+      typeof entry.classes === 'string' &&
+      entry.classes.trim().length > 0 &&
+      !entry.classes.includes('base:') &&
+      !entry.classes.includes('variants:')
+    );
+  }
+  
+  private validateClasses(classes: string): boolean {
+    if (!classes || typeof classes !== 'string') return false;
+
+    const individualClasses = classes.split(/\s+/);
+    return individualClasses.every(cls => isValidTailwindClass(cls));
   }
   
   /**
