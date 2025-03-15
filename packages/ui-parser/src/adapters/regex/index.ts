@@ -56,7 +56,6 @@ export class RegexExtractorAdapter {
       const componentName = path.basename(componentPath, path.extname(componentPath));
       const componentDir = path.dirname(componentPath);
       
-      // Получаем паттерны для конкретного файла из конфигуратора
       const filePatterns = configManager.getPatternsForFile(componentPath);
       if (!filePatterns) {
         console.warn(`No patterns found for file: ${componentPath}`);

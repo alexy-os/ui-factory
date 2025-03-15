@@ -15,7 +15,7 @@ export function createClassEntry(
 ): EnhancedClassEntry {
   const { modifiers } = extractModifiers(classes, componentName, elementType);
   
-  // Генерируем имена только если нет модификаторов
+  // Generate names only if there are no modifiers
   let quark = '', crypto = '', semantic = '';
   
   if (modifiers.length === 0) {
