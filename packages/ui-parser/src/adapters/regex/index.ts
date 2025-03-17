@@ -4,6 +4,7 @@ import { configManager } from './config';
 import { EnhancedClassEntry, RegexExtractorConfig } from './types';
 import { deduplicateEntries } from './utils/deduplication';
 import { ClassNameExtractor } from './extractors/extractor';
+import { TVExtractor } from './extractors/tv-extractor';
 
 export class RegexExtractorAdapter {
   readonly name = 'Regex Extractor';
@@ -68,6 +69,12 @@ export class RegexExtractorAdapter {
           componentDir,
           this.config.classNames,
           filePatterns
+        ),
+        ...TVExtractor.extract(
+          content,
+          componentName,
+          componentDir,
+          this.config.classNames
         )
       ];
 

@@ -1,0 +1,19 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+.manual/
+.git/
+.gitignore
+.vscode/
+dist/
+node_modules/
+public/
+packages/ui-shadcn/
+.cursorignore
+.cursorrules
+.cursorignore
+bun.lockb
+LICENSE
+README.md
+tsconfig.json
+tsconfig.node.json
+tsconfig.app.json
+tsconfig.base.json

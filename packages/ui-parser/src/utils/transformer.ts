@@ -186,6 +186,21 @@ export class ComponentTransformer {
           //console.log(`No replacement found for "${classValue}"`);
         }
         
+        if (transformationType === 'semantic' || transformationType === 'quark') {
+          // Apply TV/CVA transformations
+          const updatedContent = this.replaceTVContent(
+            transformationType === 'semantic' ? semanticContent : quarkContent,
+            domAnalysisData,
+            transformationType
+          );
+          
+          if (transformationType === 'semantic') {
+            semanticContent = updatedContent;
+          } else {
+            quarkContent = updatedContent;
+          }
+        }
+        
         const outputPath = path.join(targetOutputDir, component.relativePath);
         const outputDir = path.dirname(outputPath);
         
@@ -288,6 +303,85 @@ export class ComponentTransformer {
   
   private normalizeClassString(classString: string): string {
     return classString.split(' ').sort().join(' ');
+  }
+  
+  /**
+   * Replaces TV/CVA content with transformed classes
+   */
+  private replaceTVContent(
+    content: string,
+    classEntries: EnhancedClassEntry[],
+    transformationType: 'semantic' | 'quark'
+  ): string {
+    // Group entries by component name
+    const entriesByComponent: Record<string, EnhancedClassEntry[]> = {};
+    
+    for (const entry of classEntries) {
+      if (!entriesByComponent[entry.componentName]) {
+        entriesByComponent[entry.componentName] = [];
+      }
+      entriesByComponent[entry.componentName].push(entry);
+    }
+    
+    // Process each component
+    for (const componentName in entriesByComponent) {
+      const entries = entriesByComponent[componentName];
+      
+      // Find TV/CVA configurations in content
+      const tvPattern = /(?:tv|cva)\(\s*\{([\s\S]*?)\}\s*\)/g;
+      
+      content = content.replace(tvPattern, (match, tvContent) => {
+        let newTvContent = tvContent;
+        
+        // Replace base classes
+        const baseEntry = entries.find(entry => 
+          entry.elementType === 'base' && 
+          entry.variants && 
+          entry.variants.variant === 'base'
+        );
+        
+        if (baseEntry) {
+          const baseValue = transformationType === 'semantic' ? 
+            baseEntry.semantic : 
+            baseEntry.crypto;
+            
+          newTvContent = newTvContent.replace(
+            /(base:\s*['"`])(.*?)(['"`])/g,
+            `$1${baseValue}$3`
+          );
+        }
+        
+        // Replace variant classes
+        const variantEntries = entries.filter(entry => 
+          entry.elementType.includes('-') && 
+          entry.variants && 
+          Object.keys(entry.variants).length > 0
+        );
+        
+        for (const entry of variantEntries) {
+          // Extract group and variant names from elementType (e.g., "variant-primary")
+          const [group, variant] = entry.elementType.split('-');
+          
+          if (group && variant) {
+            const value = transformationType === 'semantic' ? 
+              entry.semantic : 
+              entry.crypto;
+              
+            // Create pattern to match this specific variant
+            const pattern = new RegExp(
+              `(${group}\\s*:\\s*\\{[\\s\\S]*?${variant}\\s*:\\s*['"\`])([^'"\`]*?)(['"\`])`,
+              'g'
+            );
+            
+            newTvContent = newTvContent.replace(pattern, `$1${value}$3`);
+          }
+        }
+        
+        return match.replace(tvContent, newTvContent);
+      });
+    }
+    
+    return content;
   }
 }
 
