@@ -22,13 +22,13 @@ export function createClassEntry(
   
   // Generate names only if there are no modifiers
   let quark = '', crypto = '', semantic = '';
-  
-  if (modifiers.length === 0) {
     const names = nameGenerator.generate(classes, componentName, elementType, config);
+  
+  //if (modifiers.length === 0) {
     quark = names.quark;
     crypto = names.crypto;
     semantic = names.semantic;
-  }
+  //}
   
   return {
     quark,
