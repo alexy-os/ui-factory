@@ -12,7 +12,6 @@ packages/ui-shadcn/
 .cursorignore
 bun.lockb
 LICENSE
-README.md
 tsconfig.json
 tsconfig.node.json
 tsconfig.app.json
