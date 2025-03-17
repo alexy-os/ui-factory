@@ -13,16 +13,21 @@ export class TVExtractor {
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
     
+    console.log('Starting extraction for component:', componentName);
+    console.log('Content:', content);
+
     // Find all tv/cva configurations in the content
     const tvPattern = /(?:tv|cva)\(\s*\{([\s\S]*?)\}\s*\)/g;
     let tvMatch;
     
     while ((tvMatch = tvPattern.exec(content)) !== null) {
+      console.log('Found tv/cva configuration:', tvMatch[1]);
       const tvContent = tvMatch[1];
       
       // Extract base classes
       const baseMatch = /base:\s*['"`](.*?)['"`]/g.exec(tvContent);
       if (baseMatch && baseMatch[1]) {
+        console.log('Found base classes:', baseMatch[1]);
         const baseClasses = baseMatch[1].trim();
         const entry = createClassEntry(
           baseClasses,
@@ -35,49 +40,49 @@ export class TVExtractor {
         if (entry) classEntries.push(entry);
       }
       
-      // Extract variant groups
-      const variantSections = tvContent.match(/variants:\s*\{([\s\S]*?)\}/g);
-      if (variantSections) {
-        for (const variantSection of variantSections) {
-          // Find all variant groups (like variant, size, etc)
-          const variantGroups = variantSection.match(/(\w+):\s*\{([\s\S]*?)\}/g);
+      // Extract variants section
+      const variantsMatch = /variants:\s*({[\s\S]*?})\s*(?=,\s*defaultVariants|$)/g.exec(tvContent);
+      
+      if (variantsMatch) {
+        const variantsContent = variantsMatch[1];
+        
+        // Extract each variant group (variant, size, etc)
+        const groups = variantsContent.match(/\w+:\s*{[^{}]*(?:{[^{}]*}[^{}]*)*}/g) || [];
+        
+        for (const group of groups) {
+          const groupMatch = /(\w+):\s*{([\s\S]*?)}/g.exec(group);
+          if (!groupMatch) continue;
           
-          if (variantGroups) {
-            for (const group of variantGroups) {
-              // Get group name (variant, size, etc)
-              const groupNameMatch = /(\w+):\s*\{/.exec(group);
-              if (!groupNameMatch) continue;
-              
-              const groupName = groupNameMatch[1];
-              
-              // Extract individual variants
-              const variantPattern = /(\w+):\s*['"`](.*?)['"`]/g;
-              let variantMatch;
-              
-              while ((variantMatch = variantPattern.exec(group)) !== null) {
-                const variantName = variantMatch[1];
-                const variantClasses = variantMatch[2].trim();
-                
-                // Create element type combining group and variant
-                const elementType = `${groupName}-${variantName}`;
-                
-                const entry = createClassEntry(
-                  variantClasses,
-                  componentName,
-                  componentDir,
-                  elementType,
-                  { [groupName]: variantName },
-                  config
-                );
-                
-                if (entry) classEntries.push(entry);
-              }
+          const groupName = groupMatch[1];
+          const groupContent = groupMatch[2];
+          
+          // Extract only the class values from each variant
+          const variantPattern = /['"`](.*?)['"`]/g;
+          let variantMatch;
+          
+          while ((variantMatch = variantPattern.exec(groupContent)) !== null) {
+            const variantClasses = variantMatch[1].trim();
+            if (!variantClasses) continue;
+            
+            const entry = createClassEntry(
+              variantClasses,
+              componentName,
+              componentDir,
+              `${groupName}`,
+              { [groupName]: 'value' },
+              config
+            );
+            
+            if (entry) {
+              console.log('Created entry:', entry);
+              classEntries.push(entry);
             }
           }
         }
       }
     }
     
+    console.log('Final extracted entries:', classEntries);
     return classEntries;
   }
 } 

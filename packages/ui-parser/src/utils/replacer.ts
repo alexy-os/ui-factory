@@ -80,8 +80,7 @@ export class DirectReplacer {
       let semanticContent = content;
       let cryptoContent = content;
 
-      for (const [baseClass, group] of this.modifierGroupsMap.entries()) {
-        console.error(`Replacing group for base class "${baseClass}":`, group);
+      for (const group of this.modifierGroupsMap.values()) {
         
         for (let i = 0; i < group.originalClasses.length; i++) {
           const originalClass = group.originalClasses[i];
@@ -124,15 +123,6 @@ export class DirectReplacer {
       throw error;
     }
   }
-
-  /*private isClassReplacedInGroups(classString: string): boolean {
-    for (const group of this.modifierGroupsMap.values()) {
-      if (group.originalClasses.includes(classString)) {
-        return true;
-      }
-    }
-    return false;
-  }*/
 
   private escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
