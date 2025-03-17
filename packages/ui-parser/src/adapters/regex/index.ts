@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { configManager } from './config';
-import { EnhancedClassEntry, RegexExtractorConfig } from '../types';
+import { EnhancedClassEntry, RegexExtractorConfig } from './types';
 import { deduplicateEntries } from './utils/deduplication';
 import { ClassNameExtractor } from './extractors/extractor';
 

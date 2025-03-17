@@ -1,13 +1,9 @@
-import { UIParserConfig } from '../config';
+import { UIParserConfig, ExtractorType, ConfigJson } from '../config';
 import { PathsConfig } from '../config/paths-config';
-import { ExtractorType } from '../config';
 import { FileFormatConfig } from '../config/file-formats-config';
 import { PatternsConfig, PatternConfig } from '../config/patterns-config';
-import { ConfigJson } from '../config';
 
-export type { PathsConfig } from '../config/paths-config';
-export type { FileFormatConfig } from '../config/file-formats-config';
-export type { PatternConfig, PatternsConfig } from '../config/patterns-config';
+export type { PatternConfig, PatternsConfig, PathsConfig, FileFormatConfig };
 
 export interface ValidationError {
   path: string;

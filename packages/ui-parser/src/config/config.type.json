@@ -15,10 +15,6 @@
           {
             "name": "templateClassName",
             "pattern": "className=\\{`([^`]+)`\\}"
-          },
-          {
-            "name": "tvVariants",
-            "pattern": "tv\\(\\s*\\{([\\s\\S]*?)\\}\\s*\\)"
           }
         ],
         "contextType": "jsx"

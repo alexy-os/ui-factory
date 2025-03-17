@@ -1,4 +1,4 @@
-import { PatternContextType } from '../adapters/types';
+import { PatternContextType } from '../adapters/regex/types';
 import { defaultPaths, PathsConfig } from './paths-config';
 import { defaultFormats, FileFormatConfig } from './file-formats-config';
 import { defaultPatterns, PatternConfig, PatternsConfig } from './patterns-config';
@@ -6,15 +6,9 @@ import { ConfigValidator, ValidationResult, ValidationError } from '../utils/val
 import path from 'path';
 import fs from 'fs';
 
-
 export type ExtractorType = 'dom' | 'regex';
 
-export type { PathsConfig } from './paths-config';
-export type { FileFormatConfig } from './file-formats-config';
-export type { PatternConfig, PatternsConfig } from './patterns-config';
-
-
-
+export type { PatternConfig, PatternsConfig, PathsConfig, FileFormatConfig };
 
 export interface UIParserConfig {
   paths: PathsConfig;

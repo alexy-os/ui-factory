@@ -3,15 +3,8 @@ import {
   EnhancedClassEntry,
   ClassNameConfig,
   PatternContextType
-} from '../../types';
+} from '../types';
 import { extractModifiers } from './modifiers';
-import { isValidTailwindClass } from '../utils/class-validator';
-
-function validateClasses(classes: string): boolean {
-  if (!classes || typeof classes !== 'string') return false;
-  const individualClasses = classes.split(/\s+/);
-  return individualClasses.every(cls => isValidTailwindClass(cls));
-}
 
 /**
  * Creates an enhanced class entry from extracted class information
@@ -24,11 +17,6 @@ export function createClassEntry(
   variants: Record<string, string> = {},
   config: ClassNameConfig
 ): EnhancedClassEntry | null {
-  // Validate classes first
-  if (!classes || !validateClasses(classes.trim())) {
-    console.warn(`Skipping invalid class entry: ${classes}`);
-    return null;
-  }
 
   const { modifiers } = extractModifiers(classes, componentName, elementType);
   

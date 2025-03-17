@@ -1,4 +1,4 @@
-import { PatternContextType } from '../adapters/types';
+import { PatternContextType } from '../adapters/regex/types';
 
 /**
  * Supported file formats configuration
@@ -34,10 +34,10 @@ export const defaultFormats: Record<string, FileFormatConfig> = {
           name: 'templateClassName',
           pattern: /className=\{`([^`]+)`\}/g
         },
-        {
+        /*{
           name: 'tvVariants',
           pattern: /tv\(\s*\{([\s\S]*?)\}\s*\)/gs
-        },
+        },*/
         {
           name: 'tvPattern',
           pattern: /(?:tv|cva)\(\s*\{([^}]+)\}\s*\)/g
@@ -79,7 +79,7 @@ export const defaultFormats: Record<string, FileFormatConfig> = {
     }
   },
   html: {
-    extensions: ['.html', '.hbs', '.handlebars'],
+    extensions: ['.html', '.hbs', '.handlebars'], 
     patterns: {
       className: [
         {

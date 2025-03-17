@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../../types';
+import { EnhancedClassEntry } from '../../regex/types';
 
 export function deduplicateEntries(entries: EnhancedClassEntry[]): EnhancedClassEntry[] {
   const uniqueMap = new Map<string, EnhancedClassEntry>();

@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../types';
+import { EnhancedClassEntry } from '../regex/types';
 
 /**
  * Base interface for class extractor adapters

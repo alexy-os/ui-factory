@@ -1,4 +1,4 @@
-import { ModifierEntry } from "../adapters/types";
+import { ModifierEntry } from "../adapters/regex/types";
 
 export type { ModifierEntry };
 

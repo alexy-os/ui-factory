@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
 // Define button variants using tailwind-variants
-export const buttonStyles = tv({
+const buttonStyles = tv({
   base: "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   variants: {
     variant: {
@@ -28,14 +28,14 @@ export const buttonStyles = tv({
 }); 
 
 // Extended Button props
-export interface ButtonProps extends HeadlessButtonProps {
+interface ButtonProps extends HeadlessButtonProps {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "link" | "default";
   size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 // Molecule Button component using tailwind styles
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => {
     const { 
       variant = "primary", 
@@ -66,4 +66,5 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-Button.displayName = "Button"; 
+export { Button, type ButtonProps };
+//Button.displayName = "Button"; 

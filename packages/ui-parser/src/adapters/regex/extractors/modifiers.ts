@@ -4,7 +4,7 @@ import { generateCryptoFromQuark } from '../utils';
 import {
   ModifierEntry,
   ModifierType
-} from '../../types';
+} from '../types';
 
 export interface ExtractedModifier {
   name: string;
