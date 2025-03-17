@@ -2,6 +2,8 @@
 
 UI Parser is a tool for analyzing, generating, and transforming UI components. It extracts class names from React components and generates semantic and quark CSS classes.
 
+> ⚠️ **Note**: This project is currently in development and not yet published to npm.
+
 ## Features
 
 - **Component Analysis**: Analyzes React components and extracts class names
@@ -13,54 +15,43 @@ UI Parser is a tool for analyzing, generating, and transforming UI components. I
 - **Modifier Groups**: Support for handling groups of modifiers and their variants
 - **Multiple Output Formats**: Generates both semantic and crypto (quark) versions of components
 
-## Installation
+## Current Usage
 
-```bash
-npm install @ui-factory/ui-parser
+Add these scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "ui-parser:analyze": "bun ./packages/ui-parser/src/cli/bin.ts analyze",
+    "ui-parser:generate": "bun ./packages/ui-parser/src/cli/bin.ts generate",
+    "ui-parser:transform": "bun ./packages/ui-parser/src/cli/bin.ts transform",
+    "ui:all": "bun ./packages/ui-parser/src/cli/bin.ts all"
+  }
+}
 ```
 
-## Usage
-
-### CLI
+Then run:
 
 ```bash
 # Analyze components
-ui-parser analyze --source ./src/components
+bun run ui-parser:analyze
 
 # Generate CSS
-ui-parser generate
+bun run ui-parser:generate
 
 # Transform components
-ui-parser transform
+bun run ui-parser:transform
 
 # Run all operations
-ui-parser all
-```
-
-### API
-
-```typescript
-import { uiParser } from '@ui-factory/ui-parser';
-
-// Analyze components
-await uiParser.analyze({ sourceDir: './src/components' });
-
-// Generate CSS
-uiParser.generate();
-
-// Transform components
-uiParser.transform();
-
-// Run all operations
-await uiParser.all();
+bun run ui:all
 ```
 
 ## Configuration
 
-You can configure UI Parser by updating the configuration:
+Create a configuration file in your project:
 
 ```typescript
-import { configManager } from '@ui-factory/ui-parser';
+import { configManager } from './packages/ui-parser';
 
 configManager.updateConfig({
   paths: {
@@ -84,27 +75,37 @@ configManager.updateConfig({
 
 ## Component Examples
 
-### Input Component
+### Button Component with TV
 
 ```typescript
 // Source component with utility classes
 const buttonStyles = tv({
-  base: "inline-flex items-center justify-center gap-2",
+  base: "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium",
   variants: {
     variant: {
       primary: "bg-primary text-primary-foreground",
       secondary: "bg-secondary text-secondary-foreground"
+    },
+    size: {
+      sm: "h-8 px-3 text-xs",
+      md: "h-10 px-4",
+      lg: "h-12 px-6 text-base"
     }
   }
 });
 
 // Transformed to semantic classes
 const buttonStyles = tv({
-  base: "sc-layout-center",
+  base: "sc-layout-center sc-button-base",
   variants: {
     variant: {
       primary: "sc-button-primary",
       secondary: "sc-button-secondary"
+    },
+    size: {
+      sm: "sc-button-sm",
+      md: "sc-button-md",
+      lg: "sc-button-lg"
     }
   }
 });
@@ -116,6 +117,11 @@ const buttonStyles = tv({
     variant: {
       primary: "q2idm",
       secondary: "q3kuh"
+    },
+    size: {
+      sm: "h3i4t",
+      md: "rcdad",
+      lg: "nipd0"
     }
   }
 });
@@ -128,6 +134,10 @@ const buttonStyles = tv({
 - **TV/CVA Integration**: Full support for tailwind-variants and class-variance-authority patterns
 - **Multiple Output Formats**: Generate different versions of components simultaneously
 - **Preservation**: Maintains component structure and comments during transformation
+
+## Development
+
+This project uses [Bun](https://bun.sh/) as its runtime. Make sure you have Bun installed before running the scripts.
 
 ## License
 
