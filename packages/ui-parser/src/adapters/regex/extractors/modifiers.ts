@@ -1,6 +1,10 @@
+
 import { configManager } from '../config';
-import { generateCryptoFromQuark } from './crypto-generator';
-import { ModifierEntry, ModifierType } from '../core/types';
+import { generateCryptoFromQuark } from '../utils';
+import {
+  ModifierEntry,
+  ModifierType
+} from '../../types';
 
 export interface ExtractedModifier {
   name: string;
@@ -35,7 +39,7 @@ export function extractModifiers(
     const patternClasses = pattern.pattern.split(' ');
     
     // Check if classesSet contains all classes from pattern
-    const matches = patternClasses.every(cls => classesSet.has(cls));
+    const matches = patternClasses.every((cls: string) => classesSet.has(cls));
     
     if (matches) {
       // Determine modifier type
@@ -60,7 +64,7 @@ export function extractModifiers(
       modifiers.push(modifier);
       
       // Remove modifier classes from remaining classes
-      patternClasses.forEach(cls => classesSet.delete(cls));
+      patternClasses.forEach((cls: string) => classesSet.delete(cls));
     }
   }
   

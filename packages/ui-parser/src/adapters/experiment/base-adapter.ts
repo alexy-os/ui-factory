@@ -1,4 +1,4 @@
-import { EnhancedClassEntry } from '../../core/types';
+import { EnhancedClassEntry } from '../types';
 
 /**
  * Base interface for class extractor adapters

@@ -1,10 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { EnhancedClassEntry, RegexExtractorConfig } from './types';
+import { configManager } from './config';
+import { EnhancedClassEntry, RegexExtractorConfig } from '../types';
 import { deduplicateEntries } from './utils/deduplication';
-import { TailwindVariantsExtractor } from './extractors/tv-extractor';
-import { ClassNameExtractor } from './extractors/className-extractor';
-import { configManager } from '../../config';
+import { ClassNameExtractor } from './extractors/extractor';
 
 export class RegexExtractorAdapter {
   readonly name = 'Regex Extractor';
@@ -56,7 +55,6 @@ export class RegexExtractorAdapter {
       const componentName = path.basename(componentPath, path.extname(componentPath));
       const componentDir = path.dirname(componentPath);
       
-      // Получаем паттерны для конкретного файла из конфигуратора
       const filePatterns = configManager.getPatternsForFile(componentPath);
       if (!filePatterns) {
         console.warn(`No patterns found for file: ${componentPath}`);
@@ -64,12 +62,6 @@ export class RegexExtractorAdapter {
       }
 
       const classEntries: EnhancedClassEntry[] = [
-        ...TailwindVariantsExtractor.extract(
-          content, 
-          componentName, 
-          componentDir,
-          this.config.classNames
-        ),
         ...ClassNameExtractor.extract(
           content, 
           componentName, 

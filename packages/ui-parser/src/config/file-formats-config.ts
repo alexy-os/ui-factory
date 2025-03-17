@@ -1,4 +1,4 @@
-import { PatternContextType } from '../adapters/regex/types/pattern-types';
+import { PatternContextType } from '../adapters/types';
 
 /**
  * Supported file formats configuration

@@ -1,22 +1,16 @@
-import { componentAnalyzer } from './analyzer.js';
-import { cssGenerator } from './generator.js';
-import { componentTransformer } from './transformer.js';
+import { componentAnalyzer } from './analyzer';
+import { cssGenerator } from './generator';
+import { componentTransformer } from './transformer';
 
-export * from './types.js';
+export * from '../types';
 export { componentAnalyzer, cssGenerator, componentTransformer };
 
-/**
- * Main UIParser class
- */
 export class UIParser {
   private static instance: UIParser;
   private latestAnalysisResults: any[] | null = null;
   
   private constructor() {}
   
-  /**
-   * Get UIParser instance (Singleton)
-   */
   public static getInstance(): UIParser {
     if (!UIParser.instance) {
       UIParser.instance = new UIParser();
@@ -24,27 +18,17 @@ export class UIParser {
     return UIParser.instance;
   }
   
-  /**
-   * Analyzes components
-   */
   public async analyze(options = {}) {
     const results = await componentAnalyzer.analyzeAllComponents(options);
     this.latestAnalysisResults = results;
     return results;
   }
   
-  /**
-   * Generates CSS
-   */
   public generate(options = {}) {
     return cssGenerator.generate(options);
   }
   
-  /**
-   * Transforms components
-   */
   public transform(options = {}) {
-    // If we have analysis results, pass them to the transformer
     if (this.latestAnalysisResults) {
       const enhancedOptions = {
         ...options,
@@ -55,14 +39,10 @@ export class UIParser {
     return componentTransformer.transformComponents(options);
   }
   
-  /**
-   * Performs all operations sequentially
-   */
   public async all(options = {}) {
     console.log('Starting UI Parser all operations...');
     
     try {
-      // Clear caches at the beginning of a full run
       this.clearAllCaches();
       
       console.log('Step 1: Analyzing components...');
@@ -91,9 +71,6 @@ export class UIParser {
     }
   }
   
-  /**
-   * Clears all caches in the system
-   */
   public clearAllCaches(): void {
     console.log('Clearing all caches...');
     componentAnalyzer.clearComponentCache();

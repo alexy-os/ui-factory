@@ -1,10 +1,10 @@
 import { Command } from 'commander';
-import { uiParser } from '../core/index.js';
-import { configManager } from '../config/index.js';
-import { DirectReplacer } from '../utils/direct-replacer.js';
+import { uiParser } from '../utils/parser';
+import { configManager } from '../config';
+import { DirectReplacer } from '../utils/replacer';
 import fs from 'fs';
 import path from 'path';
-import { EnhancedClassEntry } from '../core/types';
+import { EnhancedClassEntry } from '../types';
 
 interface AllOptions {
   sourceDir?: string;
@@ -17,10 +17,46 @@ interface AllOptions {
  */
 export class CLI {
   private program: Command;
+  private fileExtensionsPattern: RegExp;
   
   constructor() {
     this.program = new Command();
+    this.fileExtensionsPattern = this.buildFileExtensionsPattern();
     this.setupProgram();
+  }
+  
+  /**
+   * Builds a RegExp pattern for supported file extensions from config
+   */
+  private buildFileExtensionsPattern(): RegExp {
+    const config = configManager.getConfig();
+    const allExtensions: string[] = [];
+
+    const defaultExtensions = ['tsx', 'jsx', 'js', 'vue', 'svelte', 'html', 'hbs', 'handlebars', 'php'];
+    
+    Object.values(config.formats || {}).forEach(format => {
+      if (format.extensions && Array.isArray(format.extensions)) {
+        const extensions = format.extensions.map(ext => 
+          ext.startsWith('.') ? ext.substring(1) : ext
+        );
+        allExtensions.push(...extensions);
+      }
+    });
+    
+    if (allExtensions.length === 0) {
+      allExtensions.push(...defaultExtensions);
+    }
+    
+    const uniqueExtensions = [...new Set(allExtensions)];
+    
+    return new RegExp(`\\.(${uniqueExtensions.join('|')})$`, 'i');
+  }
+  
+  /**
+   * Checks if a file is a component file based on its extension
+   */
+  private isComponentFile(filename: string): boolean {
+    return this.fileExtensionsPattern.test(filename);
   }
   
   /**
@@ -32,7 +68,7 @@ export class CLI {
       .description('UI Parser CLI for analyzing and transforming UI components')
       .version('0.0.1');
     
-    this.program
+    /*this.program
       .command('set-extractor <type>')
       .description('Set the class extractor type (dom|regex)')
       .action((type: string) => {
@@ -42,7 +78,7 @@ export class CLI {
         } else {
           console.error('Invalid extractor type. Use "dom" or "regex"');
         }
-      });
+      });*/
     
     this.program
       .command('analyze')
@@ -94,7 +130,7 @@ export class CLI {
       .option('-o, --output <path>', 'Output directory for transformed components')
       .option('-t, --type <type>', 'Transformation type (semantic, quark, both)', 'both')
       .action(async (options) => {
-                if (options.source) {
+        if (options.source) {
           configManager.updatePaths({ sourceDir: options.source });
         }
         if (options.output) {
@@ -104,12 +140,12 @@ export class CLI {
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         
         try {
-                    const files = fs.readdirSync(sourceDir)
-            .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
+          const files = fs.readdirSync(sourceDir)
+            .filter(file => this.isComponentFile(file));
           
           console.log(`Found ${files.length} components to transform`);
           
-                    for (const file of files) {
+          for (const file of files) {
             const componentPath = path.join(sourceDir, file);
             await this.transformComponent(componentPath);
           }
@@ -129,29 +165,31 @@ export class CLI {
       .action(async (options) => {
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         const outputDir = options.output || configManager.getConfig().paths.componentOutput;
+
+        const domAnalysisResults = configManager.getPath('domAnalysisResults') || path.join(outputDir, 'domAnalysis.json');
         
         configManager.updatePaths({
           sourceDir,
           componentOutput: outputDir,
-          domAnalysisResults: path.join(outputDir, 'domAnalysis.json')
+          domAnalysisResults: domAnalysisResults
         });
 
         try {
-                    console.log('Step 1: Analyzing components...');
+          console.log('Step 1: Analyzing components...');
           await uiParser.analyze({
             sourceDir,
             outputPath: outputDir,
             verbose: options.verbose
           });
 
-                    console.log('\nStep 2: Generating CSS...');
+          console.log('\nStep 2: Generating CSS...');
           await uiParser.generate({
             outputPath: outputDir
           });
 
-                    console.log('\nStep 3: Transforming components...');
+          console.log('\nStep 3: Transforming components...');
           const files = fs.readdirSync(sourceDir)
-            .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
+            .filter(file => this.isComponentFile(file));
 
           for (const file of files) {
             const componentPath = path.join(sourceDir, file);
@@ -211,15 +249,15 @@ export class CLI {
     try {
       console.log('🚀 Starting UI Parser...');
 
-            console.log('\n📊 Analyzing components...');
+      console.log('\n📊 Analyzing components...');
       await uiParser.analyze(options);
 
-            console.log('\n🎨 Generating CSS...');
+      console.log('\n🎨 Generating CSS...');
       await uiParser.generate(options);
 
-            console.log('\n🔄 Transforming components...');
+      console.log('\n🔄 Transforming components...');
       const files = fs.readdirSync(options.sourceDir || configManager.getConfig().paths.sourceDir)
-        .filter(file => /\.(tsx|jsx|js|vue|svelte|html|hbs|handlebars|php)$/i.test(file));
+        .filter(file => this.isComponentFile(file));
 
       for (const file of files) {
         await this.transformComponent(path.join(options.sourceDir || configManager.getConfig().paths.sourceDir, file));

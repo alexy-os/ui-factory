@@ -1,3 +1,7 @@
+import { ModifierEntry } from "../adapters/types";
+
+export type { ModifierEntry };
+
 /**
  * Enhanced class entry with additional information
  */
@@ -92,13 +96,3 @@ export interface TransformationOptions {
  */
 export interface DirectReplacerOptions extends TransformationOptions {
 }
-
-export type ModifierType = 'layout' | 'sizing' | 'typography' | 'interaction' | 'decoration' | 'source';
-
-export interface ModifierEntry {
-  name: string;
-  classes: string;
-  crypto: string;
-  semantic: string;
-  type: ModifierType;
-} 
