@@ -205,11 +205,11 @@ export class CLI {
             outputPath: outputDir
           });
 
-          /*console.log('\nGenerating configuration...');
+          console.log('\nGenerating configuration...');
           await configurationGenerator.generate({
             outputPath: outputDir,
             updateExisting: true
-          });*/
+          });
 
           console.log('\nStep 3: Transforming components...');
           const files = fs.readdirSync(sourceDir)
