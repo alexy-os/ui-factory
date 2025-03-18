@@ -16,3 +16,4 @@ tsconfig.json
 tsconfig.node.json
 tsconfig.app.json
 tsconfig.base.json
+test/

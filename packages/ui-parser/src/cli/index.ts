@@ -227,8 +227,14 @@ export class CLI {
       );
 
       const outputDir = configManager.getConfig().paths.componentOutput;
-      const quarkOutput = path.join(outputDir, `${componentName}.quark${extension}`);
-      const semanticOutput = path.join(outputDir, `${componentName}.semantic${extension}`);
+      
+      // Получаем относительный путь компонента от sourceDir
+      const sourceDir = configManager.getConfig().paths.sourceDir;
+      const relativePath = path.relative(sourceDir, componentPath);
+      
+      // Формируем пути с сохранением структуры папок и оригинальных имен файлов
+      const quarkOutput = path.join(outputDir, 'quark', relativePath);
+      const semanticOutput = path.join(outputDir, 'semantic', relativePath);
 
       const directReplacer = new DirectReplacer(classEntries);
       await directReplacer.transform({
@@ -237,11 +243,38 @@ export class CLI {
         semanticOutput,
         classEntries
       });
+      
+      // Обновляем экспорты в сгенерированных файлах, если они существуют
+      this.updateExports(quarkOutput, 'Quark');
+      this.updateExports(semanticOutput, 'Semantic');
 
     } catch (error) {
       console.error(`❌ Failed to transform ${componentName}:`, 
         error instanceof Error ? error.message : error);
       throw error;
+    }
+  }
+  
+  /**
+   * Обновляет экспорты в сгенерированных файлах
+   */
+  private updateExports(filePath: string, suffix: string): void {
+    if (!fs.existsSync(filePath)) {
+      return;
+    }
+    
+    try {
+      let content = fs.readFileSync(filePath, 'utf-8');
+      
+      // Регулярное выражение для поиска экспортов вида: export const ComponentNameSuffix = ComponentName;
+      const exportRegex = new RegExp(`export const (\\w+)${suffix} = (\\w+);`, 'g');
+      
+      // Заменяем на экспорт без суффикса: export const ComponentName = ComponentName;
+      content = content.replace(exportRegex, 'export const $1 = $2;');
+      
+      fs.writeFileSync(filePath, content);
+    } catch (error) {
+      console.error(`Error updating exports in ${filePath}:`, error);
     }
   }
 

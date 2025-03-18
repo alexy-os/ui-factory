@@ -1,5 +1,5 @@
-import { HeroSplitQuark } from "@/components/HeroSplit.quark";
-import { HeroSplitSemantic } from "@/components/HeroSplit.semantic";
+import { HeroSplit as HeroSplitQuark } from "@/components/quark/HeroSplit";
+import { HeroSplit as HeroSplitSemantic } from "@/components/semantic/HeroSplit";
 import { HeroSplit } from "@/source/HeroSplit";
 import { CodePreview } from "@/app/CodePreview";
 import { codeExamples } from "@/app/CodeExamples";

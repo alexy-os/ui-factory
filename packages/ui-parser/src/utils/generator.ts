@@ -71,15 +71,20 @@ export class CSSGenerator {
   }
   
   private saveCSS(css: CSSGenerationResult, outputDir: string): void {
-    fs.mkdirSync(outputDir, { recursive: true });
+    // Create quark and semantic directories
+    const quarkDir = path.join(outputDir, 'quark');
+    const semanticDir = path.join(outputDir, 'semantic');
+    
+    fs.mkdirSync(quarkDir, { recursive: true });
+    fs.mkdirSync(semanticDir, { recursive: true });
     
     fs.writeFileSync(
-      path.join(outputDir, 'quark.css'), 
+      path.join(quarkDir, 'quark.css'), 
       css.quarkCSS
     );
     
     fs.writeFileSync(
-      path.join(outputDir, 'semantic.css'), 
+      path.join(semanticDir, 'semantic.css'), 
       css.semanticCSS
     );
     
