@@ -2,10 +2,10 @@
 @import "./styles/base.css";
 
 /* Semantic */
-@import "./components/semantic/semantic.css";
+@import "./components/semantic.css";
 
 /* Quark */
-@import "./components/quark/quark.css";
+@import "./components/quark.css";
 
 /* Code highlighting styles */
 .hljs-light {
