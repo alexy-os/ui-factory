@@ -213,7 +213,7 @@ export class CLI {
 
   private async transformComponent(componentPath: string): Promise<void> {
     const componentName = path.basename(componentPath, path.extname(componentPath));
-    const extension = path.extname(componentPath);
+    //const extension = path.extname(componentPath);
     
     try {
       const analysisPath = configManager.getConfig().paths.domAnalysisResults;
