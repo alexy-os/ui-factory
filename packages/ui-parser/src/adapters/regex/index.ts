@@ -5,6 +5,7 @@ import { EnhancedClassEntry, RegexExtractorConfig } from './types';
 import { deduplicateEntries } from './utils/deduplication';
 import { ClassNameExtractor } from './extractors/extractor';
 import { TVExtractor } from './extractors/tv-extractor';
+import { CVAExtractor } from './extractors/cva-extractor';
 
 export class RegexExtractorAdapter {
   readonly name = 'Regex Extractor';
@@ -75,7 +76,13 @@ export class RegexExtractorAdapter {
           componentName,
           componentDir,
           this.config.classNames
-        )
+        ),
+        ...CVAExtractor.extract(
+          content,
+          componentName,
+          componentDir,
+          this.config.classNames
+        ),
       ];
 
       return deduplicateEntries(classEntries);
