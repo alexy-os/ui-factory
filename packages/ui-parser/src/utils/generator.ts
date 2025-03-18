@@ -104,7 +104,7 @@ export class CSSGenerator {
       if (entries.length === 0) {
         console.warn('No class entries found for CSS generation. Generating empty CSS files.');
         
-        // Создаем пустые CSS файлы вместо выбрасывания ошибки
+        // Create empty CSS files instead of throwing an error
         const emptyCSS: CSSGenerationResult = {
           quarkCSS: '/* No classes found for CSS generation */\n',
           semanticCSS: '/* No classes found for CSS generation */\n'
@@ -129,7 +129,7 @@ export class CSSGenerator {
     } catch (error) {
       console.error('Failed to generate CSS:', error);
       
-      // Создаем пустые CSS файлы в случае ошибки вместо прерывания процесса
+      // Create empty CSS files in case of an error instead of interrupting the process
       const emptyCSS: CSSGenerationResult = {
         quarkCSS: `/* Error generating CSS: ${error instanceof Error ? error.message : 'Unknown error'} */\n`,
         semanticCSS: `/* Error generating CSS: ${error instanceof Error ? error.message : 'Unknown error'} */\n`

@@ -17,13 +17,13 @@ export function createClassEntry(
   variants: Record<string, string> = {},
   config: ClassNameConfig
 ): EnhancedClassEntry | null {
-  // Защита от undefined или null
+  // Protection against undefined or null
   if (!classes) {
     console.warn(`Skipping empty classes in component ${componentName}`);
     return null;
   }
 
-  // Убедимся, что classes - это строка
+  // Ensure classes is a string
   const classesString = String(classes);
   
   const { modifiers } = extractModifiers(classesString, componentName, elementType);
@@ -94,7 +94,7 @@ export class ClassNameExtractor {
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
     
-    // Защита от undefined или null
+    // Protection against undefined or null
     if (!content || !componentName || !componentDir || !filePatterns || !filePatterns.patterns) {
       console.warn('ClassNameExtractor.extract called with invalid parameters');
       return classEntries;

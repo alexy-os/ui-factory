@@ -13,7 +13,7 @@ export class TVExtractor {
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
     
-    // Защита от null, undefined или пустых значений
+    // Protection against null, undefined or empty values
     if (!content || !componentName || !componentDir) {
       console.warn('TVExtractor.extract called with invalid parameters');
       return classEntries;
@@ -24,7 +24,7 @@ export class TVExtractor {
     let tvMatch;
     
     while ((tvMatch = tvPattern.exec(content)) !== null) {
-      if (!tvMatch[1]) continue; // Защита от отсутствия захваченной группы
+      if (!tvMatch[1]) continue; // Protection against missing captured group
       
       const tvContent = tvMatch[1];
       

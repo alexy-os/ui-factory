@@ -142,7 +142,7 @@ export class CLI {
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         
         try {
-          // Находим все файлы компонентов рекурсивно
+          // Find all component files recursively
           const componentPaths = this.findComponentFiles(sourceDir);
           
           console.log(`Found ${componentPaths.length} components to transform`);
@@ -211,7 +211,6 @@ export class CLI {
           });
 
           console.log('\nStep 3: Transforming components...');
-          // Находим все файлы компонентов рекурсивно
           const componentPaths = this.findComponentFiles(sourceDir);
           
           for (const componentPath of componentPaths) {
@@ -250,11 +249,10 @@ export class CLI {
 
       const outputDir = configManager.getConfig().paths.componentOutput;
       
-      // Получаем относительный путь компонента от sourceDir
       const sourceDir = configManager.getConfig().paths.sourceDir;
       const relativePath = path.relative(sourceDir, componentPath);
       
-      // Формируем пути с сохранением структуры папок и оригинальных имен файлов
+      // Form paths with preserving folder structure and original file names
       const quarkOutput = path.join(outputDir, 'quark', relativePath);
       const semanticOutput = path.join(outputDir, 'semantic', relativePath);
 
@@ -266,7 +264,7 @@ export class CLI {
         classEntries
       });
       
-      // Обновляем экспорты в сгенерированных файлах, если они существуют
+        // Update exports in generated files if they exist
       this.updateExports(quarkOutput, 'Quark');
       this.updateExports(semanticOutput, 'Semantic');
 
@@ -278,7 +276,7 @@ export class CLI {
   }
   
   /**
-   * Обновляет экспорты в сгенерированных файлах
+   * Updates exports in generated files
    */
   private updateExports(filePath: string, suffix: string): void {
     if (!fs.existsSync(filePath)) {
@@ -288,10 +286,10 @@ export class CLI {
     try {
       let content = fs.readFileSync(filePath, 'utf-8');
       
-      // Регулярное выражение для поиска экспортов вида: export const ComponentNameSuffix = ComponentName;
+      // Regular expression to find exports of the form: export const ComponentNameSuffix = ComponentName;
       const exportRegex = new RegExp(`export const (\\w+)${suffix} = (\\w+);`, 'g');
       
-      // Заменяем на экспорт без суффикса: export const ComponentName = ComponentName;
+      // Replace with export without suffix: export const ComponentName = ComponentName;
       content = content.replace(exportRegex, 'export const $1 = $2;');
       
       fs.writeFileSync(filePath, content);
@@ -306,7 +304,7 @@ export class CLI {
     try {
       console.log('🚀 Starting UI Parser...');
 
-      // Шаг 1: Генерация конфигурации
+      // Step 1: Configuration generation
       console.log('\n⚙️ Generating configuration...');
       try {
         configurationGenerator.generate({
@@ -318,7 +316,7 @@ export class CLI {
         hasErrors = true;
       }
 
-      // Шаг 2: Анализ компонентов
+      // Step 2: Component analysis
       console.log('\n📊 Analyzing components...');
       try {
         await uiParser.analyze(options);
@@ -327,7 +325,7 @@ export class CLI {
         hasErrors = true;
       }
 
-      // Шаг 3: Генерация CSS
+      // Step 3: CSS generation
       console.log('\n🎨 Generating CSS...');
       try {
         await uiParser.generate(options);
@@ -336,12 +334,12 @@ export class CLI {
         hasErrors = true;
       }
 
-      // Шаг 4: Трансформация компонентов
+      // Step 4: Component transformation
       console.log('\n🔄 Transforming components...');
       try {
         const sourceDir = options.sourceDir || configManager.getConfig().paths.sourceDir;
         
-        // Находим все файлы компонентов рекурсивно
+        // Find all component files recursively
         const componentPaths = this.findComponentFiles(sourceDir);
 
         if (componentPaths.length === 0) {
@@ -376,7 +374,7 @@ export class CLI {
   }
 
   /**
-   * Рекурсивно находит все файлы компонентов в директории и поддиректориях
+   * Recursively finds all component files in the directory and subdirectories
    */
   private findComponentFiles(dirPath: string): string[] {
     const allFiles: string[] = [];
@@ -389,11 +387,11 @@ export class CLI {
         const stats = fs.statSync(itemPath);
         
         if (stats.isDirectory()) {
-          // Рекурсивно обходим поддиректории
+          // Recursively traverse subdirectories
           const subDirFiles = this.findComponentFiles(itemPath);
           allFiles.push(...subDirFiles);
         } else if (stats.isFile() && this.isComponentFile(item)) {
-          // Это файл компонента
+          // This is a component file
           allFiles.push(itemPath);
         }
       }

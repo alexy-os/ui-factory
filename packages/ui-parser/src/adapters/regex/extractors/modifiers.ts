@@ -23,12 +23,12 @@ export function extractModifiers(
 } {
   const modifiers: ModifierEntry[] = [];
   
-  // Защита от undefined или null
+  // Protection against undefined or null
   if (!classes) {
     return { modifiers };
   }
   
-  // Убедимся, что classes - это строка
+  // Ensure classes is a string
   const classesString = String(classes);
   const classesSet = new Set(classesString.split(' ').filter(c => c.trim()));
   

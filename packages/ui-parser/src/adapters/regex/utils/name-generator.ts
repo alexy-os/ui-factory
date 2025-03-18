@@ -52,7 +52,7 @@ export class NameGenerator {
     elementType: string,
     config: { quarkPrefix: string, semanticPrefix: string }
   ) {
-    // Защита от undefined или null
+    // Protection against undefined or null
     if (!classes) {
       classes = '';
     }
@@ -63,7 +63,7 @@ export class NameGenerator {
       elementType = 'div';
     }
     
-    // Убедимся, что все значения - строки
+    // Ensure all values are strings
     const classesStr = String(classes);
     const componentNameStr = String(componentName);
     const elementTypeStr = String(elementType);

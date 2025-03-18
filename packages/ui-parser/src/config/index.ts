@@ -79,17 +79,17 @@ export class ConfigManager {
   private loadConfiguration(): UIParserConfig {
     let jsonConfig: ConfigJson = {};
     
-    // Список возможных путей для поиска config.type.json
+    // List of possible paths to find config.type.json
     const possiblePaths = [
-      // 1. В папке componentOutput (приоритет 1)
+      // 1. In the componentOutput folder (priority 1)
       path.join(defaultPaths.componentOutput, 'config.type.json'),
-      // 2. В корне проекта (приоритет 2)
+      // 2. In the root of the project (priority 2)
       path.resolve(process.cwd(), 'config.type.json'),
-      // 3. В папке конфигурации (приоритет 3)
+      // 3. In the configuration folder (priority 3)
       path.resolve(process.cwd(), './src/scripts/ui-parser/src/config/config.type.json')
     ];
     
-    // Ищем первый существующий файл конфигурации
+    // Search for the first existing configuration file
     for (const possiblePath of possiblePaths) {
       if (fs.existsSync(possiblePath)) {
         this.configFilePath = possiblePath;
@@ -328,7 +328,7 @@ export class ConfigManager {
         return false;
       }
       
-      // Если путь к файлу не определен, используем путь по умолчанию в componentOutput
+      // If the file path is not defined, use the default path in componentOutput
       if (!this.configFilePath) {
         this.configFilePath = path.join(this.config.paths.componentOutput, 'config.type.json');
       }

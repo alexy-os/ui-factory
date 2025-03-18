@@ -5,7 +5,7 @@ import { defaultFormats } from '../config/file-formats-config';
 import { configManager } from '../config';
 
 /**
- * Опции для генерации конфигурационного файла
+ * Options for generating the configuration file
  */
 export interface ConfigGenerationOptions {
   outputPath?: string;
@@ -13,7 +13,7 @@ export interface ConfigGenerationOptions {
 }
 
 /**
- * Класс для управления генерацией конфигурационного файла
+ * Class for managing the generation of the configuration file
  */
 export class ConfigurationGenerator {
   private static instance: ConfigurationGenerator;
@@ -28,7 +28,7 @@ export class ConfigurationGenerator {
   }
   
   /**
-   * Преобразует объект с RegExp в объект с строками для JSON
+   * Converts an object with RegExp to an object with strings for JSON
    */
   private regExpToString(obj: any): any {
     if (obj === null || typeof obj !== 'object') {
@@ -57,22 +57,22 @@ export class ConfigurationGenerator {
   }
   
   /**
-   * Генерирует конфигурационный файл
+   * Generates the configuration file
    */
   public generate(options: ConfigGenerationOptions = {}): void {
     try {
       const outputDir = options.outputPath || configManager.getPath('componentOutput');
       
-      // Создаем директорию, если она не существует
+      // Create the directory if it doesn't exist
       fs.mkdirSync(outputDir, { recursive: true });
       
-      // Путь к файлу конфигурации
+      // Path to the configuration file
       const configFilePath = path.join(outputDir, 'config.type.json');
       
-      // Существующая конфигурация, если нужно обновить
+      // Existing configuration, if update is needed
       let existingConfig: any = {};
       
-      // Если нужно обновить существующий файл и он существует
+      // If update is needed and the file exists
       if (options.updateExisting && fs.existsSync(configFilePath)) {
         try {
           existingConfig = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
@@ -82,10 +82,10 @@ export class ConfigurationGenerator {
         }
       }
       
-      // Подготавливаем объект конфигурации из файлов по умолчанию
+      // Prepare the configuration object from default files
       const formatsObj = this.regExpToString(defaultFormats);
       
-      // Объединяем с существующей конфигурацией, если нужно обновить
+      // Combine with existing configuration, if update is needed
       const configObject = options.updateExisting 
         ? {
             formats: { ...existingConfig.formats, ...formatsObj },
@@ -96,7 +96,7 @@ export class ConfigurationGenerator {
             patterns: defaultPatterns
           };
       
-      // Записываем конфигурацию в JSON файл
+      // Write the configuration to the JSON file
       fs.writeFileSync(
         configFilePath,
         JSON.stringify(configObject, null, 2)
