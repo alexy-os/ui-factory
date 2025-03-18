@@ -142,13 +142,12 @@ export class CLI {
         const sourceDir = options.source || configManager.getConfig().paths.sourceDir;
         
         try {
-          const files = fs.readdirSync(sourceDir)
-            .filter(file => this.isComponentFile(file));
+          // Находим все файлы компонентов рекурсивно
+          const componentPaths = this.findComponentFiles(sourceDir);
           
-          console.log(`Found ${files.length} components to transform`);
+          console.log(`Found ${componentPaths.length} components to transform`);
           
-          for (const file of files) {
-            const componentPath = path.join(sourceDir, file);
+          for (const componentPath of componentPaths) {
             await this.transformComponent(componentPath);
           }
           
@@ -212,11 +211,10 @@ export class CLI {
           });
 
           console.log('\nStep 3: Transforming components...');
-          const files = fs.readdirSync(sourceDir)
-            .filter(file => this.isComponentFile(file));
-
-          for (const file of files) {
-            const componentPath = path.join(sourceDir, file);
+          // Находим все файлы компонентов рекурсивно
+          const componentPaths = this.findComponentFiles(sourceDir);
+          
+          for (const componentPath of componentPaths) {
             await this.transformComponent(componentPath);
           }
 
@@ -342,23 +340,24 @@ export class CLI {
       console.log('\n🔄 Transforming components...');
       try {
         const sourceDir = options.sourceDir || configManager.getConfig().paths.sourceDir;
-        const files = fs.readdirSync(sourceDir)
-          .filter(file => this.isComponentFile(file));
+        
+        // Находим все файлы компонентов рекурсивно
+        const componentPaths = this.findComponentFiles(sourceDir);
 
-        if (files.length === 0) {
+        if (componentPaths.length === 0) {
           console.warn('⚠️ No component files found to transform');
         } else {
           let transformedCount = 0;
-          for (const file of files) {
+          for (const componentPath of componentPaths) {
             try {
-              await this.transformComponent(path.join(sourceDir, file));
+              await this.transformComponent(componentPath);
               transformedCount++;
             } catch (error) {
-              console.error(`❌ Failed to transform ${file}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+              console.error(`❌ Failed to transform ${path.basename(componentPath)}: ${error instanceof Error ? error.message : 'Unknown error'}`);
               hasErrors = true;
             }
           }
-          console.log(`✓ Transformed ${transformedCount}/${files.length} components`);
+          console.log(`✓ Transformed ${transformedCount}/${componentPaths.length} components`);
         }
       } catch (error) {
         console.error(`❌ Component transformation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -374,6 +373,35 @@ export class CLI {
       console.error('\n❌ Process failed:', error instanceof Error ? error.message : error);
       process.exit(1);
     }
+  }
+
+  /**
+   * Рекурсивно находит все файлы компонентов в директории и поддиректориях
+   */
+  private findComponentFiles(dirPath: string): string[] {
+    const allFiles: string[] = [];
+    
+    try {
+      const items = fs.readdirSync(dirPath);
+      
+      for (const item of items) {
+        const itemPath = path.join(dirPath, item);
+        const stats = fs.statSync(itemPath);
+        
+        if (stats.isDirectory()) {
+          // Рекурсивно обходим поддиректории
+          const subDirFiles = this.findComponentFiles(itemPath);
+          allFiles.push(...subDirFiles);
+        } else if (stats.isFile() && this.isComponentFile(item)) {
+          // Это файл компонента
+          allFiles.push(itemPath);
+        }
+      }
+    } catch (error) {
+      console.error(`Error reading directory ${dirPath}:`, error);
+    }
+    
+    return allFiles;
   }
 }
 

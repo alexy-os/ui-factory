@@ -1,6 +1,6 @@
 import React from "react";
 import { BookOpen, Github } from "lucide-react";
-import { Button, type ButtonProps } from "./Button";
+import { Button, type ButtonProps } from "./ui/Button";
 
 type Content = {
   button?: {
