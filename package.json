@@ -18,12 +18,13 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "ui:build": "cd packages/ui-parser && tsc && vite build",
+    "ui:build": "cd packages/ui-parser && bun run build",
     "ui:analyze": "bun ./packages/ui-parser/src/cli/bin.ts analyze",
     "ui:generate": "bun ./packages/ui-parser/src/cli/bin.ts generate",
     "ui:config": "bun ./packages/ui-parser/src/cli/bin.ts config",
     "ui:transform": "bun ./packages/ui-parser/src/cli/bin.ts transform",
     "ui:all": "bun ./packages/ui-parser/src/cli/bin.ts all",
+    "ui:test": "bun ./packages/ui-parser/dist/cli/bin.js all",
     "rm": "rm -rf src/output/*"
   },
   "dependencies": {

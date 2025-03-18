@@ -19,14 +19,15 @@
     "ui-parser": "./dist/cli/bin.js"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "rm -rf dist && rollup -c && node -e \"require('fs').chmodSync('dist/cli/bin.js', '755')\"",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build",
     "lint": "eslint src/**/*.ts",
-    "cli": "node dist/cli/bin.js",
-    "analyze": "node dist/cli/bin.js analyze",
-    "generate": "node dist/cli/bin.js generate",
-    "transform": "node dist/cli/bin.js transform",
-    "all": "node dist/cli/bin.js all"
+    "cli": "node --es-module-specifier-resolution=node dist/cli/bin.js",
+    "analyze": "node --es-module-specifier-resolution=node dist/cli/bin.js analyze",
+    "generate": "node --es-module-specifier-resolution=node dist/cli/bin.js generate",
+    "transform": "node --es-module-specifier-resolution=node dist/cli/bin.js transform",
+    "all": "node --es-module-specifier-resolution=node dist/cli/bin.js all"
   },
   "dependencies": {
     "jsdom": "^26.0.0",
@@ -42,7 +43,12 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "rollup": "^4.9.6",
+    "glob": "^10.3.10"
   },
   "files": [
     "dist",
