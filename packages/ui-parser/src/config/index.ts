@@ -69,27 +69,48 @@ function convertJsonPatternsToRegExp(jsonFormats: ConfigJson['formats']): Record
 export class ConfigManager {
   private static instance: ConfigManager;
   private config: UIParserConfig;
-  private configFilePath: string;
+  private configFilePath: string | null = null;
   private validationResult: ValidationResult | null = null;
 
   private constructor() {
-    this.configFilePath = path.resolve(process.cwd(), './src/scripts/ui-parser/src/config/config.type.json');
     this.config = this.loadConfiguration();
   }
   
   private loadConfiguration(): UIParserConfig {
     let jsonConfig: ConfigJson = {};
     
+    // Список возможных путей для поиска config.type.json
+    const possiblePaths = [
+      // 1. В папке componentOutput (приоритет 1)
+      path.join(defaultPaths.componentOutput, 'config.type.json'),
+      // 2. В корне проекта (приоритет 2)
+      path.resolve(process.cwd(), 'config.type.json'),
+      // 3. В папке конфигурации (приоритет 3)
+      path.resolve(process.cwd(), './src/scripts/ui-parser/src/config/config.type.json')
+    ];
+    
+    // Ищем первый существующий файл конфигурации
+    for (const possiblePath of possiblePaths) {
+      if (fs.existsSync(possiblePath)) {
+        this.configFilePath = possiblePath;
+        break;
+      }
+    }
+    
     try {
-      if (fs.existsSync(this.configFilePath)) {
+      if (this.configFilePath && fs.existsSync(this.configFilePath)) {
         const fileContent = fs.readFileSync(this.configFilePath, 'utf-8');
         jsonConfig = JSON.parse(fileContent);
+        
+        console.log(`Using configuration from: ${this.configFilePath}`);
         
         const jsonValidation = ConfigValidator.validateJsonConfig(jsonConfig);
         if (!jsonValidation.valid) {
           console.error('Invalid JSON configuration:', jsonValidation.errors);
           jsonConfig = {};
         }
+      } else {
+        console.log('No config.type.json found, using default configuration');
       }
     } catch (error) {
       console.warn('Failed to load configuration from JSON file:', error);
@@ -305,6 +326,11 @@ export class ConfigManager {
       if (!validation.valid) {
         console.error('Cannot save invalid configuration:', validation.errors);
         return false;
+      }
+      
+      // Если путь к файлу не определен, используем путь по умолчанию в componentOutput
+      if (!this.configFilePath) {
+        this.configFilePath = path.join(this.config.paths.componentOutput, 'config.type.json');
       }
       
       const jsonConfig = this.convertConfigToJson();

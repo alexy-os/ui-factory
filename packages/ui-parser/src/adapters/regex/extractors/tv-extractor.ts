@@ -13,21 +13,24 @@ export class TVExtractor {
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
     
-    console.log('Starting extraction for component:', componentName);
-    console.log('Content:', content);
+    // Защита от null, undefined или пустых значений
+    if (!content || !componentName || !componentDir) {
+      console.warn('TVExtractor.extract called with invalid parameters');
+      return classEntries;
+    }
 
     // Find all tv/cva configurations in the content
     const tvPattern = /(?:tv|cva)\(\s*\{([\s\S]*?)\}\s*\)/g;
     let tvMatch;
     
     while ((tvMatch = tvPattern.exec(content)) !== null) {
-      console.log('Found tv/cva configuration:', tvMatch[1]);
+      if (!tvMatch[1]) continue; // Защита от отсутствия захваченной группы
+      
       const tvContent = tvMatch[1];
       
       // Extract base classes
       const baseMatch = /base:\s*['"`](.*?)['"`]/g.exec(tvContent);
       if (baseMatch && baseMatch[1]) {
-        console.log('Found base classes:', baseMatch[1]);
         const baseClasses = baseMatch[1].trim();
         const entry = createClassEntry(
           baseClasses,
@@ -43,7 +46,7 @@ export class TVExtractor {
       // Extract variants section
       const variantsMatch = /variants:\s*({[\s\S]*?})\s*(?=,\s*defaultVariants|$)/g.exec(tvContent);
       
-      if (variantsMatch) {
+      if (variantsMatch && variantsMatch[1]) {
         const variantsContent = variantsMatch[1];
         
         // Extract each variant group (variant, size, etc)
@@ -51,7 +54,7 @@ export class TVExtractor {
         
         for (const group of groups) {
           const groupMatch = /(\w+):\s*{([\s\S]*?)}/g.exec(group);
-          if (!groupMatch) continue;
+          if (!groupMatch || !groupMatch[1] || !groupMatch[2]) continue;
           
           const groupName = groupMatch[1];
           const groupContent = groupMatch[2];
@@ -61,6 +64,8 @@ export class TVExtractor {
           let variantMatch;
           
           while ((variantMatch = variantPattern.exec(groupContent)) !== null) {
+            if (!variantMatch[1]) continue;
+            
             const variantClasses = variantMatch[1].trim();
             if (!variantClasses) continue;
             
@@ -74,7 +79,6 @@ export class TVExtractor {
             );
             
             if (entry) {
-              console.log('Created entry:', entry);
               classEntries.push(entry);
             }
           }
@@ -82,7 +86,6 @@ export class TVExtractor {
       }
     }
     
-    console.log('Final extracted entries:', classEntries);
     return classEntries;
   }
 } 

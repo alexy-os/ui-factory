@@ -1,4 +1,3 @@
-
 import { configManager } from '../config';
 import { generateCryptoFromQuark } from '../utils';
 import {
@@ -23,7 +22,15 @@ export function extractModifiers(
   modifiers: ModifierEntry[];
 } {
   const modifiers: ModifierEntry[] = [];
-  const classesSet = new Set(classes.split(' ').filter(c => c.trim()));
+  
+  // Защита от undefined или null
+  if (!classes) {
+    return { modifiers };
+  }
+  
+  // Убедимся, что classes - это строка
+  const classesString = String(classes);
+  const classesSet = new Set(classesString.split(' ').filter(c => c.trim()));
   
   // Get all patterns from the configuration
   const patterns = [

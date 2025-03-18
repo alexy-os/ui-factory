@@ -17,12 +17,20 @@ export function createClassEntry(
   variants: Record<string, string> = {},
   config: ClassNameConfig
 ): EnhancedClassEntry | null {
+  // Защита от undefined или null
+  if (!classes) {
+    console.warn(`Skipping empty classes in component ${componentName}`);
+    return null;
+  }
 
-  const { modifiers } = extractModifiers(classes, componentName, elementType);
+  // Убедимся, что classes - это строка
+  const classesString = String(classes);
+  
+  const { modifiers } = extractModifiers(classesString, componentName, elementType);
   
   // Generate names only if there are no modifiers
   let quark = '', crypto = '', semantic = '';
-    const names = nameGenerator.generate(classes, componentName, elementType, config);
+  const names = nameGenerator.generate(classesString, componentName, elementType, config);
   
   //if (modifiers.length === 0) {
     quark = names.quark;
@@ -34,7 +42,7 @@ export function createClassEntry(
     quark,
     crypto,
     semantic,
-    classes: classes.trim(),
+    classes: classesString.trim(),
     componentName,
     elementType,
     variants,
@@ -85,21 +93,41 @@ export class ClassNameExtractor {
     filePatterns: { patterns: Array<{ pattern: RegExp; name: string }>; contextType: string }
   ): EnhancedClassEntry[] {
     const classEntries: EnhancedClassEntry[] = [];
+    
+    // Защита от undefined или null
+    if (!content || !componentName || !componentDir || !filePatterns || !filePatterns.patterns) {
+      console.warn('ClassNameExtractor.extract called with invalid parameters');
+      return classEntries;
+    }
 
     for (const { pattern } of filePatterns.patterns) {
-      let match;
-      while ((match = pattern.exec(content)) !== null) {
-        const classes = match[1];
-        const elementType = determineElementType(content, match.index, filePatterns.contextType as PatternContextType);
-        const entry = createClassEntry(
-          classes,
-          componentName,
-          componentDir,
-          elementType,
-          {},
-          config
-        );
-        if (entry) classEntries.push(entry); // Only add valid entries
+      if (!pattern) continue;
+      
+      try {
+        let match;
+        while ((match = pattern.exec(content)) !== null) {
+          try {
+            const classes = match[1];
+            if (!classes) continue;
+            
+            const elementType = determineElementType(content, match.index, filePatterns.contextType as PatternContextType);
+            
+            const entry = createClassEntry(
+              classes,
+              componentName,
+              componentDir,
+              elementType,
+              {},
+              config
+            );
+            
+            if (entry) classEntries.push(entry); // Only add valid entries
+          } catch (err) {
+            console.warn(`Error processing match in ${componentName}: ${err instanceof Error ? err.message : 'Unknown error'}`);
+          }
+        }
+      } catch (error) {
+        console.warn(`Error applying regex pattern in ${componentName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
 

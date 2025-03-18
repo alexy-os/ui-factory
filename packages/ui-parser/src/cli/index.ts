@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import { uiParser } from '../utils/parser';
 import { configManager } from '../config';
 import { DirectReplacer } from '../utils/replacer';
+import { configurationGenerator } from '../utils/configuration';
 import fs from 'fs';
 import path from 'path';
 import { EnhancedClassEntry } from '../types';
@@ -9,6 +10,7 @@ import { EnhancedClassEntry } from '../types';
 interface AllOptions {
   sourceDir?: string;
   outputDir?: string;
+  outputPath?: string;
   verbose?: boolean;
 }
 
@@ -157,6 +159,22 @@ export class CLI {
       });
     
     this.program
+      .command('config')
+      .description('Generate configuration file from default settings')
+      .option('-o, --output <path>', 'Output directory for configuration file')
+      .option('-u, --update', 'Update existing configuration file instead of creating a new one')
+      .action((options) => {
+        if (options.output) {
+          configManager.updatePaths({ componentOutput: options.output });
+        }
+        
+        configurationGenerator.generate({
+          outputPath: options.output,
+          updateExisting: options.update
+        });
+      });
+    
+    this.program
       .command('all')
       .description('Run all operations: analyze, generate, transform')
       .option('-s, --source <path>', 'Source directory with components')
@@ -186,6 +204,12 @@ export class CLI {
           await uiParser.generate({
             outputPath: outputDir
           });
+
+          /*console.log('\nGenerating configuration...');
+          await configurationGenerator.generate({
+            outputPath: outputDir,
+            updateExisting: true
+          });*/
 
           console.log('\nStep 3: Transforming components...');
           const files = fs.readdirSync(sourceDir)
@@ -279,24 +303,73 @@ export class CLI {
   }
 
   public async all(options: AllOptions = {}) {
+    let hasErrors = false;
+    
     try {
       console.log('🚀 Starting UI Parser...');
 
-      console.log('\n📊 Analyzing components...');
-      await uiParser.analyze(options);
-
-      console.log('\n🎨 Generating CSS...');
-      await uiParser.generate(options);
-
-      console.log('\n🔄 Transforming components...');
-      const files = fs.readdirSync(options.sourceDir || configManager.getConfig().paths.sourceDir)
-        .filter(file => this.isComponentFile(file));
-
-      for (const file of files) {
-        await this.transformComponent(path.join(options.sourceDir || configManager.getConfig().paths.sourceDir, file));
+      // Шаг 1: Генерация конфигурации
+      console.log('\n⚙️ Generating configuration...');
+      try {
+        configurationGenerator.generate({
+          outputPath: options.outputPath,
+          updateExisting: true
+        });
+      } catch (error) {
+        console.error(`❌ Configuration generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        hasErrors = true;
       }
 
-      console.log('\n✨ All operations completed successfully!');
+      // Шаг 2: Анализ компонентов
+      console.log('\n📊 Analyzing components...');
+      try {
+        await uiParser.analyze(options);
+      } catch (error) {
+        console.error(`❌ Component analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        hasErrors = true;
+      }
+
+      // Шаг 3: Генерация CSS
+      console.log('\n🎨 Generating CSS...');
+      try {
+        await uiParser.generate(options);
+      } catch (error) {
+        console.error(`❌ CSS generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        hasErrors = true;
+      }
+
+      // Шаг 4: Трансформация компонентов
+      console.log('\n🔄 Transforming components...');
+      try {
+        const sourceDir = options.sourceDir || configManager.getConfig().paths.sourceDir;
+        const files = fs.readdirSync(sourceDir)
+          .filter(file => this.isComponentFile(file));
+
+        if (files.length === 0) {
+          console.warn('⚠️ No component files found to transform');
+        } else {
+          let transformedCount = 0;
+          for (const file of files) {
+            try {
+              await this.transformComponent(path.join(sourceDir, file));
+              transformedCount++;
+            } catch (error) {
+              console.error(`❌ Failed to transform ${file}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+              hasErrors = true;
+            }
+          }
+          console.log(`✓ Transformed ${transformedCount}/${files.length} components`);
+        }
+      } catch (error) {
+        console.error(`❌ Component transformation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        hasErrors = true;
+      }
+
+      if (hasErrors) {
+        console.log('\n⚠️ Process completed with errors. See above for details.');
+      } else {
+        console.log('\n✨ All operations completed successfully!');
+      }
     } catch (error) {
       console.error('\n❌ Process failed:', error instanceof Error ? error.message : error);
       process.exit(1);

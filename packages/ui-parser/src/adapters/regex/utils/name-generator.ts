@@ -52,18 +52,34 @@ export class NameGenerator {
     elementType: string,
     config: { quarkPrefix: string, semanticPrefix: string }
   ) {
-    const cacheKey = `${classes}-${componentName}-${elementType}`;
+    // Защита от undefined или null
+    if (!classes) {
+      classes = '';
+    }
+    if (!componentName) {
+      componentName = 'component';
+    }
+    if (!elementType) {
+      elementType = 'div';
+    }
+    
+    // Убедимся, что все значения - строки
+    const classesStr = String(classes);
+    const componentNameStr = String(componentName);
+    const elementTypeStr = String(elementType);
+    
+    const cacheKey = `${classesStr}-${componentNameStr}-${elementTypeStr}`;
     
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey)!;
     }
 
-    const quark = this.generateQuarkName(classes, config.quarkPrefix);
+    const quark = this.generateQuarkName(classesStr, config.quarkPrefix);
     const crypto = generateCryptoFromQuark(quark);
     const semantic = this.generateSemanticName(
-      componentName, 
-      elementType, 
-      classes, 
+      componentNameStr, 
+      elementTypeStr, 
+      classesStr, 
       config.semanticPrefix
     );
 
@@ -74,6 +90,10 @@ export class NameGenerator {
   }
 
   private generateQuarkName(classes: string, prefix: string): string {
+    if (!classes) {
+      return `${prefix}empty`;
+    }
+    
     const normalizedClasses = normalizeClassString(classes);
   
     const quarkId = normalizedClasses
@@ -99,7 +119,7 @@ export class NameGenerator {
       })
       .join('');
   
-    return `${prefix}${quarkId}`;
+    return `${prefix}${quarkId || 'empty'}`;
   }
 
   private generateSemanticName(
@@ -108,6 +128,10 @@ export class NameGenerator {
     classes: string, 
     prefix: string
   ): string {
+    if (!componentName) componentName = 'component';
+    if (!elementType) elementType = 'div';
+    if (!classes) classes = '';
+    
     const normalizedClasses = normalizeClassString(classes);
     const classIdentifier = normalizedClasses
       .split(' ')
@@ -136,7 +160,10 @@ export class NameGenerator {
  * Normalizes class string by sorting and deduplicating classes
  */
 function normalizeClassString(classString: string): string {
-  return classString.split(' ').sort().join(' ');
+  if (!classString) {
+    return '';
+  }
+  return String(classString).split(' ').sort().join(' ');
 } 
 
 export const nameGenerator = NameGenerator.getInstance(); 
