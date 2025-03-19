@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
-// Явно перечислим внешние зависимости
+// Explicitly list external dependencies
 const external = [
   'react', 
   'react-dom', 
@@ -19,9 +19,9 @@ const external = [
   'node:process'
 ];
 
-// Проверяем, является ли импорт внешним
+// Check if the import is external
 function isExternal(id) {
-  // Проверка на встроенные Node.js модули или модули из node_modules
+  // Check for built-in Node.js modules or modules from node_modules
   return external.includes(id) || 
          id.startsWith('node:') || 
          !id.includes('src/') && /^[@a-z]/.test(id);

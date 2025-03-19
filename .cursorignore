@@ -6,7 +6,6 @@
 dist/
 node_modules/
 public/
-packages/ui-shadcn/
 .cursorignore
 .cursorrules
 .cursorignore
