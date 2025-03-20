@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input as HeadlessInput, type InputProps as HeadlessInputProps } from "@ui-factory/ui-headless/input";
+import { Input as HeadlessInput, type InputProps as HeadlessInputProps } from "@ui-factory/ui-headless/form";
 import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
 
