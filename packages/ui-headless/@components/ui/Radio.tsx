@@ -4,7 +4,7 @@ import {
   Radio as HeadlessRadio,
   type RadioGroupProps,
   type RadioProps,
-} from "@ui-factory/ui-headless/radio";
+} from "@ui-factory/ui-headless/form";
 import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
 
