@@ -1,5 +1,5 @@
-import { Button, type ButtonProps } from "src/source/ui/Button";
-import { Input } from "src/source/ui/Input";
+import { Button, type ButtonProps } from "@/source/ui/Button";
+import { Input } from "@/source/ui/Input";
 import { ArrowRight } from "lucide-react";
 
 type Content = {

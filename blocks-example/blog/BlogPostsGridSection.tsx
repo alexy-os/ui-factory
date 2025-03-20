@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { Button, type ButtonProps } from "src/source/ui/Button";
+import { Button, type ButtonProps } from "@/source/ui/Button";
 
 type Content = {
   tagline: string;

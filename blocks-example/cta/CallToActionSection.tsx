@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "src/source/ui/Button"
+import { Button, type ButtonProps } from "@/source/ui/Button"
 import { ArrowRight } from "lucide-react"
 
 type Content = {
@@ -12,8 +12,8 @@ type Content = {
 }
 
 const content: Content = {
-  title: "Unlock Your Business Potential",
-  description: "Discover innovative solutions that drive growth, efficiency, and transformative success for your organization.",
+  title: "Transform Your Business Today",
+  description: "Unlock powerful solutions that drive growth, efficiency, and innovation for your organization.",
   buttons: [
     {
       id: "learn-more",
@@ -22,7 +22,7 @@ const content: Content = {
       icon: <ArrowRight />
     },
     {
-      id: "get-started", 
+      id: "get-started",
       text: "Start Your Journey",
       variant: "default",
       icon: <ArrowRight />
@@ -30,9 +30,9 @@ const content: Content = {
   ]
 } as const
 
-type CallToActionCenteredSectionProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>
+type CallToActionSectionProps = React.ComponentPropsWithoutRef<"section"> & Partial<Content>
 
-export const CallToActionCenteredSection = (props: CallToActionCenteredSectionProps) => {
+export const CallToActionSection = (props: CallToActionSectionProps) => {
   const { title, description, buttons } = {
     ...content,
     ...props
@@ -41,8 +41,8 @@ export const CallToActionCenteredSection = (props: CallToActionCenteredSectionPr
   return (
     <section className="w-full py-16 lg:py-32">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex flex-col items-center text-center rounded-lg bg-accent p-8 md:rounded-xl lg:p-16">
-          <div className="max-w-3xl space-y-4">
+        <div className="grid w-full rounded-lg bg-accent p-8 md:rounded-xl lg:grid-cols-2 lg:items-center lg:p-16">
+          <div className="space-y-4">
             <h2 className="text-2xl font-semibold md:text-4xl">
               {title}
             </h2>
@@ -50,10 +50,10 @@ export const CallToActionCenteredSection = (props: CallToActionCenteredSectionPr
               {description}
             </p>
           </div>
-          
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row lg:justify-end">
             {buttons.map((button) => (
-              <Button 
+              <Button
                 key={button.id}
                 variant={button.variant}
                 className="w-full sm:w-auto"

@@ -1,4 +1,4 @@
-import { Badge } from "src/source/ui/Badge";
+import { Badge } from "@/source/ui/Badge";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
 type Content = {

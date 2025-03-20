@@ -1,4 +1,4 @@
-import { Button } from 'src/source/ui/Button'
+import { Button } from '@/source/ui/Button'
 
 type Content = {
   title: string

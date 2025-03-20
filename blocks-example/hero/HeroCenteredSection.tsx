@@ -1,6 +1,6 @@
 import { Info, Rocket } from "lucide-react";
-import { Badge, type BadgeProps } from "src/source/ui/Badge";
-import { Button, type ButtonProps } from "src/source/ui/Button";
+import { Badge, type BadgeProps } from "@/source/ui/Badge";
+import { Button, type ButtonProps } from "@/source/ui/Button";
 
 type Content = {
   badge?: BadgeProps & {

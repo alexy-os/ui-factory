@@ -1,5 +1,5 @@
-import { Button } from "src/source/ui/Button"
-import { Input } from "src/source/ui/Input"
+import { Button } from "@/source/ui/Button"
+import { Input } from "@/source/ui/Input"
 import { Facebook, Instagram, Linkedin, Send, Twitter, Volleyball } from "lucide-react"
 
 type Content = {

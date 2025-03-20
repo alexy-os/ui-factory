@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { Badge } from "src/source/ui/Badge";
+import { Badge } from "@/source/ui/Badge";
 
 type Content = {
   badge: string;
