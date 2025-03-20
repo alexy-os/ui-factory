@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "../../ui/Button"
+import { Button, type ButtonProps } from "src/source/ui/Button"
 import { ArrowRight } from "lucide-react"
 
 type Content = {

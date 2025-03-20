@@ -1,5 +1,5 @@
-import type { ButtonProps } from "../../ui/Button";
-import type { BadgeProps } from "../../ui/Badge";
+import type { ButtonProps } from "src/source/ui/Button";
+import type { BadgeProps } from "src/source/ui/Badge";
 
 // Base content type that can be extended by specific hero components
 export interface BaseHeroContent {

@@ -1,6 +1,6 @@
 import { Send } from "lucide-react";
-import { Badge } from "../../ui/Badge";
-import { Button, type ButtonProps } from "../../ui/Button";
+import { Badge } from "src/source/ui/Badge";
+import { Button, type ButtonProps } from "src/source/ui/Button";
 
 type Content = {
   badge: string;

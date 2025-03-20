@@ -1,5 +1,5 @@
-import { Avatar, AvatarPlaceholder, AvatarImg } from "../../ui/Avatar";
-import { Badge } from "../../ui/Badge";
+import { Avatar, AvatarPlaceholder, AvatarImg } from "src/source/ui/Avatar";
+import { Badge } from "src/source/ui/Badge";
 
 type Content = {
   title: string;
