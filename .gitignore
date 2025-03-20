@@ -14,6 +14,7 @@ lerna-debug.log*
 
 .cache
 temp/
+.bin/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 
