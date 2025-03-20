@@ -1,5 +1,6 @@
 import { HeroSplitQuark } from "@/components/HeroSplit.quark";
 import { HeroSplitSemantic } from "@/components/HeroSplit.semantic";
+import { BlogCardsSection } from "@/components/BlogCardsSection";
 import { HeroSplit } from "@/source/HeroSplit";
 import { CodePreview } from "@/app/CodePreview";
 import { codeExamples } from "@/app/CodeExamples";
@@ -57,6 +58,10 @@ export default function App() {
           </div>
           <div className="border border-border rounded-2xl shadow-sm bg-white dark:bg-background text-foreground">
             <HeroSplitQuark />
+          </div>
+
+          <div className="border border-border rounded-2xl shadow-sm bg-white dark:bg-background text-foreground mt-12 mb-6">
+            <BlogCardsSection />
           </div>
         </div>
       </div>

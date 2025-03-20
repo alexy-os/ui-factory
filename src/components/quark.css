@@ -20,3 +20,31 @@
 .ssujb { @apply max-w-2xl text-3xl md:text-4xl lg:text-5xl font-bold; }
 .ji0r2 { @apply text-base text-muted-foreground max-w-2xl; }
 .krm3d { @apply flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8; }
+.xdgad { @apply w-4 h-4; }
+.z1w33 { @apply w-full py-16 lg:py-32; }
+.zyr0b { @apply container mx-auto px-4 md:px-6 lg:px-8 flex flex-col gap-8; }
+.fu24a { @apply flex w-full flex-col sm:flex-row sm:justify-between sm:items-center gap-4; }
+.rlowp { @apply text-3xl md:text-4xl lg:text-6xl font-bold; }
+.vfdaa { @apply gap-4; }
+.mlalp { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8; }
+.h4srz { @apply flex flex-col gap-4 hover:opacity-75 cursor-pointer; }
+.kjh33 { @apply bg-muted rounded-md aspect-video mb-4; }
+.wadnd { @apply text-xl tracking-tight; }
+.b42bj { @apply text-muted-foreground text-base; }
+.cytwc { @apply inline-flex items-center justify-center; }
+.z5wia { @apply font-medium text-sm; }
+.n02l2 { @apply gap-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50; }
+.q2idm { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
+.q3kuh { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80; }
+.gbf2l { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.u4m3q { @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.ryfbq { @apply text-primary underline-offset-4 hover:underline dark:text-primary; }
+.h3i4t { @apply h-8 px-3 text-xs; }
+.rcdad { @apply h-10 px-4; }
+.hlufg { @apply px-6 h-12 text-base; }
+.q2idm { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
+.q3kuh { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80; }
+.gbf2l { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.u4m3q { @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground; }
+.ryfbq { @apply text-primary underline-offset-4 hover:underline dark:text-primary; }
+.q2idm { @apply bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90; }
