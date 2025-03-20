@@ -1,5 +1,5 @@
 import { Info, Rocket, MoveRight } from "lucide-react";
-import { Button, type ButtonProps } from "@/source/ui/Button";
+import { Button, type ButtonProps } from "../../ui/Button";
 
 type Content = {
   badge?: {

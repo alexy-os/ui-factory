@@ -1,5 +1,5 @@
 import { BookOpen, Layers, Github } from "lucide-react";
-import { Button } from "@/source/ui/Button";
+import { Button } from "../../ui/Button";
 
 type Content = {
   brand: {

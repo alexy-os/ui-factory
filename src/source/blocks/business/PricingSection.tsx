@@ -1,12 +1,12 @@
 import { ArrowRight, CircleCheck } from "lucide-react";
-import { Button, type ButtonProps } from "@/source/ui/Button";
+import { Button, type ButtonProps } from "../../ui/Button";
 import {
   Card,
   CardHead,
   CardHeading,
   CardBody,
   CardFoot,
-} from "@/source/ui/Card";
+} from "../../ui/Card";
 
 type Content = {
   title: string;
