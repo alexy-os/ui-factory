@@ -1,87 +1,109 @@
 import * as React from "react";
-import { 
-  AvatarRoot, 
-  AvatarImage, 
+import {
+  AvatarRoot,
+  AvatarImage,
   AvatarFallback,
-  type AvatarRootProps 
+  type AvatarRootProps,
+  type AvatarImageProps,
+  type AvatarFallbackProps,
 } from "@ui-factory/ui-headless/avatar";
-import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
+import { twMerge } from "tailwind-merge";
 
-// Unified style object for Avatar
-const avatarStyles = tv({
-  base: "relative flex shrink-0 overflow-hidden rounded-full [&_img]:aspect-square [&_img]:size-full [&_img]:object-cover [&_[data-fallback]]:flex [&_[data-fallback]]:size-full [&_[data-fallback]]:items-center [&_[data-fallback]]:justify-center [&_[data-fallback]]:rounded-full [&_[data-fallback]]:bg-muted [&_[data-fallback]]:text-muted-foreground",
+// @component:root
+const rootStyles = tv({
+  base: "relative flex shrink-0 overflow-hidden rounded-full",
   variants: {
     size: {
-      sm: "size-6 [&_[data-fallback]]:text-xs",
-      md: "size-8 [&_[data-fallback]]:text-sm",
-      lg: "size-12 [&_[data-fallback]]:text-base",
-      xl: "size-16 [&_[data-fallback]]:text-lg",
+      sm: "size-6",
+      md: "size-8",
+      lg: "size-12",
+      xl: "size-16",
     },
     variant: {
       circle: "rounded-full",
-      square: "rounded-md",
+      square: "rounded-md"
     }
   },
   defaultVariants: {
     size: "md",
     variant: "circle"
+  },
+});
+
+// @component:image
+const imageStyles = tv({
+  base: "aspect-square size-full object-cover",
+  variants: {}
+});
+
+// @component:fallback
+const fallbackStyles = tv({
+  base: "flex size-full items-center justify-center rounded-full bg-muted text-muted-foreground",
+  variants: {
+    size: {
+      sm: "text-xs",
+      md: "text-sm",
+      lg: "text-base",
+      xl: "text-lg",
+    }
+  },
+  defaultVariants: {
+    size: "md"
   }
 });
 
-// Extended Avatar props
+// Context for sharing size prop
+const AvatarContext = React.createContext<{ size?: "sm" | "md" | "lg" | "xl" }>({});
+
+// Extended interfaces
 interface AvatarProps extends AvatarRootProps {
   size?: "sm" | "md" | "lg" | "xl";
   variant?: "circle" | "square";
-  src?: string;
-  alt?: string;
-  fallback?: React.ReactNode;
-  className?: string;
 }
 
-// Unified Avatar component
+// Components
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-  (props, ref) => {
-    const {
-      size = "md",
-      variant = "circle",
-      src,
-      alt,
-      fallback,
-      className,
-      asChild = false,
-      ...rootProps
-    } = props;
-
-    // Generate classes using tv
-    const variantClasses = avatarStyles({ size, variant });
-    
-    // Combine with additional classes
-    const combinedClassNames = className ? twMerge(variantClasses, className) : variantClasses;
-
-    return (
+  ({ size, variant, className, children, ...props }, ref) => (
+    <AvatarContext.Provider value={{ size }}>
       <AvatarRoot
         ref={ref}
-        asChild={asChild}
-        className={combinedClassNames}
-        {...rootProps}
+        className={twMerge(rootStyles({ size, variant }), className)}
+        {...props}
       >
-        {src && (
-          <AvatarImage
-            src={src}
-            alt={alt || ""}
-          />
-        )}
-        {fallback && (
-          <AvatarFallback data-fallback>
-            {fallback}
-          </AvatarFallback>
-        )}
+        {children}
       </AvatarRoot>
+    </AvatarContext.Provider>
+  )
+);
+
+const AvatarImg = React.forwardRef<HTMLImageElement, AvatarImageProps>(
+  ({ className, ...props }, ref) => (
+    <AvatarImage
+      ref={ref}
+      className={twMerge(imageStyles(), className)}
+      {...props}
+    />
+  )
+);
+
+const AvatarPlaceholder = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
+  ({ className, ...props }, ref) => {
+    const { size } = React.useContext(AvatarContext);
+    
+    return (
+      <AvatarFallback
+        ref={ref}
+        className={twMerge(fallbackStyles({ size }), className)}
+        {...props}
+      />
     );
   }
 );
 
+// Setting display names
 Avatar.displayName = "Avatar";
+AvatarImg.displayName = "AvatarImg";
+AvatarPlaceholder.displayName = "AvatarPlaceholder";
 
-export { Avatar, type AvatarProps };
+export { Avatar, AvatarImg, AvatarPlaceholder }; 
